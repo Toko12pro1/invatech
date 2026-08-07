@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" width="300" height="64" role="img" aria-labelledby="ies-full-title">
+  <title id="ies-full-title">Innovatech Engineering Solutions</title>
+  <g transform="translate(-2.12 -3.78) scale(0.36)">
+    <g fill="none" stroke-width="14">
+      <path stroke="#F7A21E" d="M57.5 158.03 L28.5 107.79"/>
+      <path stroke="#EC8C14" d="M28.5 92.21 L57.5 41.97"/>
+      <path stroke="#DF760E" d="M71 34.18 L129 34.18"/>
+      <path stroke="#D0600A" d="M142.5 41.97 L171.5 92.21"/>
+      <path stroke="#BE4D07" d="M171.5 107.79 L142.5 158.03"/>
+      <path stroke="#A93C05" d="M129 165.82 L71 165.82"/>
+    </g>
+    <path fill="#FFCB60" d="M57 126h14l12.7-22h-14z"/>
+    <path fill="#FFB238" d="M79 126h14l20.8-36h-14z"/>
+    <path fill="#FF9812" d="M101 126h14l28.9-50h-14z"/>
+  </g>
+  <text x="82" y="35"
+        font-family="'Space Grotesk','Archivo','Inter',system-ui,sans-serif"
+        font-size="26" font-weight="600" letter-spacing="1.6" fill="#14181F">INNOVATECH</text>
+  <text x="82" y="48"
+        font-family="'Space Grotesk','Archivo','Inter',system-ui,sans-serif"
+        font-size="8.5" font-weight="500" letter-spacing="4.2" fill="#64748B">ENGINEERING SOLUTIONS</text>
+</svg>
