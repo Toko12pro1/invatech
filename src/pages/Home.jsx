@@ -16,6 +16,7 @@ import ServiceCard from "../components/ServiceCard";
 import ProductCard from "../components/ProductCard";
 import StatCounter from "../components/StatCounter";
 import TestimonialCard from "../components/TestimonialCard";
+import PromoVideo from "../components/PromoVideo";
 import services from "../data/services";
 import products from "../data/products";
 import testimonials from "../data/testimonials";
@@ -89,6 +90,8 @@ export default class Home extends BasePage {
             </motion.div>
           </div>
         </section>
+
+        <PromoVideo />
 
         <section className="stats-bar">
           <div className="container stats-grid">
@@ -167,25 +170,27 @@ export default class Home extends BasePage {
         </section>
 
         <section className="section section--dark">
-          <div className="container">
-            <SectionHeading
-              eyebrow="Why Choose Us"
-              title="Built on Trust, Backed by Skill"
-              center
-            />
-            <div className="grid grid--4">
-              {WHY_CHOOSE_US.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <Reveal key={item.title} delay={index * 0.08} className="feature-card">
-                    <span className="feature-icon">
-                      <Icon aria-hidden="true" />
-                    </span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </Reveal>
-                );
-              })}
+          <div className="container split">
+            <Reveal className="split-image">
+              <img src="/images/why-choose-us.jpg" alt="Members of the Innovatech team" />
+            </Reveal>
+            <div className="split-content">
+              <span className="eyebrow">Why Choose Us</span>
+              <h2>Built on Trust, Backed by Skill</h2>
+              <div className="grid grid--2 why-choose-grid">
+                {WHY_CHOOSE_US.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <Reveal key={item.title} delay={index * 0.08} className="feature-card feature-card--compact">
+                      <span className="feature-icon feature-icon--sm">
+                        <Icon aria-hidden="true" />
+                      </span>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </Reveal>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
