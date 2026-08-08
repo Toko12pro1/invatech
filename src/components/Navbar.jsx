@@ -1,18 +1,21 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { withTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaBars, FaTimes, FaWhatsapp } from "react-icons/fa";
 import Logo from "./Logo";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const NAV_LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/services", label: "Services" },
-  { to: "/shop", label: "Shop" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", key: "home", end: true },
+  { to: "/about", key: "about" },
+  { to: "/services", key: "services" },
+  { to: "/shop", key: "shop" },
+  { to: "/wifi-zone", key: "wifiZone" },
+  { to: "/contact", key: "contact" },
 ];
 
-export default class Navbar extends React.Component {
+class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { menuOpen: false, scrolled: false };
@@ -45,6 +48,7 @@ export default class Navbar extends React.Component {
 
   render() {
     const { menuOpen, scrolled } = this.state;
+    const { t } = this.props;
 
     return (
       <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
@@ -56,25 +60,26 @@ export default class Navbar extends React.Component {
               <NavLink
                 key={link.to}
                 to={link.to}
-                end={link.to === "/"}
+                end={Boolean(link.end)}
                 className={({ isActive }) => `navbar-link ${isActive ? "navbar-link--active" : ""}`}
               >
-                {link.label}
+                {t(`nav.${link.key}`)}
               </NavLink>
             ))}
           </nav>
 
           <div className="navbar-actions">
+            <LanguageSwitcher />
             <a
-              href="https://wa.me/237600000000"
+              href="https://wa.me/237651162373"
               target="_blank"
               rel="noreferrer"
               className="btn btn--ghost navbar-whatsapp"
             >
-              <FaWhatsapp aria-hidden="true" /> WhatsApp Us
+              <FaWhatsapp aria-hidden="true" /> {t("nav.whatsappUs")}
             </a>
             <NavLink to="/contact" className="btn btn--primary">
-              Get a Quote
+              {t("nav.getQuote")}
             </NavLink>
           </div>
 
@@ -102,15 +107,16 @@ export default class Navbar extends React.Component {
                 <NavLink
                   key={link.to}
                   to={link.to}
-                  end={link.to === "/"}
+                  end={Boolean(link.end)}
                   onClick={this.closeMenu}
                   className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
                 >
-                  {link.label}
+                  {t(`nav.${link.key}`)}
                 </NavLink>
               ))}
+              <LanguageSwitcher className="lang-switch--mobile" />
               <NavLink to="/contact" onClick={this.closeMenu} className="btn btn--primary navbar-mobile-cta">
-                Get a Quote
+                {t("nav.getQuote")}
               </NavLink>
             </motion.nav>
           )}
@@ -119,3 +125,5 @@ export default class Navbar extends React.Component {
     );
   }
 }
+
+export default withTranslation()(Navbar);

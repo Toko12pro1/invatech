@@ -1,19 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { withTranslation } from "react-i18next";
 import BasePage from "../components/BasePage";
 import Reveal from "../components/Reveal";
 
-export default class NotFound extends BasePage {
+class NotFound extends BasePage {
   renderPage() {
+    const { t } = this.props;
+
     return (
       <section className="section not-found">
         <div className="container">
           <Reveal>
-            <span className="eyebrow">404</span>
-            <h1>This page took a wrong turn.</h1>
-            <p>The page you're looking for doesn't exist, or may have moved.</p>
+            <span className="eyebrow">{t("notFound.eyebrow")}</span>
+            <h1>{t("notFound.title")}</h1>
+            <p>{t("notFound.text")}</p>
             <Link to="/" className="btn btn--primary">
-              Back to Home
+              {t("notFound.backHome")}
             </Link>
           </Reveal>
         </div>
@@ -21,3 +24,5 @@ export default class NotFound extends BasePage {
     );
   }
 }
+
+export default withTranslation()(NotFound);

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Trans, withTranslation } from "react-i18next";
 import {
   FaFacebookF,
   FaInstagram,
@@ -12,9 +13,10 @@ import {
 import Logo from "./Logo";
 import services from "../data/services";
 
-export default class Footer extends React.Component {
+class Footer extends React.Component {
   render() {
     const year = new Date().getFullYear();
+    const { t } = this.props;
 
     return (
       <footer className="footer">
@@ -22,9 +24,11 @@ export default class Footer extends React.Component {
           <div className="footer-col footer-brand">
             <Logo variant="dark" />
             <p className="footer-about">
-              Innovatech Engineering Solutions repairs, builds and sells the technology that keeps
-              Cameroon connected — and is the parent company behind{" "}
-              <strong>Skolar</strong>, our school-management platform.
+              <Trans i18nKey="footer.about" t={t}>
+                Innovatech Engineering Solutions repairs, builds and sells the technology that keeps
+                Cameroon connected — and is the parent company behind <strong>Skolar</strong>, our
+                school-management platform.
+              </Trans>
             </p>
             <div className="footer-social">
               <a href="#" aria-label="Facebook"><FaFacebookF /></a>
@@ -34,43 +38,46 @@ export default class Footer extends React.Component {
           </div>
 
           <div className="footer-col">
-            <h4>Quick Links</h4>
+            <h4>{t("footer.quickLinks")}</h4>
             <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/about">About Us</Link></li>
-              <li><Link to="/services">Services</Link></li>
-              <li><Link to="/shop">Shop</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
+              <li><Link to="/">{t("nav.home")}</Link></li>
+              <li><Link to="/about">{t("nav.about")}</Link></li>
+              <li><Link to="/services">{t("nav.services")}</Link></li>
+              <li><Link to="/shop">{t("nav.shop")}</Link></li>
+              <li><Link to="/wifi-zone">{t("nav.wifiZone")}</Link></li>
+              <li><Link to="/contact">{t("nav.contact")}</Link></li>
             </ul>
           </div>
 
           <div className="footer-col">
-            <h4>Our Services</h4>
+            <h4>{t("footer.ourServices")}</h4>
             <ul>
               {services.map((service) => (
                 <li key={service.id}>
-                  <Link to="/services">{service.title}</Link>
+                  <Link to="/services">{t(service.translationKey("title"))}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="footer-col">
-            <h4>Get In Touch</h4>
+            <h4>{t("footer.getInTouch")}</h4>
             <ul className="footer-contact">
-              <li><FaMapMarkerAlt /> Douala, Cameroon</li>
-              <li><FaPhoneAlt /> +237 6XX XXX XXX</li>
-              <li><FaWhatsapp /> +237 6XX XXX XXX</li>
+              <li><FaMapMarkerAlt /> {t("contact.details.locationValue")}</li>
+              <li><FaPhoneAlt /> +237 651 162 373</li>
+              <li><FaWhatsapp /> +237 651 162 373</li>
               <li><FaEnvelope /> hello@innovatech.cm</li>
             </ul>
           </div>
         </div>
 
         <div className="footer-bottom container">
-          <p>&copy; {year} Innovatech Engineering Solutions. All rights reserved.</p>
-          <p className="footer-bottom-sub">Proudly building technology in Cameroon 🇨🇲</p>
+          <p>&copy; {year} Innovatech Engineering Solutions. {t("footer.rights")}</p>
+          <p className="footer-bottom-sub">{t("footer.tagline")}</p>
         </div>
       </footer>
     );
   }
 }
+
+export default withTranslation()(Footer);

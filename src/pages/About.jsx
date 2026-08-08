@@ -1,57 +1,50 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Trans, withTranslation } from "react-i18next";
 import { FaArrowRight, FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
 import BasePage from "../components/BasePage";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
+import ProfileCard from "../components/ProfileCard";
 
-const VALUES = [
-  {
-    icon: FaBullseye,
-    title: "Our Mission",
-    text: "To make reliable technology — repaired, sold, or built — accessible to every home, business and school in Cameroon.",
-  },
-  {
-    icon: FaEye,
-    title: "Our Vision",
-    text: "To be the engineering company African institutions and individuals turn to first, for hardware and software alike.",
-  },
-  {
-    icon: FaHandshake,
-    title: "Our Promise",
-    text: "Transparent pricing, honest diagnostics, and a warranty that means something — every single time.",
-  },
+const VALUE_ICONS = [FaBullseye, FaEye, FaHandshake];
+const VALUE_KEYS = ["mission", "vision", "promise"];
+const PROFILE_PHOTOS = [
+  "/images/profile-founder.jpg",
+  "/images/profile-engineer.jpg",
+  "/images/profile-technician.jpg",
+  "/images/profile-relations.jpg",
 ];
 
-export default class About extends BasePage {
+class About extends BasePage {
   renderPage() {
+    const { t } = this.props;
+    const howWeWorkBullets = t("about.howWeWork.bullets", { returnObjects: true });
+    const profileMembers = t("about.profiles.members", { returnObjects: true });
+
     return (
       <>
         <PageHero
           image="/images/hero-about.jpg"
-          eyebrow="About Us"
-          title="The Engineering Team Behind the Repairs, Sales & Skolar"
-          subtitle="Innovatech Engineering Solutions is a Cameroonian technology company built on hands-on skill and long-term trust."
+          eyebrow={t("about.hero.eyebrow")}
+          title={t("about.hero.title")}
+          subtitle={t("about.hero.subtitle")}
         />
 
         <section className="section">
           <div className="container split">
             <Reveal className="split-content">
-              <span className="eyebrow">Our Story</span>
-              <h2>From Repair Bench to Software Platform</h2>
+              <span className="eyebrow">{t("about.story.eyebrow")}</span>
+              <h2>{t("about.story.title")}</h2>
+              <p>{t("about.story.p1")}</p>
               <p>
-                Innovatech Engineering Solutions started with a simple frustration: too many
-                good devices were thrown away over fixable faults, and too few local companies
-                could be trusted to fix them properly. We built a team of technicians who repair
-                electronics the right way — down to component level when needed — and sell
-                devices people can actually rely on.
-              </p>
-              <p>
-                That same engineering discipline led us into software. Today, Innovatech is the
-                parent company of <strong>Skolar</strong>, a school-management platform we
-                designed, built and continue to maintain — proof that the same attention we give
-                a soldering iron, we give a codebase.
+                <Trans i18nKey="about.story.p2" t={t}>
+                  That same engineering discipline led us into software. Today, Innovatech is the
+                  parent company of <strong>Skolar</strong>, a school-management platform we
+                  designed, built and continue to maintain — proof that the same attention we give
+                  a soldering iron, we give a codebase.
+                </Trans>
               </p>
             </Reveal>
             <Reveal className="split-image" delay={0.1}>
@@ -62,17 +55,17 @@ export default class About extends BasePage {
 
         <section className="section section--alt">
           <div className="container">
-            <SectionHeading eyebrow="What Drives Us" title="Mission, Vision & Promise" />
+            <SectionHeading eyebrow={t("about.values.eyebrow")} title={t("about.values.title")} />
             <div className="grid grid--3">
-              {VALUES.map((value, index) => {
-                const Icon = value.icon;
+              {VALUE_KEYS.map((key, index) => {
+                const Icon = VALUE_ICONS[index];
                 return (
-                  <Reveal key={value.title} delay={index * 0.1} className="feature-card feature-card--bordered">
+                  <Reveal key={key} delay={index * 0.1} className="feature-card feature-card--bordered">
                     <span className="feature-icon">
                       <Icon aria-hidden="true" />
                     </span>
-                    <h3>{value.title}</h3>
-                    <p>{value.text}</p>
+                    <h3>{t(`about.values.${key}.title`)}</h3>
+                    <p>{t(`about.values.${key}.text`)}</p>
                   </Reveal>
                 );
               })}
@@ -86,17 +79,13 @@ export default class About extends BasePage {
               <img src="/images/about-workshop.jpg" alt="Hardware prototyping and circuit-level diagnostic work" />
             </Reveal>
             <Reveal className="split-content" delay={0.1}>
-              <span className="eyebrow">How We Work</span>
-              <h2>Real Diagnostics, Not Guesswork</h2>
-              <p>
-                Every device that comes to our bench is diagnosed at component level before we
-                quote a price. It's the same rigor our software team applies to a client's
-                codebase — understand the root cause first, then fix it properly.
-              </p>
+              <span className="eyebrow">{t("about.howWeWork.eyebrow")}</span>
+              <h2>{t("about.howWeWork.title")}</h2>
+              <p>{t("about.howWeWork.p1")}</p>
               <ul className="checklist">
-                <li>Transparent, itemised quotes before any work begins</li>
-                <li>Genuine and high-grade replacement parts</li>
-                <li>Warranty on every repair and every device sold</li>
+                {howWeWorkBullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
               </ul>
             </Reveal>
           </div>
@@ -108,17 +97,54 @@ export default class About extends BasePage {
               <img src="/images/about-team.jpg" alt="The Innovatech team collaborating in the office" />
             </Reveal>
             <Reveal className="split-content" delay={0.1}>
-              <span className="eyebrow">Our Team</span>
-              <h2>A Team of Technicians, Engineers & Builders</h2>
-              <p>
-                From repair technicians to full-stack developers, our team shares one standard:
-                do it properly, explain it honestly, and stand behind the work. Many of us also
-                build and maintain Skolar day-to-day — so the company that fixes your phone is
-                the same one shipping software used by real schools.
-              </p>
+              <span className="eyebrow">{t("about.team.eyebrow")}</span>
+              <h2>{t("about.team.title")}</h2>
+              <p>{t("about.team.p1")}</p>
               <Link to="/contact" className="btn btn--secondary">
-                Work With Us <FaArrowRight aria-hidden="true" />
+                {t("about.team.workWithUs")} <FaArrowRight aria-hidden="true" />
               </Link>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <SectionHeading
+              eyebrow={t("about.profiles.eyebrow")}
+              title={t("about.profiles.title")}
+              subtitle={t("about.profiles.subtitle")}
+            />
+            <div className="grid grid--4">
+              {profileMembers.map((member, index) => (
+                <ProfileCard
+                  key={member.name}
+                  index={index}
+                  photo={PROFILE_PHOTOS[index]}
+                  name={member.name}
+                  role={member.role}
+                  bio={member.bio}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section section--alt">
+          <div className="container split">
+            <Reveal className="split-content">
+              <span className="eyebrow">{t("about.innovationHub.eyebrow")}</span>
+              <h2>{t("about.innovationHub.title")}</h2>
+              <p>{t("about.innovationHub.p1")}</p>
+              <p>{t("about.innovationHub.p2")}</p>
+              <Link to="/services" className="btn btn--secondary">
+                {t("about.innovationHub.cta")} <FaArrowRight aria-hidden="true" />
+              </Link>
+            </Reveal>
+            <Reveal className="innovation-gallery" delay={0.1}>
+              <img src="/images/innovation-raspberrypi.jpg" alt="Raspberry Pi board used in IoT prototyping" />
+              <img src="/images/innovation-sensors.jpg" alt="IoT sensor modules" />
+              <img src="/images/innovation-prototype.jpg" alt="A working IoT prototype on a breadboard" />
+              <img src="/images/innovation-lab.jpg" alt="Innovation hub workbench with electronics components" />
             </Reveal>
           </div>
         </section>
@@ -126,15 +152,15 @@ export default class About extends BasePage {
         <section className="cta-banner">
           <div className="container cta-banner-inner">
             <Reveal>
-              <h2>Want to know more about what we do?</h2>
-              <p>See our full range of services, or get in touch directly.</p>
+              <h2>{t("about.cta.title")}</h2>
+              <p>{t("about.cta.subtitle")}</p>
             </Reveal>
             <Reveal delay={0.1} className="cta-banner-actions">
               <Link to="/services" className="btn btn--dark">
-                Our Services
+                {t("about.cta.ourServices")}
               </Link>
               <Link to="/contact" className="btn btn--outline-light">
-                Contact Us
+                {t("about.cta.contactUs")}
               </Link>
             </Reveal>
           </div>
@@ -143,3 +169,5 @@ export default class About extends BasePage {
     );
   }
 }
+
+export default withTranslation()(About);

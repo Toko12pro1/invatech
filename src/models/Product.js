@@ -1,7 +1,6 @@
 export default class Product {
-  constructor({ id, name, category, price, oldPrice, image, condition = "New", badge = "" }) {
+  constructor({ id, category, price, oldPrice, image, condition = "New", badge = "" }) {
     this.id = id;
-    this.name = name;
     this.category = category;
     this.price = price;
     this.oldPrice = oldPrice;
@@ -21,5 +20,9 @@ export default class Product {
 
   formatPrice(amount = this.price) {
     return new Intl.NumberFormat("en-US").format(amount) + " FCFA";
+  }
+
+  translationKey(field) {
+    return `productsData.${this.id}.${field}`;
   }
 }

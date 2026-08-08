@@ -1,0 +1,339 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "services": "Services",
+    "shop": "Boutique",
+    "wifiZone": "Zone WiFi",
+    "contact": "Contact",
+    "getQuote": "Demander un Devis",
+    "whatsappUs": "Nous Écrire sur WhatsApp"
+  },
+  "footer": {
+    "about": "Innovatech Engineering Solutions répare, conçoit et vend la technologie qui connecte le Cameroun — et est la société mère de <1>Skolar</1>, notre plateforme de gestion scolaire.",
+    "quickLinks": "Liens Rapides",
+    "ourServices": "Nos Services",
+    "getInTouch": "Nous Contacter",
+    "rights": "Tous droits réservés.",
+    "tagline": "Fièrement bâti au Cameroun 🇨🇲"
+  },
+  "common": {
+    "learnMore": "En Savoir Plus",
+    "enquire": "Demander",
+    "sendWhatsApp": "Envoyer via WhatsApp",
+    "sendEmail": "Envoyer par Email",
+    "chatWithUs": "Discuter avec Nous",
+    "conditions": {
+      "New": "Neuf",
+      "Fairly Used": "Occasion"
+    },
+    "badges": {
+      "Best Seller": "Meilleure Vente",
+      "On Sale": "En Promotion",
+      "Popular": "Populaire"
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Innovatech Engineering Solutions",
+      "title": "Nous Réparons, Construisons et Vendons la Technologie qui Fait Tourner le Cameroun",
+      "subtitle": "Réparation de téléphones et d'électronique, vente d'appareils vérifiés et développement de logiciels sur mesure — le tout au sein d'une seule équipe d'ingénieurs. Fière société mère de <1>Skolar</1>.",
+      "exploreServices": "Découvrir Nos Services",
+      "getFreeQuote": "Obtenir un Devis Gratuit"
+    },
+    "promo": {
+      "eyebrow": "Découvrez-Nous en Action",
+      "title": "Innovatech, en Moins de Deux Minutes",
+      "subtitle": "Appuyez sur lecture quand vous êtes prêt — la vidéo ne se charge qu'après votre clic, pour ne pas consommer vos données.",
+      "lines": [
+        "Nous développons les logiciels — plateformes scolaires, applications métier, sites web",
+        "Nous réparons ce qui casse — téléphones, ordinateurs portables, électronique",
+        "Nous fournissons le matériel — sourcé, testé, garanti"
+      ]
+    },
+    "stats": {
+      "years": "Années d'Expérience",
+      "devicesRepaired": "Appareils Réparés",
+      "happyClients": "Clients Satisfaits",
+      "schoolPlatform": "Plateforme Scolaire Développée"
+    },
+    "whatWeDo": {
+      "eyebrow": "Ce Que Nous Faisons",
+      "title": "Des Services Technologiques Complets, Sous un Même Toit",
+      "subtitle": "D'un écran fissuré à une plateforme logicielle complète, nos ingénieurs s'occupent de tout.",
+      "viewAllServices": "Voir Tous Les Services"
+    },
+    "whoWeAre": {
+      "eyebrow": "Qui Sommes-Nous",
+      "title": "Des Solutions d'Ingénierie Depuis Le Premier Jour",
+      "paragraph": "Innovatech Engineering Solutions est une entreprise technologique camerounaise fondée sur une seule idée : une véritable ingénierie, appliquée concrètement. Nous réparons les appareils dont les gens dépendent, vendons de l'électronique fiable, et développons les logiciels sur lesquels reposent des institutions entières — notamment <1>Skolar</1>, notre propre plateforme de gestion scolaire utilisée par des écoles à travers la région.",
+      "bullets": [
+        "Techniciens certifiés et expérimentés",
+        "Équipe d'ingénierie logicielle interne",
+        "Tarification transparente, garanties réelles"
+      ],
+      "moreAboutUs": "En Savoir Plus Sur Nous"
+    },
+    "shop": {
+      "eyebrow": "Boutique",
+      "title": "Appareils en Vedette",
+      "subtitle": "Un aperçu de ce qui est actuellement disponible — neuf et occasion, tout est vérifié.",
+      "visitShop": "Visiter la Boutique"
+    },
+    "whyChooseUs": {
+      "eyebrow": "Pourquoi Nous Choisir",
+      "title": "Fondé sur la Confiance, Soutenu par le Savoir-Faire",
+      "items": [
+        { "title": "Ingénieurs Qualifiés", "text": "Chaque réparation et chaque projet est confié à des techniciens et ingénieurs formés — jamais au hasard." },
+        { "title": "Une Garantie Fiable", "text": "Les appareils neufs comme d'occasion sont testés et couverts par une garantie." },
+        { "title": "Un Délai Rapide", "text": "La plupart des réparations courantes sont terminées le jour même, pour que vous ne restiez jamais longtemps sans votre appareil." },
+        { "title": "Ancré au Cameroun", "text": "Conçu par et pour le Cameroun — nous comprenons le marché local, des pièces détachées aux réalités énergétiques." }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Témoignages",
+      "title": "Ce Que Disent Nos Clients"
+    },
+    "cta": {
+      "title": "Un appareil à réparer, ou un projet à construire ?",
+      "subtitle": "Contactez-nous sur WhatsApp et obtenez une réponse en quelques minutes.",
+      "chatNow": "Discuter Avec Nous Maintenant"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "À Propos de Nous",
+      "title": "L'Équipe d'Ingénieurs Derrière les Réparations, les Ventes et Skolar",
+      "subtitle": "Innovatech Engineering Solutions est une entreprise technologique camerounaise fondée sur un savoir-faire concret et une confiance durable."
+    },
+    "story": {
+      "eyebrow": "Notre Histoire",
+      "title": "Du Banc de Réparation à la Plateforme Logicielle",
+      "p1": "Innovatech Engineering Solutions est né d'une frustration simple : trop de bons appareils étaient jetés à cause de pannes réparables, et trop peu d'entreprises locales étaient dignes de confiance pour les réparer correctement. Nous avons formé une équipe de techniciens qui réparent l'électronique comme il se doit — jusqu'au niveau des composants si nécessaire — et vendent des appareils sur lesquels on peut vraiment compter.",
+      "p2": "Cette même rigueur d'ingénierie nous a menés vers le logiciel. Aujourd'hui, Innovatech est la société mère de <1>Skolar</1>, une plateforme de gestion scolaire que nous avons conçue, développée et continuons de maintenir — la preuve que nous accordons la même attention à un fer à souder qu'à une base de code."
+    },
+    "values": {
+      "eyebrow": "Ce Qui Nous Anime",
+      "title": "Mission, Vision et Engagement",
+      "mission": { "title": "Notre Mission", "text": "Rendre une technologie fiable — réparée, vendue ou conçue — accessible à chaque foyer, entreprise et école au Cameroun." },
+      "vision": { "title": "Notre Vision", "text": "Devenir l'entreprise d'ingénierie vers laquelle les institutions et particuliers africains se tournent en premier, pour le matériel comme pour le logiciel." },
+      "promise": { "title": "Notre Engagement", "text": "Une tarification transparente, des diagnostics honnêtes, et une garantie qui a du sens — à chaque fois." }
+    },
+    "howWeWork": {
+      "eyebrow": "Notre Méthode",
+      "title": "De Vrais Diagnostics, Jamais au Hasard",
+      "p1": "Chaque appareil qui arrive sur notre banc est diagnostiqué au niveau des composants avant que nous ne donnions un prix. C'est la même rigueur que notre équipe logicielle applique au code d'un client : comprendre la cause exacte avant de la corriger.",
+      "bullets": [
+        "Devis détaillés et transparents avant tout travail",
+        "Pièces de rechange authentiques et de haute qualité",
+        "Garantie sur chaque réparation et chaque appareil vendu"
+      ]
+    },
+    "team": {
+      "eyebrow": "Notre Équipe",
+      "title": "Une Équipe de Techniciens, d'Ingénieurs et de Bâtisseurs",
+      "p1": "Des techniciens de réparation aux développeurs full-stack, notre équipe partage une seule exigence : bien faire les choses, les expliquer honnêtement, et rester responsable du travail accompli. Beaucoup d'entre nous développent et maintiennent aussi Skolar au quotidien — l'entreprise qui répare votre téléphone est la même qui déploie des logiciels utilisés par de vraies écoles.",
+      "workWithUs": "Travailler Avec Nous"
+    },
+    "profiles": {
+      "eyebrow": "Rencontrez l'Équipe",
+      "title": "Les Visages d'Innovatech",
+      "subtitle": "Quelques-uns des techniciens, ingénieurs et bâtisseurs que vous pourriez rencontrer sur place ou lors d'un appel d'assistance.",
+      "members": [
+        { "name": "Emmanuel Ateba", "role": "Fondateur & Ingénieur Principal", "bio": "Dirige à la fois le banc de réparation et l'équipe logicielle — la même personne qui a validé la toute première version de Skolar." },
+        { "name": "Chantal Mbarga", "role": "Ingénieure Logiciel", "bio": "Développe et maintient le cœur de la plateforme Skolar, en plus des projets web et mobiles des clients." },
+        { "name": "Patrick Nguema", "role": "Technicien en Réparation Matérielle", "bio": "S'occupe des diagnostics au niveau des circuits — la personne la plus susceptible de sauver un appareil que d'autres jugeaient irréparable." },
+        { "name": "Divine Ayuk", "role": "Relation Client", "bio": "Votre premier point de contact — accompagne chaque client à travers le diagnostic, la tarification et les conditions de garantie." }
+      ]
+    },
+    "innovationHub": {
+      "eyebrow": "Pôle Innovation",
+      "title": "Au-delà de la Réparation : Nous Concevons et Construisons",
+      "p1": "Non, nous ne faisons pas que réparer de l'électronique — nous la concevons aussi. Notre pôle innovation est l'endroit où nos ingénieurs prototypent des circuits sur mesure et des dispositifs IoT pour les clients qui ont besoin d'une solution construite depuis zéro, et non achetée toute faite.",
+      "p2": "D'une preuve de concept sur Raspberry Pi à un véritable réseau de capteurs, c'est la même équipe, le même banc de travail — simplement tourné vers la création de quelque chose de neuf plutôt que la réparation de quelque chose de cassé.",
+      "cta": "Découvrir Notre Service Design & Conception"
+    },
+    "cta": {
+      "title": "Vous voulez en savoir plus sur ce que nous faisons ?",
+      "subtitle": "Consultez l'ensemble de nos services, ou contactez-nous directement.",
+      "ourServices": "Nos Services",
+      "contactUs": "Nous Contacter"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Nos Services",
+      "title": "Chaque Service Soutenu par une Véritable Ingénierie",
+      "subtitle": "Réparation, vente et logiciel — gérés par la même équipe, selon les mêmes exigences."
+    },
+    "process": {
+      "eyebrow": "Notre Processus",
+      "title": "Notre Méthode de Travail, à Chaque Fois",
+      "steps": [
+        { "title": "Diagnostic", "text": "Nous inspectons votre appareil ou recueillons en détail les exigences de votre projet." },
+        { "title": "Devis", "text": "Vous recevez un prix clair et détaillé avant que tout travail ne commence — aucune surprise." },
+        { "title": "Construction ou Réparation", "text": "Nos techniciens et ingénieurs se mettent au travail avec les bonnes pièces et les bons outils." },
+        { "title": "Livraison et Garantie", "text": "Vous récupérez votre appareil testé, fonctionnel, et couvert par notre garantie." }
+      ]
+    },
+    "cta": {
+      "title": "Vous ne savez pas quel service choisir ?",
+      "subtitle": "Expliquez-nous votre situation — nous vous orienterons dans la bonne direction, gratuitement.",
+      "talkToUs": "Discuter Avec Nous"
+    }
+  },
+  "servicesData": {
+    "device-repair": {
+      "title": "Réparation de Téléphones et Gadgets",
+      "summary": "Écrans, batteries, ports et pannes logicielles réparés rapidement — pour téléphones, ordinateurs portables, consoles et objets connectés.",
+      "description": "D'un écran fissuré à un téléphone qui ne charge plus, nos techniciens diagnostiquent et réparent smartphones, ordinateurs portables, consoles de jeu et appareils domestiques intelligents. Nous utilisons des pièces authentiques et de haute qualité, et la plupart des réparations courantes sont terminées le jour même.",
+      "features": ["Remplacement d'écran et de batterie", "Réparation de port de charge et de boutons", "Pannes logicielles et récupération de données", "Réparation de consoles et accessoires"]
+    },
+    "electronics-repair": {
+      "title": "Réparation d'Électronique et de Matériel",
+      "summary": "Diagnostic et réparation pratiques au niveau des circuits pour téléviseurs, appareils électroménagers et autres équipements électroniques.",
+      "description": "Nos ingénieurs vont au-delà de la surface — ils tracent les pannes jusqu'au niveau des composants et des circuits pour les téléviseurs, appareils électroménagers, blocs d'alimentation et autres équipements électroniques que d'autres abandonnent.",
+      "features": ["Diagnostic de panne au niveau des circuits", "Réparation de téléviseurs et d'électroménager", "Réparation de blocs d'alimentation et de cartes", "Maintenance préventive"]
+    },
+    "software-development": {
+      "title": "Développement d'Applications et de Logiciels",
+      "summary": "Logiciels sur mesure, applications mobiles et plateformes web — développés et maintenus par l'équipe derrière Skolar.",
+      "description": "Nous concevons, développons et maintenons des logiciels pour les entreprises et institutions — des applications mobiles aux plateformes web complètes. Skolar, notre plateforme phare de gestion scolaire, a été développée et est maintenue par cette même équipe d'ingénieurs.",
+      "features": ["Applications web et mobiles sur mesure", "Maintenance et support continus", "Systèmes de gestion scolaire et d'entreprise", "Intégrations API"]
+    },
+    "electronics-sales": {
+      "title": "Vente d'Électronique Neuve et d'Occasion",
+      "summary": "Téléphones, ordinateurs portables et gadgets vérifiés et testés — neufs et d'occasion — avec garantie sur chaque appareil.",
+      "description": "Chaque appareil que nous vendons — neuf ou d'occasion — est testé et vérifié en interne avant de vous parvenir, couvert par une garantie et un service après-vente assuré par la même équipe qui effectue les réparations.",
+      "features": ["Appareils testés et vérifiés", "Options neuves et d'occasion", "Garantie sur chaque appareil", "Reprise possible"]
+    },
+    "design-conception": {
+      "title": "Design et Conception",
+      "summary": "Conception de matériel sur mesure et prototypage IoT — nous ne faisons pas que réparer l'électronique, nous la concevons.",
+      "description": "Au-delà de la réparation et de la revente, nos ingénieurs conçoivent et prototypent de l'électronique sur mesure — de la conception de circuits à des dispositifs IoT fonctionnels — pour les entreprises qui ont besoin d'une solution construite de zéro plutôt qu'achetée toute faite.",
+      "features": ["Conception de circuits et de produits sur mesure", "Prototypage de dispositifs IoT", "Réalisation de preuves de concept", "Du concept au matériel fonctionnel"]
+    }
+  },
+  "shop": {
+    "hero": {
+      "eyebrow": "Boutique",
+      "title": "Électronique Neuve et d'Occasion, Entièrement Vérifiée",
+      "subtitle": "Chaque appareil est testé en interne avant de vous parvenir, garantie incluse."
+    },
+    "browse": {
+      "eyebrow": "Parcourir",
+      "title": "Appareils Disponibles"
+    },
+    "categories": {
+      "All": "Tout",
+      "Smartphones": "Smartphones",
+      "Wearables": "Objets Connectés",
+      "Audio": "Audio",
+      "Cameras": "Appareils Photo",
+      "Gaming": "Gaming"
+    },
+    "cta": {
+      "title": "Vous cherchez quelque chose de précis, ou souhaitez échanger un appareil ?",
+      "subtitle": "Écrivez-nous sur WhatsApp — nous nous réapprovisionnons régulièrement et pouvons sourcer sur demande."
+    }
+  },
+  "productsData": {
+    "smartphone-1": { "name": "Smartphone — 128 Go", "category": "Smartphones" },
+    "smartwatch-1": { "name": "Montre Connectée", "category": "Objets Connectés" },
+    "smart-speaker-1": { "name": "Enceinte Intelligente", "category": "Audio" },
+    "studio-speaker-1": { "name": "Enceintes de Studio (Paire)", "category": "Audio" },
+    "instant-camera-1": { "name": "Appareil Photo Instantané", "category": "Appareils Photo" },
+    "gaming-bundle-1": { "name": "Pack Console de Jeu et Manette", "category": "Gaming" }
+  },
+  "testimonialsData": {
+    "t1": { "role": "Petite Entrepreneure, Douala", "quote": "Mon ordinateur portable refusait de démarrer avant une livraison importante. Innovatech l'a diagnostiqué et réparé le jour même. Des prix honnêtes, et ils m'ont clairement expliqué le problème." },
+    "t2": { "role": "Administrateur Scolaire", "quote": "Ils ont développé Skolar pour notre école et continuent de le maintenir aujourd'hui. Savoir que les mêmes ingénieurs qui ont conçu notre logiciel s'occupent aussi de notre matériel est vraiment rassurant." },
+    "t3": { "role": "Étudiante, Yaoundé", "quote": "J'ai acheté un téléphone d'occasion dans leur boutique — entièrement testé, avec garantie, à moitié prix d'un neuf. Il fonctionne toujours parfaitement." }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Contactez-Nous",
+      "title": "Réparons, Construisons ou Trouvons Ce Dont Vous Avez Besoin",
+      "subtitle": "Contactez-nous par formulaire, WhatsApp, téléphone ou email — selon ce qui vous convient le mieux."
+    },
+    "getInTouch": {
+      "eyebrow": "Nous Contacter",
+      "title": "Nous Répondons Rapidement sur WhatsApp",
+      "p1": "Pour les réparations, demandes commerciales ou projets logiciels, WhatsApp est le moyen le plus rapide de joindre notre équipe directement."
+    },
+    "details": {
+      "location": "Notre Emplacement",
+      "locationValue": "Melen, Yaoundé, Cameroun",
+      "phone": "Téléphone",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "hours": "Heures d'Ouverture",
+      "hoursValue": "Lun – Sam, 8h00 – 18h30"
+    },
+    "form": {
+      "title": "Envoyez-Nous un Message",
+      "name": "Nom Complet",
+      "namePlaceholder": "Votre nom",
+      "phone": "Téléphone ou Email",
+      "phonePlaceholder": "+237 651 162 373",
+      "service": "De quoi avez-vous besoin ?",
+      "serviceOptions": ["Réparation de Téléphones et Gadgets", "Réparation d'Électronique et de Matériel", "Développement d'Applications et de Logiciels", "Design et Conception", "Achat d'Électronique", "Autre chose"],
+      "message": "Message",
+      "messagePlaceholder": "Dites-nous en quoi nous pouvons vous aider...",
+      "errors": {
+        "name": "Veuillez indiquer votre nom",
+        "phone": "Veuillez indiquer un numéro de téléphone ou un email",
+        "message": "Dites-nous en un peu plus sur votre besoin"
+      }
+    }
+  },
+  "wifiZone": {
+    "hero": {
+      "eyebrow": "Innovatech Zone WiFi",
+      "title": "Achetez Votre Accès Internet en Quelques Secondes — Sans Coupon Physique",
+      "subtitle": "Choisissez un forfait, générez votre coupon sur cette page, et connectez-vous. Sans file d'attente, sans carte à gratter."
+    },
+    "intro": {
+      "eyebrow": "Comment Ça Marche",
+      "title": "Trois Étapes Pour Vous Connecter",
+      "steps": [
+        { "title": "Choisissez un Forfait", "text": "Sélectionnez la quantité de données et la durée de validité qui vous conviennent." },
+        { "title": "Recevez Votre Coupon", "text": "Nous générons un identifiant unique et un code d'accès directement sur cette page." },
+        { "title": "Connectez-Vous", "text": "Entrez le code sur la page de connexion de la Zone WiFi et vous êtes en ligne." }
+      ]
+    },
+    "packages": {
+      "eyebrow": "Forfaits Data",
+      "title": "Choisissez Votre Forfait",
+      "subtitle": "Prix en FCFA. Générez un coupon de démonstration ci-dessous pour voir comment cela fonctionne.",
+      "items": [
+        { "id": "p1", "data": "500 Mo", "duration": "1 Jour", "price": 200 },
+        { "id": "p2", "data": "1 Go", "duration": "1 Jour", "price": 350 },
+        { "id": "p3", "data": "2 Go", "duration": "7 Jours", "price": 1000 },
+        { "id": "p4", "data": "5 Go", "duration": "30 Jours", "price": 2500 }
+      ],
+      "selectPlan": "Choisir ce Forfait",
+      "selected": "Sélectionné",
+      "mostPopular": "Le Plus Populaire"
+    },
+    "generate": {
+      "title": "Votre Coupon",
+      "subtitle": "Ceci est un aperçu de ce à quoi ressemblera votre coupon — le paiement final se fait par Mobile Money ou WhatsApp.",
+      "generateButton": "Générer Mon Coupon",
+      "regenerate": "Générer un Autre",
+      "voucherId": "Identifiant du Coupon",
+      "accessCode": "Code d'Accès",
+      "plan": "Forfait",
+      "validFor": "Valable Pour",
+      "payNote": "Pour activer ce coupon, effectuez le paiement via MTN/Orange Money ou WhatsApp — nous confirmerons et l'activerons en quelques minutes.",
+      "payWhatsApp": "Confirmer le Paiement sur WhatsApp",
+      "chooseFirst": "Choisissez d'abord un forfait ci-dessus"
+    }
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Cette page a pris un mauvais virage.",
+    "text": "La page que vous recherchez n'existe pas, ou a peut-être été déplacée.",
+    "backHome": "Retour à l'Accueil"
+  }
+}

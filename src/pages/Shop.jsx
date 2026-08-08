@@ -1,4 +1,5 @@
 import React from "react";
+import { withTranslation } from "react-i18next";
 import { FaWhatsapp } from "react-icons/fa";
 import BasePage from "../components/BasePage";
 import PageHero from "../components/PageHero";
@@ -9,7 +10,7 @@ import products from "../data/products";
 
 const CATEGORIES = ["All", ...new Set(products.map((product) => product.category))];
 
-export default class Shop extends BasePage {
+class Shop extends BasePage {
   constructor(props) {
     super(props);
     this.state = { activeCategory: "All" };
@@ -28,19 +29,20 @@ export default class Shop extends BasePage {
 
   renderPage() {
     const filtered = this.getFilteredProducts();
+    const { t } = this.props;
 
     return (
       <>
         <PageHero
           image="/images/hero-shop.jpg"
-          eyebrow="Shop"
-          title="New & Fairly-Used Electronics, Fully Verified"
-          subtitle="Every device is tested in-house before it reaches you, with warranty included."
+          eyebrow={t("shop.hero.eyebrow")}
+          title={t("shop.hero.title")}
+          subtitle={t("shop.hero.subtitle")}
         />
 
         <section className="section">
           <div className="container">
-            <SectionHeading eyebrow="Browse" title="Available Devices" />
+            <SectionHeading eyebrow={t("shop.browse.eyebrow")} title={t("shop.browse.title")} />
 
             <Reveal className="shop-filters">
               {CATEGORIES.map((category) => (
@@ -49,7 +51,7 @@ export default class Shop extends BasePage {
                   className={`filter-pill ${this.state.activeCategory === category ? "filter-pill--active" : ""}`}
                   onClick={() => this.setCategory(category)}
                 >
-                  {category}
+                  {t(`shop.categories.${category}`)}
                 </button>
               ))}
             </Reveal>
@@ -65,17 +67,17 @@ export default class Shop extends BasePage {
         <section className="cta-banner">
           <div className="container cta-banner-inner">
             <Reveal>
-              <h2>Looking for something specific, or want to trade in a device?</h2>
-              <p>Message us on WhatsApp — we restock regularly and can source on request.</p>
+              <h2>{t("shop.cta.title")}</h2>
+              <p>{t("shop.cta.subtitle")}</p>
             </Reveal>
             <Reveal delay={0.1}>
               <a
-                href="https://wa.me/237600000000"
+                href="https://wa.me/237651162373"
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn--dark"
               >
-                <FaWhatsapp aria-hidden="true" /> Chat With Us
+                <FaWhatsapp aria-hidden="true" /> {t("common.chatWithUs")}
               </a>
             </Reveal>
           </div>
@@ -84,3 +86,5 @@ export default class Shop extends BasePage {
     );
   }
 }
+
+export default withTranslation()(Shop);

@@ -225,6 +225,12 @@ p {
   transform: translateY(-2px);
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .btn--primary {
   background: var(--gradient-primary);
   color: var(--color-navy);
@@ -367,6 +373,37 @@ p {
 
 .navbar-whatsapp {
   display: none;
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.lang-switch-btn {
+  color: var(--color-gray-400);
+  padding: 2px;
+  transition: color 0.2s ease;
+}
+
+.lang-switch-btn:hover {
+  color: var(--color-orange);
+}
+
+.lang-switch-btn--active {
+  color: var(--color-navy);
+}
+
+.lang-switch-divider {
+  color: var(--color-gray-200);
+}
+
+.lang-switch--mobile {
+  margin: 10px 4px 4px;
 }
 
 .navbar-burger {
@@ -855,6 +892,60 @@ p {
 }
 
 /* ---------------------------------------------------------------- */
+/* Profile cards (team)                                               */
+/* ---------------------------------------------------------------- */
+.profile-card {
+  text-align: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  padding: 32px 24px;
+  height: 100%;
+}
+
+.profile-card img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-card h3 {
+  margin-bottom: 4px;
+}
+
+.profile-role {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-orange);
+  margin-bottom: 12px;
+}
+
+.profile-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.innovation-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.innovation-gallery img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------------------------------------------------------------- */
 /* CTA banner                                                         */
 /* ---------------------------------------------------------------- */
 .cta-banner {
@@ -914,6 +1005,127 @@ p {
   background: var(--gradient-primary);
   border-color: transparent;
   color: var(--color-navy);
+}
+
+/* ---------------------------------------------------------------- */
+/* WiFi Zone                                                           */
+/* ---------------------------------------------------------------- */
+.wifi-package {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  background: var(--color-white);
+  border: 2px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  padding: 32px 20px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wifi-package--active {
+  border-color: var(--color-orange);
+  box-shadow: var(--shadow-md);
+}
+
+.wifi-package-badge {
+  position: absolute;
+  top: -12px;
+  background: var(--gradient-primary);
+  color: var(--color-navy);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 5px 14px;
+  border-radius: 999px;
+}
+
+.wifi-package-icon {
+  font-size: 1.8rem;
+  color: var(--color-orange);
+  margin-bottom: 8px;
+}
+
+.wifi-package-data {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--color-navy);
+}
+
+.wifi-package-duration {
+  color: var(--color-gray-400);
+  font-size: 0.9rem;
+}
+
+.wifi-package-price {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-orange);
+  margin: 8px 0 12px;
+}
+
+.wifi-package-btn {
+  width: 100%;
+  padding: 10px 16px;
+}
+
+.voucher-card {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: 44px;
+  box-shadow: var(--shadow-md);
+}
+
+.voucher-hint {
+  color: var(--color-gray-400);
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+
+.voucher-result {
+  margin-top: 8px;
+}
+
+.voucher-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  text-align: left;
+  background: var(--color-cream);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.voucher-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-gray-400);
+  margin-bottom: 4px;
+}
+
+.voucher-value {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--color-navy);
+  letter-spacing: 0.5px;
+}
+
+.voucher-pay-note {
+  font-size: 0.88rem;
+  margin-bottom: 20px;
 }
 
 /* ---------------------------------------------------------------- */
@@ -1010,6 +1222,10 @@ p {
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 8px;
+}
+
+.voucher-card .form-actions {
+  justify-content: center;
 }
 
 .map-embed {

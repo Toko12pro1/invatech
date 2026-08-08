@@ -1,32 +1,23 @@
 import React from "react";
+import { withTranslation } from "react-i18next";
 import { FaLaptopCode, FaWrench, FaMicrochip } from "react-icons/fa";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
-const SERVICE_LINES = [
-  {
-    icon: FaLaptopCode,
-    text: "We build the software — school platforms, business apps, websites",
-  },
-  {
-    icon: FaWrench,
-    text: "We fix what breaks — phones, laptops, electronics",
-  },
-  {
-    icon: FaMicrochip,
-    text: "We supply the hardware — sourced, tested, guaranteed",
-  },
-];
+const LINE_ICONS = [FaLaptopCode, FaWrench, FaMicrochip];
 
-export default class PromoVideo extends React.Component {
+class PromoVideo extends React.Component {
   render() {
+    const { t } = this.props;
+    const lines = t("home.promo.lines", { returnObjects: true });
+
     return (
       <section className="section promo-section">
         <div className="container">
           <SectionHeading
-            eyebrow="See Us In Action"
-            title="Innovatech, In Under Two Minutes"
-            subtitle="Tap play when you're ready — the video only loads once you press it, so it won't eat into your data."
+            eyebrow={t("home.promo.eyebrow")}
+            title={t("home.promo.title")}
+            subtitle={t("home.promo.subtitle")}
           />
 
           <Reveal className="promo-video-wrap">
@@ -37,20 +28,20 @@ export default class PromoVideo extends React.Component {
               poster="/images/promo-poster.jpg"
               aria-label="Innovatech Engineering Solutions company promo video"
             >
-              {/* Only a .webm was supplied — add an .mp4 <source> above this line once one exists, for Safari/iOS fallback */}
               <source src="/videos/innovatech-promo.webm" type="video/webm" />
+              <source src="/videos/innovatech-promo.mp4" type="video/mp4" />
             </video>
           </Reveal>
 
           <div className="grid grid--3 promo-lines">
-            {SERVICE_LINES.map((line, index) => {
-              const Icon = line.icon;
+            {lines.map((text, index) => {
+              const Icon = LINE_ICONS[index];
               return (
-                <Reveal key={line.text} delay={index * 0.08} className="promo-line">
+                <Reveal key={text} delay={index * 0.08} className="promo-line">
                   <span className="promo-line-icon">
                     <Icon aria-hidden="true" />
                   </span>
-                  <p>{line.text}</p>
+                  <p>{text}</p>
                 </Reveal>
               );
             })}
@@ -60,3 +51,5 @@ export default class PromoVideo extends React.Component {
     );
   }
 }
+
+export default withTranslation()(PromoVideo);

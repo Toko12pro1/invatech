@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { withTranslation } from "react-i18next";
 import { FaSearch, FaFileInvoiceDollar, FaWrench, FaCheckCircle } from "react-icons/fa";
 import BasePage from "../components/BasePage";
 import PageHero from "../components/PageHero";
@@ -8,22 +9,20 @@ import SectionHeading from "../components/SectionHeading";
 import ServiceCard from "../components/ServiceCard";
 import services from "../data/services";
 
-const PROCESS = [
-  { icon: FaSearch, title: "Diagnose", text: "We inspect your device or gather your project requirements in detail." },
-  { icon: FaFileInvoiceDollar, title: "Quote", text: "You get a clear, itemised price before any work begins — no surprises." },
-  { icon: FaWrench, title: "Build or Repair", text: "Our technicians and engineers get to work with the right parts and tools." },
-  { icon: FaCheckCircle, title: "Deliver & Warranty", text: "You get it back tested, working, and backed by our warranty." },
-];
+const PROCESS_ICONS = [FaSearch, FaFileInvoiceDollar, FaWrench, FaCheckCircle];
 
-export default class Services extends BasePage {
+class Services extends BasePage {
   renderPage() {
+    const { t } = this.props;
+    const processSteps = t("services.process.steps", { returnObjects: true });
+
     return (
       <>
         <PageHero
           image="/images/hero-services.jpg"
-          eyebrow="Our Services"
-          title="Every Service Backed by Real Engineering"
-          subtitle="Repair, sales and software — handled by the same team, to the same standard."
+          eyebrow={t("services.hero.eyebrow")}
+          title={t("services.hero.title")}
+          subtitle={t("services.hero.subtitle")}
         />
 
         <section className="section">
@@ -38,10 +37,10 @@ export default class Services extends BasePage {
 
         <section className="section section--alt">
           <div className="container">
-            <SectionHeading eyebrow="Our Process" title="How We Work, Every Time" />
+            <SectionHeading eyebrow={t("services.process.eyebrow")} title={t("services.process.title")} />
             <div className="grid grid--4">
-              {PROCESS.map((step, index) => {
-                const Icon = step.icon;
+              {processSteps.map((step, index) => {
+                const Icon = PROCESS_ICONS[index];
                 return (
                   <Reveal key={step.title} delay={index * 0.08} className="process-step">
                     <span className="process-step-number">{index + 1}</span>
@@ -60,12 +59,12 @@ export default class Services extends BasePage {
         <section className="cta-banner">
           <div className="container cta-banner-inner">
             <Reveal>
-              <h2>Not sure which service you need?</h2>
-              <p>Tell us what's going on — we'll point you in the right direction, free of charge.</p>
+              <h2>{t("services.cta.title")}</h2>
+              <p>{t("services.cta.subtitle")}</p>
             </Reveal>
             <Reveal delay={0.1}>
               <Link to="/contact" className="btn btn--dark">
-                Talk To Us
+                {t("services.cta.talkToUs")}
               </Link>
             </Reveal>
           </div>
@@ -74,3 +73,5 @@ export default class Services extends BasePage {
     );
   }
 }
+
+export default withTranslation()(Services);

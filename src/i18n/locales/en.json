@@ -1,0 +1,339 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "shop": "Shop",
+    "wifiZone": "WiFi Zone",
+    "contact": "Contact",
+    "getQuote": "Get a Quote",
+    "whatsappUs": "WhatsApp Us"
+  },
+  "footer": {
+    "about": "Innovatech Engineering Solutions repairs, builds and sells the technology that keeps Cameroon connected — and is the parent company behind <1>Skolar</1>, our school-management platform.",
+    "quickLinks": "Quick Links",
+    "ourServices": "Our Services",
+    "getInTouch": "Get In Touch",
+    "rights": "All rights reserved.",
+    "tagline": "Proudly building technology in Cameroon 🇨🇲"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "enquire": "Enquire",
+    "sendWhatsApp": "Send via WhatsApp",
+    "sendEmail": "Send via Email",
+    "chatWithUs": "Chat With Us",
+    "conditions": {
+      "New": "New",
+      "Fairly Used": "Fairly Used"
+    },
+    "badges": {
+      "Best Seller": "Best Seller",
+      "On Sale": "On Sale",
+      "Popular": "Popular"
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Innovatech Engineering Solutions",
+      "title": "We Repair, Build & Sell the Technology Cameroon Runs On",
+      "subtitle": "Phone and electronics repair, verified device sales, and custom software development — all under one engineering team. Proud parent company of <1>Skolar</1>.",
+      "exploreServices": "Explore Our Services",
+      "getFreeQuote": "Get a Free Quote"
+    },
+    "promo": {
+      "eyebrow": "See Us In Action",
+      "title": "Innovatech, In Under Two Minutes",
+      "subtitle": "Tap play when you're ready — the video only loads once you press it, so it won't eat into your data.",
+      "lines": [
+        "We build the software — school platforms, business apps, websites",
+        "We fix what breaks — phones, laptops, electronics",
+        "We supply the hardware — sourced, tested, guaranteed"
+      ]
+    },
+    "stats": {
+      "years": "Years of Experience",
+      "devicesRepaired": "Devices Repaired",
+      "happyClients": "Happy Clients",
+      "schoolPlatform": "School Platform Built"
+    },
+    "whatWeDo": {
+      "eyebrow": "What We Do",
+      "title": "Complete Technology Services, Under One Roof",
+      "subtitle": "From a cracked screen to a full software platform, our engineers handle it all.",
+      "viewAllServices": "View All Services"
+    },
+    "whoWeAre": {
+      "eyebrow": "Who We Are",
+      "title": "Engineering Solutions Since Day One",
+      "paragraph": "Innovatech Engineering Solutions is a Cameroonian technology company built around one idea: real engineering, applied practically. We repair the devices people depend on, sell electronics people can trust, and build the software that institutions run on — including <1>Skolar</1>, our own school-management platform used by schools across the region.",
+      "bullets": [
+        "Certified, hands-on technicians",
+        "In-house software engineering team",
+        "Transparent pricing, real warranties"
+      ],
+      "moreAboutUs": "More About Us"
+    },
+    "shop": {
+      "eyebrow": "Shop",
+      "title": "Featured Devices",
+      "subtitle": "A sample of what's currently available — new and fairly-used, all verified.",
+      "visitShop": "Visit the Shop"
+    },
+    "whyChooseUs": {
+      "eyebrow": "Why Choose Us",
+      "title": "Built on Trust, Backed by Skill",
+      "items": [
+        { "title": "Skilled Engineers", "text": "Every repair and build is handled by trained technicians and software engineers — not guesswork." },
+        { "title": "Warranty You Can Trust", "text": "New and fairly-used devices alike are tested and backed by a warranty." },
+        { "title": "Fast Turnaround", "text": "Most common repairs are completed same-day, so you're never without your device for long." },
+        { "title": "Rooted in Cameroon", "text": "Built by and for Cameroon — we understand the local market, from spare parts to power realities." }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Testimonials",
+      "title": "What Our Clients Say"
+    },
+    "cta": {
+      "title": "Got a device that needs fixing, or a project to build?",
+      "subtitle": "Talk to us on WhatsApp and get a response in minutes.",
+      "chatNow": "Chat With Us Now"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "About Us",
+      "title": "The Engineering Team Behind the Repairs, Sales & Skolar",
+      "subtitle": "Innovatech Engineering Solutions is a Cameroonian technology company built on hands-on skill and long-term trust."
+    },
+    "story": {
+      "eyebrow": "Our Story",
+      "title": "From Repair Bench to Software Platform",
+      "p1": "Innovatech Engineering Solutions started with a simple frustration: too many good devices were thrown away over fixable faults, and too few local companies could be trusted to fix them properly. We built a team of technicians who repair electronics the right way — down to component level when needed — and sell devices people can actually rely on.",
+      "p2": "That same engineering discipline led us into software. Today, Innovatech is the parent company of <1>Skolar</1>, a school-management platform we designed, built and continue to maintain — proof that the same attention we give a soldering iron, we give a codebase."
+    },
+    "values": {
+      "eyebrow": "What Drives Us",
+      "title": "Mission, Vision & Promise",
+      "mission": { "title": "Our Mission", "text": "To make reliable technology — repaired, sold, or built — accessible to every home, business and school in Cameroon." },
+      "vision": { "title": "Our Vision", "text": "To be the engineering company African institutions and individuals turn to first, for hardware and software alike." },
+      "promise": { "title": "Our Promise", "text": "Transparent pricing, honest diagnostics, and a warranty that means something — every single time." }
+    },
+    "howWeWork": {
+      "eyebrow": "How We Work",
+      "title": "Real Diagnostics, Not Guesswork",
+      "p1": "Every device that comes to our bench is diagnosed at component level before we quote a price. It's the same rigor our software team applies to a client's codebase — understand the root cause first, then fix it properly.",
+      "bullets": [
+        "Transparent, itemised quotes before any work begins",
+        "Genuine and high-grade replacement parts",
+        "Warranty on every repair and every device sold"
+      ]
+    },
+    "team": {
+      "eyebrow": "Our Team",
+      "title": "A Team of Technicians, Engineers & Builders",
+      "p1": "From repair technicians to full-stack developers, our team shares one standard: do it properly, explain it honestly, and stand behind the work. Many of us also build and maintain Skolar day-to-day — so the company that fixes your phone is the same one shipping software used by real schools.",
+      "workWithUs": "Work With Us"
+    },
+    "profiles": {
+      "eyebrow": "Meet The Team",
+      "title": "The People Behind Innovatech",
+      "subtitle": "A few of the technicians, engineers and builders you might meet on-site or on a support call.",
+      "members": [
+        { "name": "Emmanuel Ateba", "role": "Founder & Lead Engineer", "bio": "Leads both the repair bench and the software team — the same person who signed off on Skolar's first release." },
+        { "name": "Chantal Mbarga", "role": "Software Engineer", "bio": "Builds and maintains Skolar's core platform, alongside client web and mobile projects." },
+        { "name": "Patrick Nguema", "role": "Hardware Repair Technician", "bio": "Handles circuit-level diagnostics — the person most likely to save a device others called unfixable." },
+        { "name": "Divine Ayuk", "role": "Client Relations", "bio": "Your first point of contact — walks every client through diagnosis, pricing and warranty terms." }
+      ]
+    },
+    "innovationHub": {
+      "eyebrow": "Innovation Hub",
+      "title": "Beyond Repair: We Design & Build",
+      "p1": "No, we don't just repair electronics — we conceive them. Our innovation hub is where our engineers prototype custom circuits and IoT devices for clients who need something built from scratch, not bought off a shelf.",
+      "p2": "From a Raspberry Pi proof-of-concept to a working sensor network, this is the same team, the same bench — just pointed at building something new instead of fixing something broken.",
+      "cta": "See Our Design & Conception Service"
+    },
+    "cta": {
+      "title": "Want to know more about what we do?",
+      "subtitle": "See our full range of services, or get in touch directly.",
+      "ourServices": "Our Services",
+      "contactUs": "Contact Us"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Our Services",
+      "title": "Every Service Backed by Real Engineering",
+      "subtitle": "Repair, sales and software — handled by the same team, to the same standard."
+    },
+    "process": {
+      "eyebrow": "Our Process",
+      "title": "How We Work, Every Time",
+      "steps": [
+        { "title": "Diagnose", "text": "We inspect your device or gather your project requirements in detail." },
+        { "title": "Quote", "text": "You get a clear, itemised price before any work begins — no surprises." },
+        { "title": "Build or Repair", "text": "Our technicians and engineers get to work with the right parts and tools." },
+        { "title": "Deliver & Warranty", "text": "You get it back tested, working, and backed by our warranty." }
+      ]
+    },
+    "cta": {
+      "title": "Not sure which service you need?",
+      "subtitle": "Tell us what's going on — we'll point you in the right direction, free of charge.",
+      "talkToUs": "Talk To Us"
+    }
+  },
+  "servicesData": {
+    "device-repair": {
+      "title": "Phone & Gadget Repair",
+      "summary": "Screens, batteries, ports and software faults fixed fast — for phones, laptops, consoles and smart devices.",
+      "description": "From a cracked screen to a phone that won't charge, our technicians diagnose and repair smartphones, laptops, gaming consoles and smart-home devices. We use genuine and high-grade parts, and most common repairs are completed the same day.",
+      "features": ["Screen & battery replacement", "Charging port & button repair", "Software faults & data recovery", "Console & accessory repair"]
+    },
+    "electronics-repair": {
+      "title": "Electronics & Hardware Repair",
+      "summary": "Hands-on circuit-level diagnostics and repair for TVs, appliances, and other electronic equipment.",
+      "description": "Our engineers go beyond the surface — tracing faults down to component and circuit level for televisions, home appliances, power units and other electronic equipment that others give up on.",
+      "features": ["Circuit-level fault diagnosis", "TV & home appliance repair", "Power unit & board-level repair", "Preventive maintenance"]
+    },
+    "software-development": {
+      "title": "App & Software Development",
+      "summary": "Custom software, mobile apps and web platforms — built and maintained by the team behind Skolar.",
+      "description": "We design, build and maintain software for businesses and institutions — from mobile apps to full web platforms. Skolar, our flagship school-management platform, was built and is maintained by this same engineering team.",
+      "features": ["Custom web & mobile apps", "Ongoing maintenance & support", "School & business management systems", "API integrations"]
+    },
+    "electronics-sales": {
+      "title": "Sales of New & Fairly-Used Electronics",
+      "summary": "Verified, tested phones, laptops and gadgets — new and fairly-used — with warranty on every unit.",
+      "description": "Every device we sell — new or fairly-used — is tested and verified in-house before it reaches you, backed by a warranty and after-sales support from the same team that repairs it.",
+      "features": ["Tested & verified devices", "New and fairly-used options", "Warranty on every unit", "Trade-in available"]
+    },
+    "design-conception": {
+      "title": "Design & Conception",
+      "summary": "Custom hardware design and IoT prototyping — we don't just repair electronics, we conceive them.",
+      "description": "Beyond repair and resale, our engineers design and prototype custom electronics — from circuit-level conception to working IoT devices — for businesses that need a solution built from scratch rather than bought off the shelf.",
+      "features": ["Custom circuit & product design", "IoT device prototyping", "Proof-of-concept builds", "From concept to working hardware"]
+    }
+  },
+  "shop": {
+    "hero": {
+      "eyebrow": "Shop",
+      "title": "New & Fairly-Used Electronics, Fully Verified",
+      "subtitle": "Every device is tested in-house before it reaches you, with warranty included."
+    },
+    "browse": {
+      "eyebrow": "Browse",
+      "title": "Available Devices"
+    },
+    "categories": {
+      "All": "All",
+      "Smartphones": "Smartphones",
+      "Wearables": "Wearables",
+      "Audio": "Audio",
+      "Cameras": "Cameras",
+      "Gaming": "Gaming"
+    },
+    "cta": {
+      "title": "Looking for something specific, or want to trade in a device?",
+      "subtitle": "Message us on WhatsApp — we restock regularly and can source on request."
+    }
+  },
+  "productsData": {
+    "smartphone-1": { "name": "Smartphone — 128GB", "category": "Smartphones" },
+    "smartwatch-1": { "name": "Smartwatch Series", "category": "Wearables" },
+    "smart-speaker-1": { "name": "Smart Speaker Assistant", "category": "Audio" },
+    "studio-speaker-1": { "name": "Studio Bookshelf Speaker (Pair)", "category": "Audio" },
+    "instant-camera-1": { "name": "Instant Camera", "category": "Cameras" },
+    "gaming-bundle-1": { "name": "Gaming Console & Controller Bundle", "category": "Gaming" }
+  },
+  "testimonialsData": {
+    "t1": { "role": "Small Business Owner, Douala", "quote": "My laptop wouldn't boot before an important delivery. Innovatech had it diagnosed and fixed the same day. Honest pricing and they explained exactly what was wrong." },
+    "t2": { "role": "School Administrator", "quote": "They built Skolar for our school and still maintain it today. Knowing the same engineers who built our software also handle our hardware gives real peace of mind." },
+    "t3": { "role": "University Student, Yaoundé", "quote": "Bought a fairly-used phone from their shop — fully tested, with warranty, at half the price of new. Still working perfectly." }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Contact Us",
+      "title": "Let's Fix, Build or Find What You Need",
+      "subtitle": "Reach out by form, WhatsApp, phone or email — whichever is easiest for you."
+    },
+    "getInTouch": {
+      "eyebrow": "Get In Touch",
+      "title": "We Respond Fast on WhatsApp",
+      "p1": "For repairs, sales enquiries or software projects, WhatsApp is the quickest way to reach our team directly."
+    },
+    "details": {
+      "location": "Our Location",
+      "locationValue": "Melen, Yaoundé, Cameroon",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "hours": "Working Hours",
+      "hoursValue": "Mon – Sat, 8:00 AM – 6:30 PM"
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "name": "Full Name",
+      "namePlaceholder": "Your name",
+      "phone": "Phone or Email",
+      "phonePlaceholder": "+237 651 162 373",
+      "service": "What do you need?",
+      "serviceOptions": ["Phone & Gadget Repair", "Electronics & Hardware Repair", "App & Software Development", "Design & Conception", "Buying Electronics", "Something else"],
+      "message": "Message",
+      "messagePlaceholder": "Tell us what you need help with...",
+      "errors": {
+        "name": "Please enter your name",
+        "phone": "Please enter a phone number or email",
+        "message": "Tell us a little about what you need"
+      }
+    }
+  },
+  "wifiZone": {
+    "hero": {
+      "eyebrow": "Innovatech WiFi Zone",
+      "title": "Buy Internet Access in Seconds — No Physical Coupon Needed",
+      "subtitle": "Pick a data plan, generate your voucher on this page, and connect. No queue, no scratch card."
+    },
+    "intro": {
+      "eyebrow": "How It Works",
+      "title": "Three Steps to Get Online",
+      "steps": [
+        { "title": "Choose a Plan", "text": "Pick the data amount and validity period that fits your needs." },
+        { "title": "Get Your Voucher", "text": "We generate a unique ID and access code right here on the page." },
+        { "title": "Connect & Go", "text": "Enter the code on the WiFi Zone login page and you're online." }
+      ]
+    },
+    "packages": {
+      "eyebrow": "Data Plans",
+      "title": "Choose Your Plan",
+      "subtitle": "Prices in FCFA. Generate a demo voucher below to see how it works.",
+      "items": [
+        { "id": "p1", "data": "500 MB", "duration": "1 Day", "price": 200 },
+        { "id": "p2", "data": "1 GB", "duration": "1 Day", "price": 350 },
+        { "id": "p3", "data": "2 GB", "duration": "7 Days", "price": 1000 },
+        { "id": "p4", "data": "5 GB", "duration": "30 Days", "price": 2500 }
+      ],
+      "selectPlan": "Select Plan",
+      "selected": "Selected",
+      "mostPopular": "Most Popular"
+    },
+    "generate": {
+      "title": "Your Voucher",
+      "subtitle": "This is a live preview of how your voucher will look — final payment happens via Mobile Money or WhatsApp.",
+      "generateButton": "Generate My Voucher",
+      "regenerate": "Generate Another",
+      "voucherId": "Voucher ID",
+      "accessCode": "Access Code",
+      "plan": "Plan",
+      "validFor": "Valid For",
+      "payNote": "To activate this voucher, complete payment via MTN/Orange Money or WhatsApp — we'll confirm and switch it on within minutes.",
+      "payWhatsApp": "Confirm Payment on WhatsApp",
+      "chooseFirst": "Choose a plan above first"
+    }
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "This page took a wrong turn.",
+    "text": "The page you're looking for doesn't exist, or may have moved.",
+    "backHome": "Back to Home"
+  }
+}
