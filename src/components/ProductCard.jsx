@@ -6,8 +6,8 @@ import Reveal from "./Reveal";
 
 class ProductCard extends React.Component {
   render() {
-    const { product, index = 0, t } = this.props;
-    const name = t(product.translationKey("name"));
+    const { product, index = 0, t, i18n } = this.props;
+    const name = product.getName(i18n.resolvedLanguage || i18n.language);
     const message = encodeURIComponent(`Hi Innovatech, I'm interested in the ${name}.`);
 
     return (

@@ -5,56 +5,90 @@ import BasePage from "../components/BasePage";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
+import WifiPackage from "../models/WifiPackage";
+import { supabase } from "../lib/supabaseClient";
 
 const INTRO_ICONS = [FaListOl, FaTicketAlt, FaPlug];
 const VOUCHER_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 
-class Voucher {
-  constructor(plan) {
-    this.plan = plan;
-    this.id = Voucher.randomString(2, true) + "-" + Voucher.randomString(4, false);
-    this.code = Voucher.randomString(4, false) + "-" + Voucher.randomString(4, false);
-  }
-
-  static randomString(length, lettersOnly) {
-    const pool = lettersOnly ? "ABCDEFGHJKLMNPQRSTUVWXYZ" : VOUCHER_CHARS;
-    let result = "";
-    for (let i = 0; i < length; i++) {
-      result += pool[Math.floor(Math.random() * pool.length)];
-    }
-    return result;
-  }
+function randomString(length, pool) {
+  let result = "";
+  for (let i = 0; i < length; i++) result += pool[Math.floor(Math.random() * pool.length)];
+  return result;
 }
 
 class WifiZone extends BasePage {
   constructor(props) {
     super(props);
-    this.state = { selectedIndex: null, voucher: null };
+    this.state = { packages: [], loadingPackages: true, selectedIndex: null, voucher: null, generating: false, error: "" };
     this.selectPackage = this.selectPackage.bind(this);
     this.generateVoucher = this.generateVoucher.bind(this);
   }
 
-  selectPackage(index) {
-    this.setState({ selectedIndex: index, voucher: null });
+  componentDidMount() {
+    super.componentDidMount();
+    this.loadPackages();
   }
 
-  generateVoucher() {
-    const { selectedIndex } = this.state;
+  async loadPackages() {
+    const { data, error } = await supabase
+      .from("wifi_packages")
+      .select("*")
+      .eq("active", true)
+      .order("sort_order");
+    if (error) {
+      this.setState({ loadingPackages: false, error: error.message });
+      return;
+    }
+    this.setState({ packages: data.map((row) => new WifiPackage(row)), loadingPackages: false });
+  }
+
+  selectPackage(index) {
+    this.setState({ selectedIndex: index, voucher: null, error: "" });
+  }
+
+  // Reserves a unique code as a real DB row before ever showing it, so the
+  // same code can never be generated twice — retries a few times in the
+  // astronomically unlikely event of a collision on the unique constraint.
+  async generateVoucher() {
+    const { selectedIndex, packages } = this.state;
     if (selectedIndex === null) return;
-    const packages = this.props.t("wifiZone.packages.items", { returnObjects: true });
-    this.setState({ voucher: new Voucher(packages[selectedIndex]) });
+    const plan = packages[selectedIndex];
+
+    this.setState({ generating: true, error: "" });
+
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const idLabel = randomString(2, LETTERS) + "-" + randomString(4, VOUCHER_CHARS);
+      const accessCode = randomString(4, VOUCHER_CHARS) + "-" + randomString(4, VOUCHER_CHARS);
+      const code = `${idLabel}:${accessCode}`;
+
+      const { error } = await supabase
+        .from("wifi_vouchers")
+        .insert({ package_id: plan.id, code, status: "pending" });
+
+      if (!error) {
+        this.setState({ generating: false, voucher: { id: idLabel, code: accessCode, plan } });
+        return;
+      }
+      if (error.code !== "23505") {
+        this.setState({ generating: false, error: error.message });
+        return;
+      }
+      // 23505 = unique_violation — extremely rare code collision, retry.
+    }
+
+    this.setState({ generating: false, error: "Could not generate a voucher right now. Please try again." });
   }
 
   renderPage() {
     const { t } = this.props;
-    const { selectedIndex, voucher } = this.state;
+    const { packages, loadingPackages, selectedIndex, voucher, generating, error } = this.state;
     const introSteps = t("wifiZone.intro.steps", { returnObjects: true });
-    const packages = t("wifiZone.packages.items", { returnObjects: true });
-    const mostPopularIndex = 2;
 
     const whatsappMessage = voucher
       ? encodeURIComponent(
-          `Hi Innovatech, I'd like to activate a WiFi Zone voucher.\nVoucher ID: ${voucher.id}\nPlan: ${voucher.plan.data} / ${voucher.plan.duration}\nPrice: ${voucher.plan.price} FCFA`
+          `Hi Innovatech, I'd like to activate a WiFi Zone voucher.\nVoucher ID: ${voucher.id}\nPlan: ${voucher.plan.dataAmount} ${voucher.plan.dataUnit} / ${voucher.plan.durationDays} days\nPrice: ${voucher.plan.price} FCFA`
         )
       : "";
 
@@ -95,25 +129,34 @@ class WifiZone extends BasePage {
               title={t("wifiZone.packages.title")}
               subtitle={t("wifiZone.packages.subtitle")}
             />
-            <div className="grid grid--4">
-              {packages.map((pkg, index) => (
-                <Reveal key={pkg.id} delay={index * 0.08} className={`wifi-package ${selectedIndex === index ? "wifi-package--active" : ""}`}>
-                  {index === mostPopularIndex && (
-                    <span className="wifi-package-badge">{t("wifiZone.packages.mostPopular")}</span>
-                  )}
-                  <FaWifi className="wifi-package-icon" aria-hidden="true" />
-                  <div className="wifi-package-data">{pkg.data}</div>
-                  <div className="wifi-package-duration">{pkg.duration}</div>
-                  <div className="wifi-package-price">{new Intl.NumberFormat("en-US").format(pkg.price)} FCFA</div>
-                  <button
-                    className={`btn ${selectedIndex === index ? "btn--secondary" : "btn--ghost"} wifi-package-btn`}
-                    onClick={() => this.selectPackage(index)}
-                  >
-                    {selectedIndex === index ? t("wifiZone.packages.selected") : t("wifiZone.packages.selectPlan")}
-                  </button>
-                </Reveal>
-              ))}
-            </div>
+            {loadingPackages ? (
+              <p>Loading…</p>
+            ) : (
+              <div className="grid grid--4">
+                {packages.map((pkg, index) => (
+                  <Reveal key={pkg.id} delay={index * 0.08} className={`wifi-package ${selectedIndex === index ? "wifi-package--active" : ""}`}>
+                    {pkg.isPopular && (
+                      <span className="wifi-package-badge">{t("wifiZone.packages.mostPopular")}</span>
+                    )}
+                    <FaWifi className="wifi-package-icon" aria-hidden="true" />
+                    <div className="wifi-package-data">{pkg.dataAmount} {t(`common.units.${pkg.dataUnit}`)}</div>
+                    <div className="wifi-package-duration">
+                      {t("wifiZone.packages.daysCount", { count: pkg.durationDays })}
+                    </div>
+                    <div className="wifi-package-price">
+                      {pkg.formatPrice()}
+                      {pkg.isOnSale && <span className="product-price-old"> {pkg.formatPrice(pkg.oldPrice)}</span>}
+                    </div>
+                    <button
+                      className={`btn ${selectedIndex === index ? "btn--secondary" : "btn--ghost"} wifi-package-btn`}
+                      onClick={() => this.selectPackage(index)}
+                    >
+                      {selectedIndex === index ? t("wifiZone.packages.selected") : t("wifiZone.packages.selectPlan")}
+                    </button>
+                  </Reveal>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -123,13 +166,15 @@ class WifiZone extends BasePage {
               <h3>{t("wifiZone.generate.title")}</h3>
               <p>{t("wifiZone.generate.subtitle")}</p>
 
+              {error && <p className="form-error">{error}</p>}
+
               {!voucher && (
                 <button
                   className="btn btn--primary"
                   onClick={this.generateVoucher}
-                  disabled={selectedIndex === null}
+                  disabled={selectedIndex === null || generating}
                 >
-                  <FaTicketAlt aria-hidden="true" /> {t("wifiZone.generate.generateButton")}
+                  <FaTicketAlt aria-hidden="true" /> {generating ? "…" : t("wifiZone.generate.generateButton")}
                 </button>
               )}
               {selectedIndex === null && !voucher && (
@@ -149,11 +194,11 @@ class WifiZone extends BasePage {
                     </div>
                     <div>
                       <span className="voucher-label">{t("wifiZone.generate.plan")}</span>
-                      <span className="voucher-value">{voucher.plan.data}</span>
+                      <span className="voucher-value">{voucher.plan.dataAmount} {t(`common.units.${voucher.plan.dataUnit}`)}</span>
                     </div>
                     <div>
                       <span className="voucher-label">{t("wifiZone.generate.validFor")}</span>
-                      <span className="voucher-value">{voucher.plan.duration}</span>
+                      <span className="voucher-value">{t("wifiZone.packages.daysCount", { count: voucher.plan.durationDays })}</span>
                     </div>
                   </div>
 

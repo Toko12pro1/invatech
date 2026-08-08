@@ -19,12 +19,34 @@ import StatCounter from "../components/StatCounter";
 import TestimonialCard from "../components/TestimonialCard";
 import PromoVideo from "../components/PromoVideo";
 import services from "../data/services";
-import products from "../data/products";
 import testimonials from "../data/testimonials";
+import Product from "../models/Product";
+import { supabase } from "../lib/supabaseClient";
 
 const WHY_CHOOSE_US_ICONS = [FaTools, FaShieldAlt, FaClock, FaMapMarkedAlt];
 
 class Home extends BasePage {
+  constructor(props) {
+    super(props);
+    this.state = { products: [] };
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    this.loadFeaturedProducts();
+  }
+
+  async loadFeaturedProducts() {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("active", true)
+      .order("sort_order")
+      .limit(3);
+    if (error) return;
+    this.setState({ products: data.map((row) => new Product(row)) });
+  }
+
   renderPage() {
     const { t } = this.props;
     const whyChooseUsItems = t("home.whyChooseUs.items", { returnObjects: true });
@@ -145,7 +167,7 @@ class Home extends BasePage {
               subtitle={t("home.shop.subtitle")}
             />
             <div className="grid grid--3">
-              {products.slice(0, 3).map((product, index) => (
+              {this.state.products.map((product, index) => (
                 <ProductCard key={product.id} product={product} index={index} />
               ))}
             </div>

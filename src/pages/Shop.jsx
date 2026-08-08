@@ -6,15 +6,34 @@ import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import ProductCard from "../components/ProductCard";
-import products from "../data/products";
+import Product from "../models/Product";
+import { supabase } from "../lib/supabaseClient";
 
-const CATEGORIES = ["All", ...new Set(products.map((product) => product.category))];
+const CATEGORIES = ["All", "Smartphones", "Wearables", "Audio", "Cameras", "Gaming"];
 
 class Shop extends BasePage {
   constructor(props) {
     super(props);
-    this.state = { activeCategory: "All" };
+    this.state = { activeCategory: "All", products: [], loading: true };
     this.setCategory = this.setCategory.bind(this);
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    this.loadProducts();
+  }
+
+  async loadProducts() {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("active", true)
+      .order("sort_order");
+    if (error) {
+      this.setState({ loading: false });
+      return;
+    }
+    this.setState({ products: data.map((row) => new Product(row)), loading: false });
   }
 
   setCategory(category) {
@@ -22,7 +41,7 @@ class Shop extends BasePage {
   }
 
   getFilteredProducts() {
-    const { activeCategory } = this.state;
+    const { activeCategory, products } = this.state;
     if (activeCategory === "All") return products;
     return products.filter((product) => product.category === activeCategory);
   }
@@ -30,6 +49,7 @@ class Shop extends BasePage {
   renderPage() {
     const filtered = this.getFilteredProducts();
     const { t } = this.props;
+    const { loading } = this.state;
 
     return (
       <>
@@ -56,11 +76,15 @@ class Shop extends BasePage {
               ))}
             </Reveal>
 
-            <div className="grid grid--3">
-              {filtered.map((product, index) => (
-                <ProductCard key={product.id} product={product} index={index} />
-              ))}
-            </div>
+            {loading ? (
+              <p>Loading…</p>
+            ) : (
+              <div className="grid grid--3">
+                {filtered.map((product, index) => (
+                  <ProductCard key={product.id} product={product} index={index} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 

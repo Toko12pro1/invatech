@@ -1,12 +1,20 @@
 export default class Product {
-  constructor({ id, category, price, oldPrice, image, condition = "New", badge = "" }) {
-    this.id = id;
-    this.category = category;
-    this.price = price;
-    this.oldPrice = oldPrice;
-    this.image = image;
-    this.condition = condition;
-    this.badge = badge;
+  constructor(row) {
+    this.id = row.id;
+    this.nameEn = row.name_en;
+    this.nameFr = row.name_fr;
+    this.category = row.category;
+    this.price = row.price;
+    this.oldPrice = row.old_price;
+    this.condition = row.condition;
+    this.badge = row.badge;
+    this.image = row.image_url;
+    this.sortOrder = row.sort_order;
+    this.active = row.active;
+  }
+
+  getName(lang) {
+    return lang === "fr" ? this.nameFr : this.nameEn;
   }
 
   get isOnSale() {
@@ -22,7 +30,18 @@ export default class Product {
     return new Intl.NumberFormat("en-US").format(amount) + " FCFA";
   }
 
-  translationKey(field) {
-    return `productsData.${this.id}.${field}`;
+  toRow() {
+    return {
+      name_en: this.nameEn,
+      name_fr: this.nameFr,
+      category: this.category,
+      price: this.price,
+      old_price: this.oldPrice || null,
+      condition: this.condition,
+      badge: this.badge || null,
+      image_url: this.image,
+      sort_order: this.sortOrder || 0,
+      active: this.active !== false,
+    };
   }
 }

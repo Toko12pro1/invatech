@@ -31,6 +31,10 @@
       "Best Seller": "Best Seller",
       "On Sale": "On Sale",
       "Popular": "Popular"
+    },
+    "units": {
+      "MB": "MB",
+      "GB": "GB"
     }
   },
   "home": {
@@ -237,14 +241,6 @@
       "subtitle": "Message us on WhatsApp — we restock regularly and can source on request."
     }
   },
-  "productsData": {
-    "smartphone-1": { "name": "Smartphone — 128GB", "category": "Smartphones" },
-    "smartwatch-1": { "name": "Smartwatch Series", "category": "Wearables" },
-    "smart-speaker-1": { "name": "Smart Speaker Assistant", "category": "Audio" },
-    "studio-speaker-1": { "name": "Studio Bookshelf Speaker (Pair)", "category": "Audio" },
-    "instant-camera-1": { "name": "Instant Camera", "category": "Cameras" },
-    "gaming-bundle-1": { "name": "Gaming Console & Controller Bundle", "category": "Gaming" }
-  },
   "testimonialsData": {
     "t1": { "role": "Small Business Owner, Douala", "quote": "My laptop wouldn't boot before an important delivery. Innovatech had it diagnosed and fixed the same day. Honest pricing and they explained exactly what was wrong." },
     "t2": { "role": "School Administrator", "quote": "They built Skolar for our school and still maintain it today. Knowing the same engineers who built our software also handle our hardware gives real peace of mind." },
@@ -305,13 +301,9 @@
     "packages": {
       "eyebrow": "Data Plans",
       "title": "Choose Your Plan",
-      "subtitle": "Prices in FCFA. Generate a demo voucher below to see how it works.",
-      "items": [
-        { "id": "p1", "data": "500 MB", "duration": "1 Day", "price": 200 },
-        { "id": "p2", "data": "1 GB", "duration": "1 Day", "price": 350 },
-        { "id": "p3", "data": "2 GB", "duration": "7 Days", "price": 1000 },
-        { "id": "p4", "data": "5 GB", "duration": "30 Days", "price": 2500 }
-      ],
+      "subtitle": "Prices in FCFA. Generate a voucher below to see how it works.",
+      "daysCount_one": "{{count}} Day",
+      "daysCount_other": "{{count}} Days",
       "selectPlan": "Select Plan",
       "selected": "Selected",
       "mostPopular": "Most Popular"

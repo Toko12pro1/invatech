@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -9,22 +9,55 @@ import Shop from "./pages/Shop";
 import WifiZone from "./pages/WifiZone";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import RequireAuth from "./components/admin/RequireAuth";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminWifiPackages from "./pages/admin/AdminWifiPackages";
+import AdminVouchers from "./pages/admin/AdminVouchers";
+
+class PublicLayout extends React.Component {
+  render() {
+    return (
+      <>
+        <Navbar />
+        <Outlet />
+        <Footer />
+      </>
+    );
+  }
+}
 
 export default class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/wifi-zone" element={<WifiZone />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/wifi-zone" element={<WifiZone />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <RequireAuth>
+                <AdminLayout />
+              </RequireAuth>
+            }
+          >
+            <Route index element={<Navigate to="products" replace />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="wifi-packages" element={<AdminWifiPackages />} />
+            <Route path="vouchers" element={<AdminVouchers />} />
+          </Route>
         </Routes>
-        <Footer />
       </BrowserRouter>
     );
   }
