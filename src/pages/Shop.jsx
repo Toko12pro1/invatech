@@ -19,8 +19,9 @@ import SectionHeading from "../components/SectionHeading";
 import ProductCard from "../components/ProductCard";
 import { supabase } from "../lib/supabaseClient";
 import { getDemoProducts, PARTNER_STORES, toMarketplaceProduct, whatsappLink } from "../data/marketplace";
+import { SHOP_CATEGORIES } from "../data/catalog";
 
-const CATEGORIES = ["All", "Fast Deals", "Smartphones", "Wearables", "Audio", "Cameras", "Gaming"];
+const CATEGORIES = SHOP_CATEGORIES;
 
 class Shop extends BasePage {
   constructor(props) {
@@ -47,6 +48,7 @@ class Shop extends BasePage {
   }
 
   async loadProducts() {
+    await supabase.rpc("deactivate_expired_fast_deals");
     const { data, error } = await supabase
       .from("products")
       .select("*, stores(name, location)")

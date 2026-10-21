@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaClipboardCheck, FaMapMarkerAlt, FaReceipt, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
 import Reveal from "./Reveal";
 import { whatsappLink } from "../data/marketplace";
+import { trackMetaEvent } from "../lib/metaPixel";
 
 class ProductCard extends React.Component {
   render() {
@@ -38,6 +39,7 @@ class ProductCard extends React.Component {
               </span>
             )}
             {product.isFastDealActive && <span className="product-fast-deal-badge">{t("shop.product.fastDeal")}</span>}
+            {product.fastDealExpired && <span className="product-fast-deal-badge product-fast-deal-badge--ended">{t("shop.product.fastDealEnded")}</span>}
           </div>
           <div className="product-card-body">
             <span className="product-condition">{t(`common.conditions.${product.condition}`)}</span>
@@ -47,6 +49,7 @@ class ProductCard extends React.Component {
               <span className="product-card-verified"><FaShieldAlt aria-hidden="true" /> {verificationLabel}</span>
             </div>
             <span className="product-card-location">{product.storeLocation}</span>
+            {product.fastDealExpired && <p className="product-fast-deal-ended-note">{t("shop.product.fastDealEndedNotice")}</p>}
             <Link className="product-card-consultant product-card-consultant--link" to={consultationLink}>
               <FaClipboardCheck aria-hidden="true" />
               <span>{product.isFastDealActive ? t("shop.product.fastDealHelp") : product.negotiable ? t("shop.product.negotiable") : t("shop.product.verifyBeforeBuy")}</span>
@@ -84,13 +87,14 @@ class ProductCard extends React.Component {
               target="_blank"
               rel="noreferrer"
               className="btn btn--primary product-cta"
+              onClick={() => trackMetaEvent("Contact", { content_name: name, content_category: product.category })}
             >
               <FaWhatsapp aria-hidden="true" /> {t("shop.product.chat")}
             </a>
-            <Link className="product-purchase-link" to={`/consult?product=${encodeURIComponent(name)}&request=purchase_trace&seller=${encodeURIComponent(product.storeName)}`}>
+            <Link className="product-purchase-link" to={`/consult?product=${encodeURIComponent(name)}&request=purchase_trace&seller=${encodeURIComponent(product.storeName)}`} onClick={() => trackMetaEvent("Lead", { content_name: name, content_category: product.category, content_type: "purchase_trace" })}>
               <FaReceipt aria-hidden="true" /> {t("shop.product.trackPurchase")}
             </Link>
-            <Link className="product-consult-link" to={`/consult?product=${encodeURIComponent(name)}&request=negotiate_purchase&seller=${encodeURIComponent(product.storeName)}`}>
+            <Link className="product-consult-link" to={`/consult?product=${encodeURIComponent(name)}&request=negotiate_purchase&seller=${encodeURIComponent(product.storeName)}`} onClick={() => trackMetaEvent("Lead", { content_name: name, content_category: product.category, content_type: "negotiation" })}>
               <FaClipboardCheck aria-hidden="true" /> {t("shop.product.negotiate")}
             </Link>
           </div>

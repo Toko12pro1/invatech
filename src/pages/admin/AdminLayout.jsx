@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { FaBoxOpen, FaWifi, FaTicketAlt, FaSignOutAlt, FaExternalLinkAlt, FaStore, FaClipboardCheck, FaReceipt } from "react-icons/fa";
+import { FaBoxOpen, FaWifi, FaTicketAlt, FaSignOutAlt, FaExternalLinkAlt, FaStore, FaClipboardCheck, FaReceipt, FaTachometerAlt } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import withNavigate from "../../utils/withNavigate";
 
@@ -24,8 +24,14 @@ class AdminLayout extends React.Component {
             <span>Innovatech Admin</span>
           </div>
           <nav className="admin-nav">
+            <NavLink to="/admin/dashboard" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+              <FaTachometerAlt /> Dashboard
+            </NavLink>
             <NavLink to="/admin/seller" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
               <FaStore /> Seller Workspace
+            </NavLink>
+            <NavLink to="/admin/stores" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+              <FaStore /> Partner Stores
             </NavLink>
             <NavLink to="/admin/products" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
               <FaBoxOpen /> Products

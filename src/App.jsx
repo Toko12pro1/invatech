@@ -23,6 +23,9 @@ import AdminWifiPackages from "./pages/admin/AdminWifiPackages";
 import AdminVouchers from "./pages/admin/AdminVouchers";
 import AdminTraceability from "./pages/admin/AdminTraceability";
 import AdminPurchaseProofs from "./pages/admin/AdminPurchaseProofs";
+import AdminOverview from "./pages/admin/AdminOverview";
+import AdminStores from "./pages/admin/AdminStores";
+import MetaPixelTracker from "./components/MetaPixelTracker";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 
@@ -42,6 +45,7 @@ export default class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
+        <MetaPixelTracker />
         <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
@@ -71,8 +75,10 @@ export default class App extends React.Component {
               </RequireAuth>
             }
           >
-            <Route index element={<Navigate to="seller" replace />} />
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<AdminOverview />} />
             <Route path="seller" element={<SellerWorkspace />} />
+            <Route path="stores" element={<AdminStores />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="traceability" element={<AdminTraceability />} />
             <Route path="purchase-proofs" element={<AdminPurchaseProofs />} />

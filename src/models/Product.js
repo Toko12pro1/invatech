@@ -11,6 +11,7 @@ export default class Product {
     this.image = row.image_url;
     this.sortOrder = row.sort_order;
     this.active = row.active;
+    this.listingStatus = row.listing_status || "approved";
     this.storeId = row.store_id || null;
     this.storeName = row.store_name || "Innovatech Verified Hub";
     this.storeLocation = row.store_location || "Yaoundé, Cameroon";
@@ -25,6 +26,7 @@ export default class Product {
     this.fastDeal = Boolean(row.fast_deal);
     this.fastDealNote = row.fast_deal_note || "Seller needs a quick sale";
     this.fastDealExpiresAt = row.fast_deal_expires_at || null;
+    this.fastDealExpiredAt = row.fast_deal_expired_at || null;
   }
 
   getName(lang) {
@@ -39,6 +41,11 @@ export default class Product {
     if (!this.fastDeal) return false;
     if (!this.fastDealExpiresAt) return true;
     return new Date(this.fastDealExpiresAt).getTime() > Date.now();
+  }
+
+  get fastDealExpired() {
+    if (this.fastDealExpiredAt) return true;
+    return Boolean(this.fastDeal && this.fastDealExpiresAt && new Date(this.fastDealExpiresAt).getTime() <= Date.now());
   }
 
   get discountPercent() {
@@ -74,8 +81,10 @@ export default class Product {
       fast_deal: this.fastDeal,
       fast_deal_note: this.fastDealNote,
       fast_deal_expires_at: this.fastDealExpiresAt,
+      fast_deal_expired_at: this.fastDealExpiredAt,
       sort_order: this.sortOrder || 0,
       active: this.active !== false,
+      listing_status: this.listingStatus,
     };
   }
 }

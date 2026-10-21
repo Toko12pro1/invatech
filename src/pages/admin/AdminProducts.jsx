@@ -2,8 +2,9 @@ import React from "react";
 import { FaPlus, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import Product from "../../models/Product";
+import { PRODUCT_CATEGORIES } from "../../data/catalog";
 
-const CATEGORIES = ["Smartphones", "Wearables", "Audio", "Cameras", "Gaming"];
+const CATEGORIES = PRODUCT_CATEGORIES;
 const CONDITIONS = ["New", "Fairly Used"];
 const BADGES = ["", "Best Seller", "On Sale", "Popular"];
 
@@ -17,6 +18,12 @@ const EMPTY_FORM = {
   condition: CONDITIONS[0],
   badge: "",
   image_url: "",
+  store_id: "",
+  negotiable: false,
+  fast_deal: false,
+  fast_deal_note: "",
+  fast_deal_expires_at: "",
+  listing_status: "approved",
   sort_order: 0,
   active: true,
 };
@@ -26,6 +33,7 @@ export default class AdminProducts extends React.Component {
     super(props);
     this.state = {
       products: [],
+      stores: [],
       loading: true,
       formVisible: false,
       form: { ...EMPTY_FORM },
@@ -44,6 +52,7 @@ export default class AdminProducts extends React.Component {
 
   componentDidMount() {
     this.loadProducts();
+    this.loadStores();
   }
 
   async loadProducts() {
@@ -54,6 +63,11 @@ export default class AdminProducts extends React.Component {
       return;
     }
     this.setState({ products: data.map((row) => new Product(row)), loading: false });
+  }
+
+  async loadStores() {
+    const { data } = await supabase.from("stores").select("id, name, active").order("name");
+    this.setState({ stores: data || [] });
   }
 
   openCreateForm() {
@@ -74,6 +88,12 @@ export default class AdminProducts extends React.Component {
         condition: product.condition,
         badge: product.badge || "",
         image_url: product.image,
+        store_id: product.storeId || "",
+        negotiable: product.negotiable,
+        fast_deal: product.fastDeal,
+        fast_deal_note: product.fastDealNote || "",
+        fast_deal_expires_at: product.fastDealExpiresAt ? product.fastDealExpiresAt.slice(0, 10) : "",
+        listing_status: product.listingStatus || "approved",
         sort_order: product.sortOrder || 0,
         active: product.active !== false,
       },
@@ -127,6 +147,13 @@ export default class AdminProducts extends React.Component {
       condition: form.condition,
       badge: form.badge || null,
       image_url: form.image_url,
+      store_id: form.store_id || null,
+      negotiable: Boolean(form.negotiable),
+      fast_deal: Boolean(form.fast_deal),
+      fast_deal_note: form.fast_deal_note || null,
+      fast_deal_expires_at: form.fast_deal && form.fast_deal_expires_at ? `${form.fast_deal_expires_at}T23:59:59Z` : null,
+      fast_deal_expired_at: form.fast_deal ? null : undefined,
+      listing_status: form.listing_status || "approved",
       sort_order: Number(form.sort_order) || 0,
       active: form.active,
     };
@@ -156,7 +183,7 @@ export default class AdminProducts extends React.Component {
   }
 
   render() {
-    const { products, loading, formVisible, form, uploading, saving, error } = this.state;
+    const { products, stores, loading, formVisible, form, uploading, saving, error } = this.state;
 
     return (
       <div className="admin-page">
@@ -182,6 +209,7 @@ export default class AdminProducts extends React.Component {
                   <th>Price</th>
                   <th>Condition</th>
                   <th>Badge</th>
+                  <th>Fast Deal</th>
                   <th>Active</th>
                   <th></th>
                 </tr>
@@ -198,6 +226,7 @@ export default class AdminProducts extends React.Component {
                     </td>
                     <td>{product.condition}</td>
                     <td>{product.badge || "—"}</td>
+                    <td>{product.isFastDealActive ? "Live" : product.fastDealExpired ? "Ended" : "No"}</td>
                     <td>{product.active !== false ? "Yes" : "No"}</td>
                     <td className="admin-table-actions">
                       <button onClick={() => this.openEditForm(product)} aria-label="Edit"><FaEdit /></button>
@@ -253,6 +282,29 @@ export default class AdminProducts extends React.Component {
                     <input name="old_price" type="number" min="0" value={form.old_price} onChange={this.handleChange} />
                   </div>
                 </div>
+
+                <div className="admin-form-grid">
+                  <div className="form-row">
+                    <label>Partner store</label>
+                    <select name="store_id" value={form.store_id} onChange={this.handleChange}>
+                      <option value="">Innovatech verified listing</option>
+                      {stores.map((store) => <option key={store.id} value={store.id}>{store.name}{store.active ? "" : " (hidden)"}</option>)}
+                    </select>
+                  </div>
+                  <div className="form-row">
+                    <label>Listing status</label>
+                    <select name="listing_status" value={form.listing_status} onChange={this.handleChange}>
+                      <option value="draft">Draft</option>
+                      <option value="pending">Pending review</option>
+                      <option value="approved">Approved</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                  </div>
+                </div>
+
+                <label className="form-row form-row--checkbox"><span><input type="checkbox" name="negotiable" checked={Boolean(form.negotiable)} onChange={this.handleChange} /> Price is negotiable</span></label>
+                <label className="form-row form-row--checkbox"><span><input type="checkbox" name="fast_deal" checked={Boolean(form.fast_deal)} onChange={this.handleChange} /> Mark as Fast Deal</span></label>
+                {form.fast_deal && <div className="admin-form-grid"><div className="form-row"><label>Fast Deal reason</label><input name="fast_deal_note" value={form.fast_deal_note} onChange={this.handleChange} placeholder="Why is this price urgent?" /></div><div className="form-row"><label>Deal ends</label><input name="fast_deal_expires_at" type="date" value={form.fast_deal_expires_at} onChange={this.handleChange} required /></div></div>}
 
                 <div className="admin-form-grid">
                   <div className="form-row">

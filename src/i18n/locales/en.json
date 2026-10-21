@@ -275,10 +275,19 @@
     "categories": {
       "All": "All",
       "Smartphones": "Smartphones",
+      "Laptops": "Laptops",
+      "Computers": "Computers",
+      "Tablets": "Tablets",
       "Wearables": "Wearables",
       "Audio": "Audio",
       "Cameras": "Cameras",
-      "Gaming": "Gaming"
+      "Gaming": "Gaming",
+      "Phone Accessories": "Phone accessories",
+      "Laptop Accessories": "Laptop accessories",
+      "Chargers": "Chargers",
+      "Earphones": "Earphones",
+      "Power Banks": "Power banks",
+      "Other Electronics": "Other electronics"
     },
     "filters": {
       "searchPlaceholder": "Search product, store or area",
@@ -313,6 +322,8 @@
       "beforeBuyPoint3": "If you use a registered referral code, keep the receipt or Mobile Money proof and upload it after payment; the reward starts at 1,000 FCFA under the published offer.",
       "negotiate": "Ask us to negotiate the price",
       "fastDeal": "Fast Deal",
+      "fastDealEnded": "Fast Deal ended",
+      "fastDealEndedNotice": "This Fast Deal is no longer available. The listing remains visible for reference; ask us for the current price.",
       "fastDealHelp": "Fast Deal · ask us to negotiate",
       "negotiable": "Negotiable through Innovatech",
       "verifyBeforeBuy": "Ask us to verify before you buy",
@@ -506,6 +517,11 @@
       "payWhatsApp": "Confirm Payment on WhatsApp",
       "chooseFirst": "Choose a plan above first"
     }
+  },
+  "analyticsConsent": {
+    "text": "We use an optional Meta Pixel to understand which pages and product actions are useful. It starts only after you agree.",
+    "accept": "Allow analytics",
+    "decline": "No thanks"
   },
   "notFound": {
     "eyebrow": "404",

@@ -18,8 +18,9 @@ import {
   toMarketplaceProduct,
   whatsappLink,
 } from "../../data/marketplace";
+import { PRODUCT_CATEGORIES } from "../../data/catalog";
 
-const CATEGORIES = ["Smartphones", "Wearables", "Audio", "Cameras", "Gaming"];
+const CATEGORIES = PRODUCT_CATEGORIES;
 const CONDITIONS = ["New", "Fairly Used"];
 const SELLER_DRAFT_KEY = "innovatech-seller-drafts";
 
@@ -96,6 +97,7 @@ export default class SellerWorkspace extends React.Component {
 
   async loadData() {
     this.setState({ loading: true, error: "" });
+    await supabase.rpc("deactivate_expired_fast_deals");
     const [{ data, error }, storesResult] = await Promise.all([
       supabase.from("products").select("*, stores(name, location)").order("sort_order"),
       supabase.from("stores").select("*").eq("active", true).order("name"),
@@ -228,6 +230,7 @@ export default class SellerWorkspace extends React.Component {
       fast_deal: form.fast_deal,
       fast_deal_note: form.fast_deal_note || null,
       fast_deal_expires_at: form.fast_deal && form.fast_deal_expires_at ? `${form.fast_deal_expires_at}T23:59:59Z` : null,
+      fast_deal_expired_at: form.fast_deal ? null : undefined,
       verification_status: usingDemo ? "verified" : "pending",
       listing_status: usingDemo ? "approved" : "pending",
       active: usingDemo ? true : false,
@@ -340,6 +343,7 @@ export default class SellerWorkspace extends React.Component {
           <span>{product.storeName} · {product.category}</span>
           {product.negotiable && <em>Negotiable</em>}
           {product.isFastDealActive && <em className="seller-fast-deal-tag">Fast Deal</em>}
+          {product.fastDealExpired && <em className="seller-fast-deal-tag seller-fast-deal-tag--ended">Fast Deal ended</em>}
         </div>
         <label className="seller-price-input">
           <span>Price (FCFA)</span>
@@ -443,7 +447,7 @@ export default class SellerWorkspace extends React.Component {
                 <div className="form-row"><label>Store</label><select name="store_id" value={form.store_id} onChange={this.handleChange}><option value="">Innovatech will connect this listing during review</option>{stores.map((store) => <option key={store.id} value={store.id}>{store.name}</option>)}</select></div>
                 <label className="seller-negotiable-toggle"><input type="checkbox" name="negotiable" checked={form.negotiable} onChange={this.handleChange} /><span><strong>Price is negotiable</strong><small>Innovatech can help discuss a fair price with the customer.</small></span></label>
                 <label className="seller-fast-deal-toggle"><input type="checkbox" name="fast_deal" checked={form.fast_deal} onChange={this.handleChange} /><span><strong>Mark as Fast Deal</strong><small>Use this when the seller needs a quick sale or the price is below the usual market price.</small></span></label>
-                {form.fast_deal && <div className="seller-form-grid seller-fast-deal-fields"><div className="form-row"><label>Why is it a Fast Deal?</label><input name="fast_deal_note" value={form.fast_deal_note} onChange={this.handleChange} placeholder="e.g. Seller needs cash urgently" /></div><div className="form-row"><label>Deal ends (optional)</label><input name="fast_deal_expires_at" type="date" value={form.fast_deal_expires_at} onChange={this.handleChange} /></div></div>}
+                {form.fast_deal && <div className="seller-form-grid seller-fast-deal-fields"><div className="form-row"><label>Why is it a Fast Deal?</label><input name="fast_deal_note" value={form.fast_deal_note} onChange={this.handleChange} placeholder="e.g. Seller needs cash urgently" /></div><div className="form-row"><label>Deal ends</label><input name="fast_deal_expires_at" type="date" value={form.fast_deal_expires_at} onChange={this.handleChange} required /></div></div>}
                 {!this.state.usingDemo && <p className="seller-review-note"><FaShieldAlt /> New listings stay hidden until Innovatech reviews them.</p>}
                 {error && <p className="form-error">{error}</p>}
                 <div className="form-actions"><button type="submit" className="btn btn--primary" disabled={saving || uploading}><FaSave /> {uploading ? "Uploading photo..." : saving ? "Saving..." : form.id ? "Save changes" : "Send for review"}</button><button type="button" className="btn btn--ghost" onClick={this.closeForm}>Cancel</button></div>

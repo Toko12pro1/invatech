@@ -55,7 +55,7 @@ export default function Privacy() {
             <p>The website is not designed to collect personal data from children without the consent or involvement of a parent or legal representative. If you are under 18, ask a parent or legal representative to help before opening an account or requesting a paid service.</p>
 
             <h2>9. Cookies and local storage</h2>
-            <p>We use essential browser storage for language preference, referral-code continuity and basic site operation. We do not use those features to request a password or Mobile Money PIN. If we introduce non-essential analytics or advertising cookies, we will update this notice and provide any consent or control required.</p>
+            <p>We use essential browser storage for language preference, referral-code continuity and basic site operation. We do not use those features to request a password or Mobile Money PIN. If the Meta Pixel is configured for this deployment, it is optional, starts only after analytics consent and records page or product actions in accordance with Meta's own terms. You can decline optional analytics from the consent notice.</p>
 
             <h2>10. International processing</h2>
             <p>Some hosting, authentication, email or messaging providers may process data outside Cameroon. We will use providers and safeguards appropriate to the applicable Cameroon requirements and will update this notice when the providers or processing purposes materially change.</p>
@@ -65,6 +65,7 @@ export default function Privacy() {
             <p className="legal-contact"><strong>Innovatech Engineering Solutions</strong><br />Yaounde, Cameroon<br />WhatsApp: +237 651 162 373<br />Email: <a href="mailto:hello@innovatech.cm">hello@innovatech.cm</a></p>
 
             <hr />
+            <p>Le Pixel Meta est facultatif et ne demarre qu'apres votre consentement aux statistiques. Vous pouvez refuser ces statistiques dans l'avis de consentement.</p>
             <div className="legal-meta">Version française</div>
             <h2>Politique de confidentialité</h2>
             <p>Innovatech Engineering Solutions traite les données nécessaires pour répondre à vos demandes, gérer les comptes, les parrainages, les consultations, les annonces et les réclamations. Nous pouvons recevoir votre nom, téléphone/WhatsApp, email, ville, informations sur le produit ou la réparation, liens, photos et messages que vous choisissez d’envoyer.</p>

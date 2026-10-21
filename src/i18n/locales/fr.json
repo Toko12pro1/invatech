@@ -275,10 +275,19 @@
     "categories": {
       "All": "Tout",
       "Smartphones": "Smartphones",
+      "Laptops": "Ordinateurs portables",
+      "Computers": "Ordinateurs",
+      "Tablets": "Tablettes",
       "Wearables": "Objets Connectés",
       "Audio": "Audio",
       "Cameras": "Appareils Photo",
-      "Gaming": "Gaming"
+      "Gaming": "Gaming",
+      "Phone Accessories": "Accessoires de téléphone",
+      "Laptop Accessories": "Accessoires pour ordinateur",
+      "Chargers": "Chargeurs",
+      "Earphones": "Écouteurs",
+      "Power Banks": "Batteries externes",
+      "Other Electronics": "Autres appareils électroniques"
     },
     "filters": {
       "searchPlaceholder": "Rechercher un produit, une boutique ou un quartier",
@@ -313,6 +322,8 @@
       "chat": "Discuter avec nous de cet article",
       "negotiate": "Demander une négociation du prix",
       "fastDeal": "Bonne affaire",
+      "fastDealEnded": "Bonne affaire terminée",
+      "fastDealEndedNotice": "Cette bonne affaire n'est plus disponible. L'annonce reste visible pour référence ; demandez-nous le prix actuel.",
       "fastDealHelp": "Bonne affaire · demandez une négociation",
       "negotiable": "Négociable avec Innovatech",
       "verifyBeforeBuy": "Demandez une vérification avant d'acheter",
@@ -506,6 +517,11 @@
       "payWhatsApp": "Confirmer le Paiement sur WhatsApp",
       "chooseFirst": "Choisissez d'abord un forfait ci-dessus"
     }
+  },
+  "analyticsConsent": {
+    "text": "Nous utilisons un Pixel Meta facultatif pour comprendre les pages et actions produit utiles. Il ne demarre qu'apres votre accord.",
+    "accept": "Autoriser les statistiques",
+    "decline": "Non merci"
   },
   "notFound": {
     "eyebrow": "404",
