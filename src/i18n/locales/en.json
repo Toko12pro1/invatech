@@ -5,7 +5,7 @@
     "services": "Services",
     "shop": "Marketplace",
     "stores": "Stores",
-    "portfolio": "Portfolio",
+    "achievements": "Achievements",
     "refer": "Refer & Earn",
     "account": "Account",
     "consult": "Ask a Consultant",
@@ -265,17 +265,21 @@
       "button": "Ask Innovatech to help",
       "whatsapp": "Chat on WhatsApp"
     },
+    "product": {
+      "chat": "Chat with us about this item",
+      "negotiate": "Ask us to negotiate the price"
+    },
     "cta": {
       "title": "Looking for something specific, or want to trade in a device?",
       "subtitle": "Message us on WhatsApp — we restock regularly and can source on request."
     }
   },
-  "portfolio": {
+  "achievements": {
     "team": {
       "eyebrow": "The people behind the work",
       "title": "Meet the Innovatech team",
       "subtitle": "See the engineers, technicians and client team members who turn our projects into useful results.",
-      "note": "Personal portfolio links can be added for each member as they become available. For now, each card points to the Innovatech work or service connected to that person's contribution."
+      "note": "Individual work links can be added for each member as they become available. For now, each card points to the Innovatech work or service connected to that person's contribution."
     }
   },
   "testimonialsData": {

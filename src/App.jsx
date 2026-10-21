@@ -49,7 +49,8 @@ export default class App extends React.Component {
             <Route path="/shop" element={<Shop />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/refer" element={<Refer />} />
-            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/achievements" element={<Portfolio />} />
+            <Route path="/portfolio" element={<Navigate to="/achievements" replace />} />
             <Route path="/account" element={<Account />} />
             <Route path="/consult" element={<Consultation />} />
             <Route path="/wifi-zone" element={<WifiZone />} />

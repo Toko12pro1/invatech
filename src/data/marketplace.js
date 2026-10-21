@@ -148,8 +148,8 @@ export const PORTFOLIO_PROJECTS = [
   },
 ];
 
-// Keep personal portfolio URLs optional. Until a team member supplies one,
-// the portfolio points visitors to the related Innovatech work instead.
+// Keep personal work URLs optional. Until a team member supplies one,
+// the achievements page points visitors to the related Innovatech work instead.
 export const TEAM_MEMBER_WORK = [
   {
     name: "Emmanuel Ateba",

@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { to: "/", key: "home", end: true },
   { to: "/shop", key: "shop" },
   { to: "/stores", key: "stores" },
-  { to: "/portfolio", key: "portfolio" },
+  { to: "/achievements", key: "achievements" },
   { to: "/services", key: "services" },
   { to: "/contact", key: "contact" },
 ];

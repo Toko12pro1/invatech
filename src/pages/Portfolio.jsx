@@ -22,8 +22,8 @@ function Portfolio({ t }) {
     <main>
       <PageHero
         image="/images/hero-services.jpg"
-        eyebrow="Innovatech portfolio"
-        title="Software and hardware built for real work"
+        eyebrow="Innovatech achievements"
+        title="What our team has built and achieved"
         subtitle="Explore the platforms, prototypes and practical systems our team has designed, built and supported."
       />
 
@@ -31,8 +31,8 @@ function Portfolio({ t }) {
         <div className="container">
           <div className="portfolio-intro">
             <div>
-              <span className="eyebrow">Our work</span>
-              <h2>From the first sketch to the product people use.</h2>
+              <span className="eyebrow">Our achievements</span>
+              <h2>From the first sketch to results people can use.</h2>
             </div>
             <p>We pair product thinking with hands-on engineering, so every project can move from an idea to something your team can actually rely on.</p>
           </div>
@@ -67,9 +67,9 @@ function Portfolio({ t }) {
       <section className="section section--alt portfolio-team-section">
         <div className="container">
           <SectionHeading
-            eyebrow={t("portfolio.team.eyebrow")}
-            title={t("portfolio.team.title")}
-            subtitle={t("portfolio.team.subtitle")}
+            eyebrow={t("achievements.team.eyebrow")}
+            title={t("achievements.team.title")}
+            subtitle={t("achievements.team.subtitle")}
           />
           <div className="grid grid--4">
             {profileMembers.map((member, index) => {
@@ -89,7 +89,7 @@ function Portfolio({ t }) {
               );
             })}
           </div>
-          <p className="portfolio-team-note">{t("portfolio.team.note")}</p>
+          <p className="portfolio-team-note">{t("achievements.team.note")}</p>
         </div>
       </section>
 

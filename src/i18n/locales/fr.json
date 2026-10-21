@@ -5,7 +5,7 @@
     "services": "Services",
     "shop": "Marketplace",
     "stores": "Boutiques partenaires",
-    "portfolio": "Portfolio",
+    "achievements": "Réalisations",
     "refer": "Parrainer",
     "account": "Compte",
     "consult": "Demander conseil",
@@ -265,17 +265,21 @@
       "button": "Demander l'aide d'Innovatech",
       "whatsapp": "Discuter sur WhatsApp"
     },
+    "product": {
+      "chat": "Discuter avec nous de cet article",
+      "negotiate": "Demander une négociation du prix"
+    },
     "cta": {
       "title": "Vous cherchez quelque chose de précis, ou souhaitez échanger un appareil ?",
       "subtitle": "Écrivez-nous sur WhatsApp — nous nous réapprovisionnons régulièrement et pouvons sourcer sur demande."
     }
   },
-  "portfolio": {
+  "achievements": {
     "team": {
       "eyebrow": "Les personnes derrière nos réalisations",
       "title": "Découvrez l'équipe Innovatech",
       "subtitle": "Découvrez les ingénieurs, techniciens et membres de notre équipe client qui transforment nos projets en résultats utiles.",
-      "note": "Les liens vers les portfolios personnels pourront être ajoutés lorsqu'ils seront disponibles. Pour l'instant, chaque carte renvoie vers le travail ou le service Innovatech lié à la contribution de cette personne."
+      "note": "Les liens vers les réalisations personnelles pourront être ajoutés lorsqu'ils seront disponibles. Pour l'instant, chaque carte renvoie vers le travail ou le service Innovatech lié à la contribution de cette personne."
     }
   },
   "testimonialsData": {

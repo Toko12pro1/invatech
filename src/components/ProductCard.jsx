@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaClipboardCheck, FaMapMarkerAlt, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
 import Reveal from "./Reveal";
+import { whatsappLink } from "../data/marketplace";
 
 class ProductCard extends React.Component {
   render() {
@@ -19,6 +20,7 @@ class ProductCard extends React.Component {
       innovatech_stock: "Innovatech stock",
     };
     const verificationLabel = levelLabels[product.verificationLevel] || "Traceability pending";
+    const itemMessage = `Hi Innovatech, I would like help with this item.\n\nProduct: ${name}\nPrice shown: ${product.formatPrice()}\nStore: ${product.storeName}\nLocation: ${product.storeLocation}\n\nPlease confirm availability, help verify it or guide me on the best way to buy.`;
 
     return (
       <Reveal delay={index * 0.06} className="product-card-wrap">
@@ -67,14 +69,16 @@ class ProductCard extends React.Component {
                 <span className="product-price-old">{product.formatPrice(product.oldPrice)}</span>
               )}
             </div>
-            <Link
-              to={`/consult?product=${encodeURIComponent(name)}&request=negotiate_purchase`}
+            <a
+              href={whatsappLink(itemMessage)}
+              target="_blank"
+              rel="noreferrer"
               className="btn btn--primary product-cta"
             >
-              <FaWhatsapp aria-hidden="true" /> Start free negotiation
-            </Link>
-            <Link className="product-consult-link" to={`/consult?product=${encodeURIComponent(name)}&request=negotiate_purchase`}>
-              Ready to buy? Ask us to negotiate free
+              <FaWhatsapp aria-hidden="true" /> {t("shop.product.chat")}
+            </a>
+            <Link className="product-consult-link" to={`/consult?product=${encodeURIComponent(name)}&request=negotiate_purchase&seller=${encodeURIComponent(product.storeName)}`}>
+              <FaClipboardCheck aria-hidden="true" /> {t("shop.product.negotiate")}
             </Link>
           </div>
         </motion.article>

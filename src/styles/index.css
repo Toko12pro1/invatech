@@ -2796,7 +2796,10 @@ p {
 }
 
 .product-consult-link {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   margin-top: 12px;
   color: var(--color-orange);
   font-size: 0.78rem;
