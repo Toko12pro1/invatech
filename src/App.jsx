@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Shop from "./pages/Shop";
+import Stores from "./pages/Stores";
+import Refer from "./pages/Refer";
+import Portfolio from "./pages/Portfolio";
 import WifiZone from "./pages/WifiZone";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -38,6 +41,9 @@ export default class App extends React.Component {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/stores" element={<Stores />} />
+            <Route path="/refer" element={<Refer />} />
+            <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/wifi-zone" element={<WifiZone />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />

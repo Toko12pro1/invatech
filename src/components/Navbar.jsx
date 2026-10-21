@@ -8,10 +8,10 @@ import LanguageSwitcher from "./LanguageSwitcher";
 
 const NAV_LINKS = [
   { to: "/", key: "home", end: true },
-  { to: "/about", key: "about" },
-  { to: "/services", key: "services" },
   { to: "/shop", key: "shop" },
-  { to: "/wifi-zone", key: "wifiZone" },
+  { to: "/stores", key: "stores" },
+  { to: "/portfolio", key: "portfolio" },
+  { to: "/services", key: "services" },
   { to: "/contact", key: "contact" },
 ];
 
@@ -114,6 +114,13 @@ class Navbar extends React.Component {
                   {t(`nav.${link.key}`)}
                 </NavLink>
               ))}
+              <NavLink
+                to="/refer"
+                onClick={this.closeMenu}
+                className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
+              >
+                {t("nav.refer", "Refer & Earn")}
+              </NavLink>
               <LanguageSwitcher className="lang-switch--mobile" />
               <NavLink to="/contact" onClick={this.closeMenu} className="btn btn--primary navbar-mobile-cta">
                 {t("nav.getQuote")}

@@ -20,8 +20,8 @@ import TestimonialCard from "../components/TestimonialCard";
 import PromoVideo from "../components/PromoVideo";
 import services from "../data/services";
 import testimonials from "../data/testimonials";
-import Product from "../models/Product";
 import { supabase } from "../lib/supabaseClient";
+import { getDemoProducts, toMarketplaceProduct } from "../data/marketplace";
 
 const WHY_CHOOSE_US_ICONS = [FaTools, FaShieldAlt, FaClock, FaMapMarkedAlt];
 
@@ -39,12 +39,15 @@ class Home extends BasePage {
   async loadFeaturedProducts() {
     const { data, error } = await supabase
       .from("products")
-      .select("*")
+      .select("*, stores(name, location)")
       .eq("active", true)
       .order("sort_order")
       .limit(3);
-    if (error) return;
-    this.setState({ products: data.map((row) => new Product(row)) });
+    if (error || !data?.length) {
+      this.setState({ products: getDemoProducts().slice(0, 3) });
+      return;
+    }
+    this.setState({ products: data.map(toMarketplaceProduct) });
   }
 
   renderPage() {
@@ -107,6 +110,40 @@ class Home extends BasePage {
             <StatCounter value={4200} label={t("home.stats.devicesRepaired")} suffix="+" />
             <StatCounter value={3100} label={t("home.stats.happyClients")} suffix="+" />
             <StatCounter value={1} label={t("home.stats.schoolPlatform")} suffix="" />
+          </div>
+        </section>
+
+        <section className="section section--cream marketplace-intro">
+          <div className="container">
+            <div className="marketplace-intro-header">
+              <div>
+                <span className="eyebrow">More than a shop</span>
+                <h2>Buy with a local team on your side.</h2>
+              </div>
+              <Link to="/stores" className="btn btn--secondary">
+                See partner stores <FaArrowRight aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="grid grid--3 marketplace-benefits">
+              <Reveal className="marketplace-benefit-card">
+                <span className="feature-icon"><FaShieldAlt aria-hidden="true" /></span>
+                <span className="eyebrow">01 · Verified</span>
+                <h3>Know who you are buying from</h3>
+                <p>We show the partner store behind each listing, so your purchase has a real name and a real contact.</p>
+              </Reveal>
+              <Reveal className="marketplace-benefit-card" delay={0.08}>
+                <span className="feature-icon"><FaTools aria-hidden="true" /></span>
+                <span className="eyebrow">02 · Tested</span>
+                <h3>We check before you commit</h3>
+                <p>Our team helps verify the product and test it where possible, giving you a clearer decision.</p>
+              </Reveal>
+              <Reveal className="marketplace-benefit-card" delay={0.16}>
+                <span className="feature-icon"><FaWhatsapp aria-hidden="true" /></span>
+                <span className="eyebrow">03 · Connected</span>
+                <h3>Continue the conversation on WhatsApp</h3>
+                <p>Ask questions, request a discount, buy from the store or place an order with our help.</p>
+              </Reveal>
+            </div>
           </div>
         </section>
 

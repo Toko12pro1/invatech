@@ -11,6 +11,10 @@ export default class Product {
     this.image = row.image_url;
     this.sortOrder = row.sort_order;
     this.active = row.active;
+    this.storeId = row.store_id || null;
+    this.storeName = row.store_name || "Innovatech Verified Hub";
+    this.storeLocation = row.store_location || "Yaoundé, Cameroon";
+    this.verificationStatus = row.verification_status || "verified";
   }
 
   getName(lang) {
@@ -40,6 +44,10 @@ export default class Product {
       condition: this.condition,
       badge: this.badge || null,
       image_url: this.image,
+      store_id: this.storeId,
+      store_name: this.storeName,
+      store_location: this.storeLocation,
+      verification_status: this.verificationStatus,
       sort_order: this.sortOrder || 0,
       active: this.active !== false,
     };
