@@ -264,6 +264,14 @@
       "subtitle": "Écrivez-nous sur WhatsApp — nous nous réapprovisionnons régulièrement et pouvons sourcer sur demande."
     }
   },
+  "portfolio": {
+    "team": {
+      "eyebrow": "Les personnes derrière nos réalisations",
+      "title": "Découvrez l'équipe Innovatech",
+      "subtitle": "Découvrez les ingénieurs, techniciens et membres de notre équipe client qui transforment nos projets en résultats utiles.",
+      "note": "Les liens vers les portfolios personnels pourront être ajoutés lorsqu'ils seront disponibles. Pour l'instant, chaque carte renvoie vers le travail ou le service Innovatech lié à la contribution de cette personne."
+    }
+  },
   "testimonialsData": {
     "t1": { "role": "Petite Entrepreneure, Douala", "quote": "Mon ordinateur portable refusait de démarrer avant une livraison importante. Innovatech l'a diagnostiqué et réparé le jour même. Des prix honnêtes, et ils m'ont clairement expliqué le problème." },
     "t2": { "role": "Administrateur Scolaire", "quote": "Ils ont développé Skolar pour notre école et continuent de le maintenir aujourd'hui. Savoir que les mêmes ingénieurs qui ont conçu notre logiciel s'occupent aussi de notre matériel est vraiment rassurant." },

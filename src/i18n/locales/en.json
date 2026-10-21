@@ -264,6 +264,14 @@
       "subtitle": "Message us on WhatsApp — we restock regularly and can source on request."
     }
   },
+  "portfolio": {
+    "team": {
+      "eyebrow": "The people behind the work",
+      "title": "Meet the Innovatech team",
+      "subtitle": "See the engineers, technicians and client team members who turn our projects into useful results.",
+      "note": "Personal portfolio links can be added for each member as they become available. For now, each card points to the Innovatech work or service connected to that person's contribution."
+    }
+  },
   "testimonialsData": {
     "t1": { "role": "Small Business Owner, Douala", "quote": "My laptop wouldn't boot before an important delivery. Innovatech had it diagnosed and fixed the same day. Honest pricing and they explained exactly what was wrong." },
     "t2": { "role": "School Administrator", "quote": "They built Skolar for our school and still maintain it today. Knowing the same engineers who built our software also handle our hardware gives real peace of mind." },

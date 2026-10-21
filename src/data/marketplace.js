@@ -106,6 +106,7 @@ export const DEMO_PRODUCTS = [
 
 export const PORTFOLIO_PROJECTS = [
   {
+    id: "skolar-school-platform",
     title: "Skolar school platform",
     category: "Education technology",
     description: "A practical school-management platform that keeps administrators, teachers and families in sync.",
@@ -115,6 +116,7 @@ export const PORTFOLIO_PROJECTS = [
     url: "https://skolar.cm",
   },
   {
+    id: "connected-inventory-system",
     title: "Connected inventory system",
     category: "Business software",
     description: "A clearer way for a growing business to track stock, orders and customer conversations.",
@@ -124,6 +126,7 @@ export const PORTFOLIO_PROJECTS = [
     url: "/contact",
   },
   {
+    id: "iot-proof-of-concept",
     title: "IoT proof of concept",
     category: "Hardware & IoT",
     description: "A sensor prototype that turns a real-world problem into useful data and a decision-ready view.",
@@ -131,6 +134,35 @@ export const PORTFOLIO_PROJECTS = [
     tags: ["IoT", "Prototype"],
     result: "From idea to working demo",
     url: "/contact",
+  },
+];
+
+// Keep personal portfolio URLs optional. Until a team member supplies one,
+// the portfolio points visitors to the related Innovatech work instead.
+export const TEAM_MEMBER_WORK = [
+  {
+    name: "Emmanuel Ateba",
+    achievement: "Leads the repair bench and software team behind Skolar.",
+    workUrl: "https://skolar.cm",
+    workLabel: "View Skolar",
+  },
+  {
+    name: "Chantal Mbarga",
+    achievement: "Builds and maintains Skolar, alongside client web and mobile products.",
+    workUrl: "https://skolar.cm",
+    workLabel: "View Skolar",
+  },
+  {
+    name: "Patrick Nguema",
+    achievement: "Handles circuit-level diagnostics and the hardware work behind reliable repairs.",
+    workUrl: "/services",
+    workLabel: "See our engineering work",
+  },
+  {
+    name: "Divine Ayuk",
+    achievement: "Guides clients through diagnostics, pricing, referrals and warranty conversations.",
+    workUrl: "/consult",
+    workLabel: "See the client process",
   },
 ];
 

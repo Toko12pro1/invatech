@@ -1,13 +1,22 @@
 import React, { useEffect } from "react";
 import { FaArrowRight, FaExternalLinkAlt, FaWhatsapp } from "react-icons/fa";
+import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import PageHero from "../components/PageHero";
+import ProfileCard from "../components/ProfileCard";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import { PORTFOLIO_PROJECTS, whatsappLink } from "../data/marketplace";
+import { PORTFOLIO_PROJECTS, TEAM_MEMBER_WORK, whatsappLink } from "../data/marketplace";
 
-export default function Portfolio() {
+function Portfolio({ t }) {
   useEffect(() => window.scrollTo(0, 0), []);
+  const profileMembers = t("about.profiles.members", { returnObjects: true });
+  const profilePhotos = [
+    "/images/profile-founder.jpg",
+    "/images/profile-engineer.jpg",
+    "/images/profile-technician.jpg",
+    "/images/profile-relations.jpg",
+  ];
 
   return (
     <main>
@@ -29,7 +38,7 @@ export default function Portfolio() {
           </div>
           <div className="portfolio-grid">
             {PORTFOLIO_PROJECTS.map((project, index) => (
-              <Reveal key={project.title} delay={index * 0.08} className={`portfolio-card portfolio-card--${index + 1}`}>
+              <Reveal key={project.id} id={`portfolio-project-${project.id}`} delay={index * 0.08} className={`portfolio-card portfolio-card--${index + 1}`}>
                 <div className="portfolio-card-image">
                   <img src={project.image} alt="" loading="lazy" />
                   <span>{project.category}</span>
@@ -52,6 +61,35 @@ export default function Portfolio() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section section--alt portfolio-team-section">
+        <div className="container">
+          <SectionHeading
+            eyebrow={t("portfolio.team.eyebrow")}
+            title={t("portfolio.team.title")}
+            subtitle={t("portfolio.team.subtitle")}
+          />
+          <div className="grid grid--4">
+            {profileMembers.map((member, index) => {
+              const work = TEAM_MEMBER_WORK.find((item) => item.name === member.name);
+              return (
+                <ProfileCard
+                  key={member.name}
+                  index={index}
+                  photo={profilePhotos[index]}
+                  name={member.name}
+                  role={member.role}
+                  bio={member.bio}
+                  achievement={work?.achievement}
+                  link={work?.workUrl}
+                  linkLabel={work?.workLabel}
+                />
+              );
+            })}
+          </div>
+          <p className="portfolio-team-note">{t("portfolio.team.note")}</p>
         </div>
       </section>
 
@@ -88,3 +126,5 @@ export default function Portfolio() {
     </main>
   );
 }
+
+export default withTranslation()(Portfolio);
