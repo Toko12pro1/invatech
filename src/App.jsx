@@ -22,6 +22,7 @@ import SellerWorkspace from "./pages/admin/SellerWorkspace";
 import AdminWifiPackages from "./pages/admin/AdminWifiPackages";
 import AdminVouchers from "./pages/admin/AdminVouchers";
 import AdminTraceability from "./pages/admin/AdminTraceability";
+import AdminPurchaseProofs from "./pages/admin/AdminPurchaseProofs";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 
@@ -74,6 +75,7 @@ export default class App extends React.Component {
             <Route path="seller" element={<SellerWorkspace />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="traceability" element={<AdminTraceability />} />
+            <Route path="purchase-proofs" element={<AdminPurchaseProofs />} />
             <Route path="wifi-packages" element={<AdminWifiPackages />} />
             <Route path="vouchers" element={<AdminVouchers />} />
           </Route>

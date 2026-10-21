@@ -52,22 +52,33 @@ export default function Terms() {
             <h2>9. Referrals</h2>
             <p>Referral codes identify a referrer; they are not money, employment or a guaranteed income. The code is captured with the request, but a reward is considered only after we confirm a qualifying completed transaction with the store. We may refuse duplicate, fraudulent, self-referred, cancelled or disputed transactions. If a store or partner pays Innovatech or a referrer a referral commission, we will not describe the service as “no gain” where that commission is relevant, and the customer will not be charged a hidden markup. No spam, impersonation, misleading advertising or multi-level recruitment is allowed.</p>
 
-            <h2>10. WhatsApp and other services</h2>
+            <h2 id="purchase-tracking">10. Direct purchases, proof and reward</h2>
+            <p>Customers may buy directly from a partner store without asking Innovatech to negotiate. In that option, Innovatech is a connector and traceability service, not the seller, unless the written invoice names Innovatech as seller.</p>
+            <ul>
+              <li>Before paying, confirm the store identity, final price, product condition, warranty, delivery or collection and return process.</li>
+              <li>Ask the store to write the Innovatech tracking reference on the receipt or order note.</li>
+              <li>After payment, submit a clear receipt/invoice photo or Mobile Money transaction screenshot through the private proof form.</li>
+              <li>Never upload a Mobile Money PIN, password, national ID number or unnecessary full IMEI. We may reject altered, duplicate, unreadable or unrelated documents.</li>
+              <li>If a registered referral code was used, the referral reward starts at 1,000 FCFA and may be higher under the published campaign or transaction offer. It is promotional, subject to store confirmation, and is never payment for a positive review.</li>
+              <li>If the customer asks Innovatech to negotiate, that request is not treated as an account referral. Any agreed commission is paid by the partner store to Innovatech under the store agreement, and we do not add a hidden markup to the customer’s confirmed store price.</li>
+            </ul>
+
+            <h2>11. WhatsApp and other services</h2>
             <p>Some requests open WhatsApp, email, Supabase or other third-party services. Their own terms and privacy notices apply. Messages sent through WhatsApp can be seen and processed by WhatsApp and the people in the conversation. Do not send passwords, banking PINs, identity documents or a full IMEI through a public chat.</p>
 
-            <h2>11. Acceptable use and intellectual property</h2>
+            <h2>12. Acceptable use and intellectual property</h2>
             <p>You must not use the website to commit fraud, impersonate another person, upload unlawful content, interfere with security, scrape private data, or infringe another person's rights. Innovatech owns or licenses the website, branding, software, text, graphics and portfolio materials. Store owners keep ownership of their content but give us permission to display it for listing, support and promotion purposes until they ask us to remove it or the listing ends.</p>
 
-            <h2>12. Complaints, cancellation and returns</h2>
+            <h2>13. Complaints, cancellation and returns</h2>
             <p>Send a complaint to <a href="mailto:hello@innovatech.cm">hello@innovatech.cm</a> or WhatsApp +237 651 162 373 with your order/reference, seller, date, photos and requested remedy. We will identify whether the issue concerns Innovatech, a partner store or a third-party service and route it accordingly. Any applicable statutory cancellation, withdrawal, repair, replacement, refund and compensation rights remain available; the order confirmation will state the process and any lawful exceptions. We do not use a blanket “no refund in all circumstances” clause.</p>
 
-            <h2>13. Liability</h2>
+            <h2>14. Liability</h2>
             <p>We are not responsible for a partner store's product or conduct where the store is the seller, but we will handle complaints in good faith and cooperate with the customer and store. Nothing in these Terms excludes or limits liability that cannot lawfully be excluded, including mandatory consumer rights, fraud or personal injury caused by negligence.</p>
 
-            <h2>14. Governing law and changes</h2>
+            <h2>15. Governing law and changes</h2>
             <p>These Terms are intended to be governed by the laws of Cameroon. We may update them when our services or the law changes. The version shown at the time of a confirmed order or accepted service request applies to that transaction, unless a mandatory law requires otherwise.</p>
 
-            <h2>15. Contact</h2>
+            <h2>16. Contact</h2>
             <ContactBlock />
 
             <hr />
@@ -87,6 +98,14 @@ export default function Terms() {
             <p>Les boutiques doivent publier des informations exactes, avoir le droit de vendre les produits et signaler les défauts. Les produits volés, contrefaits ou illégaux sont interdits. Un code de parrainage ne garantit pas un revenu : le code est enregistré avec la demande et une récompense éventuelle dépend d’un achat admissible confirmé avec la boutique. Si une commission de mise en relation est payée à Innovatech ou au parrain, nous ne la présenterons pas comme un « aucun gain » lorsqu’elle est pertinente et aucun supplément caché ne sera ajouté au client.</p>
             <h3>6. Réclamations et données</h3>
             <p>Envoyez votre réclamation à hello@innovatech.cm ou au +237 651 162 373 avec la référence de la commande. Nous expliquerons si le problème relève d’Innovatech, de la boutique ou d’un autre prestataire. Vos données sont traitées selon notre <Link to="/privacy">Politique de confidentialité</Link>. N’envoyez pas de mot de passe, code bancaire, pièce d’identité ou IMEI complet dans un chat public.</p>
+            <h3>6. Achat direct, preuve et récompense</h3>
+            <ul>
+              <li>Vous pouvez acheter directement auprès d’une boutique partenaire sans demander à Innovatech de négocier. La boutique reste le vendeur sauf si la facture désigne Innovatech comme vendeur.</li>
+              <li>Avant de payer, confirmez l’identité de la boutique, le prix final, l’état du produit, la garantie, la livraison ou le retrait et les retours.</li>
+              <li>Demandez à la boutique d’inscrire la référence Innovatech sur le reçu ou la commande, puis envoyez une photo du reçu ou une capture Mobile Money dans le formulaire privé.</li>
+              <li>N’envoyez jamais votre code PIN Mobile Money, mot de passe, pièce d’identité ou IMEI complet. Si un code de parrainage enregistré a été utilisé, la récompense commence à 1 000 FCFA et peut être supérieure selon l’offre publiée. Elle dépend de la confirmation de la vente et ne paie pas un avis positif.</li>
+              <li>Si le client demande à Innovatech de négocier, cette demande n’est pas un parrainage client. Toute commission convenue est payée par la boutique partenaire à Innovatech selon l’accord, sans supplément caché sur le prix confirmé de la boutique.</li>
+            </ul>
             <h3>7. Droit applicable</h3>
             <p>Ces conditions sont destinées à être régies par le droit camerounais. Elles ne suppriment pas les droits obligatoires du consommateur, notamment ceux relatifs à l’information, à la réparation, au remplacement, au remboursement ou au recours lorsque la loi les prévoit.</p>
             <ContactBlock />

@@ -306,6 +306,11 @@
     },
     "product": {
       "chat": "Chat with us about this item",
+      "trackPurchase": "Buy directly & keep proof",
+      "beforeBuy": "Before you buy",
+      "beforeBuyPoint1": "The store remains the seller and confirms the final price, receipt and warranty.",
+      "beforeBuyPoint2": "If you ask Innovatech to negotiate, this is a negotiation request, not a customer referral reward.",
+      "beforeBuyPoint3": "If you use a registered referral code, keep the receipt or Mobile Money proof and upload it after payment; the reward starts at 1,000 FCFA under the published offer.",
       "negotiate": "Ask us to negotiate the price",
       "fastDeal": "Fast Deal",
       "fastDealHelp": "Fast Deal · ask us to negotiate",
@@ -341,11 +346,12 @@
     "section": {
       "eyebrow": "One clear process",
       "title": "Tell us what you need help with.",
-      "subtitle": "Choose a service, share the basics and continue the conversation on WhatsApp. Photos can be sent there after you submit."
+      "subtitle": "Choose a service, share the basics and continue on WhatsApp when needed. For a direct purchase record, upload your receipt or Mobile Money proof privately here."
     },
     "requestTypes": {
       "productCheck": { "label": "Check a product", "description": "We review the phone or electronics before you spend money." },
       "negotiatePurchase": { "label": "Free negotiation (ready to buy)", "description": "We contact the store at no consulting fee if you are ready to buy." },
+      "purchaseTrace": { "label": "Buy directly & keep proof", "description": "Buy from the store yourself and send us the receipt or Mobile Money proof for traceability." },
       "repairAnalysis": { "label": "Analyse a repair", "description": "We assess the problem and explain the realistic next step." },
       "businessAdvice": { "label": "Technology advice", "description": "Get practical guidance for software, devices or a business need." }
     },
@@ -354,7 +360,9 @@
       "title": "WhatsApp is ready.",
       "note": "We confirm the store's final price before you commit to the purchase. Paid analysis or consulting starts only after the fee and scope are agreed.",
       "continueShopping": "Continue shopping",
-      "another": "Start another request"
+      "another": "Start another request",
+      "purchaseSaved": "Your purchase record is saved as {{reference}}. We will review the proof and confirm eligibility for a reward starting at 1,000 FCFA after the store confirms the sale.",
+      "purchaseTracked": "Your purchase record is saved as {{reference}}. Because no referral code was included, this is traceability only; any reward applies only when a published offer says so."
     },
     "form": {
       "name": "Your name",
@@ -368,6 +376,19 @@
       "notesPlaceholder": "Tell us the price, the problem, your budget or anything you already know.",
       "photoTitle": "Have a photo? Select it from your phone",
       "photoHint": "We do not upload it here; send the photo in the WhatsApp chat that opens next.",
+      "purchaseStageLabel": "When are you submitting this record?",
+      "beforePurchase": "Before buying: create a traceability record",
+      "alreadyBought": "Already bought: upload proof now",
+      "proofType": "Proof type",
+      "storeReceipt": "Store receipt or invoice",
+      "mobileMoney": "Mobile Money transaction",
+      "proofTitle": "Snap the receipt or Mobile Money screenshot",
+      "proofHint": "Private upload. Hide your PIN, password, ID number and unnecessary sensitive details.",
+      "proofRequired": "Please upload the store receipt or Mobile Money screenshot for a completed purchase.",
+      "purchaseAcknowledgement": "I understand that the store is the seller, the final price and warranty come from the store, and any reward starting at 1,000 FCFA depends on the published offer and verification.",
+      "saveError": "We could not save the purchase record. Please try again or contact us on WhatsApp.",
+      "whatsappReady": "Your WhatsApp chat is ready. If you selected a photo, send it in that chat so we can review it.",
+      "proofUploadError": "The purchase record was saved, but the proof upload did not finish. Please send the receipt or Mobile Money screenshot to us on WhatsApp with your tracking reference.",
       "readyToBuy": "I am ready to buy if the store confirms availability and the final price. The negotiation is free; the purchase price is decided by the store.",
       "feeAcknowledged": "I understand that the consulting fee is confirmed with me before work starts.",
       "legalBefore": "I agree to the",
@@ -375,7 +396,16 @@
       "legalAnd": "and acknowledge the",
       "privacy": "Privacy Notice",
       "preparing": "Preparing your request...",
-      "submit": "Continue on WhatsApp"
+      "submit": "Continue on WhatsApp",
+      "submitPurchase": "Save purchase proof"
+    },
+    "purchasePolicy": {
+      "title": "Before you buy directly",
+      "point1": "The partner store remains the seller and must provide the receipt, final price, warranty and after-sales support.",
+      "point2": "Innovatech does not negotiate in this option; you buy directly after confirming the details with the store.",
+      "point3": "Ask the store to write the Innovatech tracking reference on the receipt or order note.",
+      "point4": "After payment, upload a clear store receipt or Mobile Money transaction screenshot here.",
+      "point5": "A registered referral code may qualify for a reward starting at 1,000 FCFA, or more under the published offer. If Innovatech negotiates for you, that request is not a customer referral; any commission is paid by the partner store to Innovatech under the store agreement."
     },
     "trust": {
       "eyebrow": "Our promise",

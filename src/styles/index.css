@@ -795,6 +795,13 @@ p {
 .product-traceability-body dt { color: var(--color-gray-400); }
 .product-traceability-body dd { margin: 0; color: var(--color-navy); font-weight: 700; text-align: right; }
 .product-traceability-body small { display: block; margin-top: 10px; line-height: 1.45; color: var(--color-gray-400); }
+.product-purchase-policy { margin: 2px 0 8px; border-top: 1px solid var(--color-gray-200); padding-top: 8px; }
+.product-purchase-policy summary { cursor: pointer; display: flex; align-items: center; gap: 7px; color: var(--color-navy); font-size: 0.78rem; font-weight: 700; list-style: none; }
+.product-purchase-policy summary::-webkit-details-marker { display: none; }
+.product-purchase-policy summary::after { content: "+"; margin-left: auto; color: var(--color-orange); font-size: 1rem; }
+.product-purchase-policy[open] summary::after { content: "−"; }
+.product-purchase-policy ul { margin: 10px 0 0; padding: 12px 12px 12px 28px; border-radius: var(--radius-sm); background: #fffaf0; color: var(--color-gray-700); font-size: 0.76rem; line-height: 1.45; }
+.product-purchase-policy li + li { margin-top: 5px; }
 
 /* ---------------------------------------------------------------- */
 /* Feature cards / process steps                                      */
@@ -2858,6 +2865,16 @@ p {
   flex-shrink: 0;
 }
 
+.product-card-consultant--link {
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.product-card-consultant--link:hover {
+  color: #1f6b32;
+  background: #dff3e4;
+}
+
 .product-consult-link {
   display: inline-flex;
   align-items: center;
@@ -2872,6 +2889,30 @@ p {
 
 .product-consult-link:hover {
   color: var(--color-navy);
+}
+
+.product-purchase-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 12px;
+  border: 1px solid rgba(247, 148, 29, 0.45);
+  border-radius: 999px;
+  color: var(--color-navy);
+  background: #fffaf0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.product-purchase-link:hover {
+  border-color: var(--color-orange);
+  background: #fff1d4;
 }
 
 .consultant-section {
@@ -2980,6 +3021,55 @@ p {
   font-size: 0.76rem;
   line-height: 1.45;
 }
+
+.purchase-policy-callout {
+  margin: -8px 0 22px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--color-orange);
+  border-radius: var(--radius-sm);
+  background: #fff8e6;
+  color: var(--color-navy);
+}
+
+.purchase-policy-callout strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.94rem;
+}
+
+.purchase-policy-callout ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--color-gray-700);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.purchase-policy-callout li + li { margin-top: 5px; }
+
+.consultation-purchase-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 2px 0 16px;
+  color: var(--color-navy);
+  font-size: 0.8rem;
+}
+
+.consultation-purchase-options .consultation-small-note {
+  flex-basis: 100%;
+  color: var(--color-navy);
+  font-weight: 700;
+}
+
+.consultation-purchase-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.consultation-purchase-options input { accent-color: var(--color-orange); }
 
 .consultation-form-grid {
   display: grid;
@@ -3485,6 +3575,14 @@ p {
 .admin-content { flex: 1; padding: 40px; background: var(--color-gray-100); overflow-x: auto; }
 .admin-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
 .admin-page-hint { color: var(--color-gray-700); font-size: 0.9rem; margin-bottom: 20px; }
+.purchase-proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+.purchase-proof-card { padding: 22px; border-radius: var(--radius-md); background: var(--color-white); box-shadow: var(--shadow-sm); }
+.purchase-proof-card h2 { margin: 14px 0 8px; font-size: 1.08rem; }
+.purchase-proof-card p { margin: 6px 0; color: var(--color-gray-700); font-size: 0.84rem; line-height: 1.45; }
+.purchase-proof-card .btn { width: 100%; justify-content: center; margin-top: 10px; }
+.purchase-proof-card-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; color: var(--color-gray-400); font-size: 0.76rem; }
+.purchase-proof-type { display: inline-flex; align-items: center; gap: 6px; color: var(--color-orange); font-weight: 700; }
+.purchase-proof-preview { display: inline-flex; align-items: center; gap: 7px; margin: 12px 0; color: var(--color-orange); font-size: 0.82rem; font-weight: 700; }
 .admin-table-wrap { background: var(--color-white); border-radius: var(--radius-md); overflow-x: auto; box-shadow: var(--shadow-sm); }
 .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .admin-table th, .admin-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--color-gray-200); white-space: nowrap; }

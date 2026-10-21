@@ -305,6 +305,11 @@
       "whatsapp": "Discuter sur WhatsApp"
     },
     "product": {
+      "trackPurchase": "Acheter directement et garder la preuve",
+      "beforeBuy": "Avant d'acheter",
+      "beforeBuyPoint1": "La boutique reste le vendeur et confirme le prix final, le recu et la garantie.",
+      "beforeBuyPoint2": "Si vous demandez a Innovatech de negocier, il s'agit d'une demande de negociation et non d'une recompense de parrainage client.",
+      "beforeBuyPoint3": "Si vous utilisez un code de parrainage enregistre, gardez le recu ou la preuve Mobile Money et envoyez-la apres le paiement ; la recompense commence a 1 000 FCFA selon l'offre publiee.",
       "chat": "Discuter avec nous de cet article",
       "negotiate": "Demander une négociation du prix",
       "fastDeal": "Bonne affaire",
@@ -344,19 +349,35 @@
       "subtitle": "Choisissez un service, partagez les informations essentielles et poursuivez la discussion sur WhatsApp. Vous pourrez envoyer les photos après l'envoi."
     },
     "requestTypes": {
+      "purchaseTrace": { "label": "Acheter directement et garder la preuve", "description": "Achetez vous-meme aupres de la boutique et envoyez le recu ou la preuve Mobile Money pour la tracabilite." },
       "productCheck": { "label": "Vérifier un produit", "description": "Nous examinons le téléphone ou l'appareil avant que vous ne dépensiez." },
       "negotiatePurchase": { "label": "Négociation gratuite (prêt à acheter)", "description": "Nous contactons la boutique sans frais de conseil si vous êtes prêt à acheter." },
       "repairAnalysis": { "label": "Analyser une réparation", "description": "Nous évaluons le problème et expliquons l'étape suivante réaliste." },
       "businessAdvice": { "label": "Conseil technologique", "description": "Obtenez des conseils pratiques pour vos logiciels, appareils ou besoins professionnels." }
     },
     "success": {
+      "purchaseSaved": "Votre achat est enregistre sous {{reference}}. Nous examinerons la preuve et confirmerons l'eligibilite a une recompense a partir de 1 000 FCFA apres confirmation de la vente par la boutique.",
       "eyebrow": "Demande commencée",
       "title": "WhatsApp est prêt.",
       "note": "Nous confirmons le prix final de la boutique avant que vous ne vous engagiez. Toute analyse ou consultation payante commence seulement après accord sur le tarif et le périmètre.",
       "continueShopping": "Continuer les achats",
-      "another": "Faire une autre demande"
+      "another": "Faire une autre demande",
+      "purchaseTracked": "Votre achat est enregistre sous {{reference}}. Aucun code de parrainage n'a ete fourni : il s'agit uniquement de tracabilite ; une recompense ne s'applique que si une offre publiee le prevoit."
     },
     "form": {
+      "purchaseStageLabel": "Quand envoyez-vous cet enregistrement ?",
+      "beforePurchase": "Avant l'achat : creer une trace",
+      "alreadyBought": "Achat deja effectue : envoyer la preuve",
+      "proofType": "Type de preuve",
+      "storeReceipt": "Recu ou facture de la boutique",
+      "mobileMoney": "Transaction Mobile Money",
+      "proofTitle": "Photographier le recu ou la capture Mobile Money",
+      "proofHint": "Envoi prive. Cachez votre code PIN, mot de passe, numero de piece et les donnees inutiles.",
+      "proofRequired": "Envoyez le recu de la boutique ou la capture Mobile Money pour un achat deja effectue.",
+      "purchaseAcknowledgement": "Je comprends que la boutique est le vendeur, que le prix final et la garantie viennent de la boutique et que toute recompense a partir de 1 000 FCFA depend de l'offre publiee et de la verification.",
+      "saveError": "Nous n'avons pas pu enregistrer l'achat. Reessayez ou contactez-nous sur WhatsApp.",
+      "whatsappReady": "Votre discussion WhatsApp est prete. Si vous avez choisi une photo, envoyez-la dans cette discussion.",
+      "proofUploadError": "L'achat est enregistre, mais l'envoi de la preuve n'est pas termine. Envoyez le recu ou la capture Mobile Money sur WhatsApp avec votre reference.",
       "name": "Votre nom",
       "phone": "Téléphone / WhatsApp",
       "product": "Produit ou service",
@@ -375,7 +396,16 @@
       "legalAnd": "et reconnais la",
       "privacy": "Notice de confidentialité",
       "preparing": "Préparation de votre demande...",
-      "submit": "Continuer sur WhatsApp"
+      "submit": "Continuer sur WhatsApp",
+      "submitPurchase": "Enregistrer la preuve d'achat"
+    },
+    "purchasePolicy": {
+      "title": "Avant d'acheter directement",
+      "point1": "La boutique partenaire reste le vendeur et doit fournir le recu, le prix final, la garantie et le service apres-vente.",
+      "point2": "Innovatech ne negocie pas dans cette option ; vous achetez directement apres avoir confirme les details avec la boutique.",
+      "point3": "Demandez a la boutique d'inscrire la reference Innovatech sur le recu ou la commande.",
+      "point4": "Apres le paiement, envoyez ici une photo claire du recu ou une capture de la transaction Mobile Money.",
+      "point5": "Un code de parrainage enregistre peut donner droit a une recompense a partir de 1 000 FCFA, ou davantage selon l'offre publiee. Si Innovatech negocie pour vous, cette demande n'est pas un parrainage client ; toute commission est payee par la boutique partenaire a Innovatech selon l'accord."
     },
     "trust": {
       "eyebrow": "Notre engagement",

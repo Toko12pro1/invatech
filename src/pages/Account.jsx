@@ -115,7 +115,7 @@ export default function Account() {
 
   const code = profile?.referral_code || localCode;
   const name = profile?.full_name || session?.user?.user_metadata?.full_name || "Innovatech member";
-  const referralLink = code ? `${window.location.origin}/consult?request=negotiate_purchase&ref=${encodeURIComponent(code)}` : `${window.location.origin}/consult?request=negotiate_purchase`;
+  const referralLink = code ? `${window.location.origin}/consult?request=purchase_trace&ref=${encodeURIComponent(code)}` : `${window.location.origin}/consult?request=purchase_trace`;
 
   return (
     <main>
@@ -134,7 +134,7 @@ export default function Account() {
                 <div className="account-welcome"><span className="account-avatar"><FaUserCircle /></span><div><span className="eyebrow">Member account</span><h2>Welcome, {name}</h2><p>Your account keeps your referral identity connected to your activity.</p></div></div>
                 <div className="account-code-card">
                   <div><span className="voucher-label">Your referral code</span><strong>{code || "Preparing..."}</strong><small>Share this code when someone shops through Innovatech.</small></div>
-                  <div className="account-code-actions"><button className="btn btn--ghost" onClick={copyCode}><FaCopy /> {copied ? "Copied" : "Copy"}</button><a className="btn btn--primary" href={whatsappLink(`Ready to buy? Innovatech can negotiate with a partner store for free when you are ready to buy. Use my referral code ${code}: ${referralLink}`)} target="_blank" rel="noreferrer"><FaWhatsapp /> Share</a></div>
+                  <div className="account-code-actions"><button className="btn btn--ghost" onClick={copyCode}><FaCopy /> {copied ? "Copied" : "Copy"}</button><a className="btn btn--primary" href={whatsappLink(`Shop directly with a partner store and keep the purchase traceable. Use my Innovatech referral code ${code}: ${referralLink}`)} target="_blank" rel="noreferrer"><FaWhatsapp /> Share</a></div>
                 </div>
                 {message && <p className="seller-message seller-message--success"><FaCheckCircle /> {message}</p>}
                 <div className="account-detail-list"><div><span>Email</span><strong>{session.user.email}</strong></div><div><span>Phone</span><strong>{profile?.phone || session.user.user_metadata?.phone || "Add it when you contact us"}</strong></div></div>

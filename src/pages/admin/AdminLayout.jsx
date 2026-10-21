@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { FaBoxOpen, FaWifi, FaTicketAlt, FaSignOutAlt, FaExternalLinkAlt, FaStore, FaClipboardCheck } from "react-icons/fa";
+import { FaBoxOpen, FaWifi, FaTicketAlt, FaSignOutAlt, FaExternalLinkAlt, FaStore, FaClipboardCheck, FaReceipt } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import withNavigate from "../../utils/withNavigate";
 
@@ -32,6 +32,9 @@ class AdminLayout extends React.Component {
             </NavLink>
             <NavLink to="/admin/traceability" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
               <FaClipboardCheck /> Traceability
+            </NavLink>
+            <NavLink to="/admin/purchase-proofs" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+              <FaReceipt /> Purchase Proofs
             </NavLink>
             <NavLink to="/admin/wifi-packages" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
               <FaWifi /> WiFi Packages

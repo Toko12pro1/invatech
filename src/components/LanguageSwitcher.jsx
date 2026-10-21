@@ -10,8 +10,17 @@ class LanguageSwitcher extends React.Component {
   setLang(lang) {
     if (lang === this.props.i18n.resolvedLanguage) return;
     const scrollY = window.scrollY;
-    this.props.i18n.changeLanguage(lang);
-    window.requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: "auto" }));
+    const restoreScroll = () => {
+      window.scrollTo({ top: scrollY, left: 0, behavior: "auto" });
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: scrollY, left: 0, behavior: "auto" });
+      });
+    };
+
+    this.props.i18n.changeLanguage(lang).then(() => {
+      restoreScroll();
+      window.setTimeout(restoreScroll, 50);
+    });
   }
 
   render() {

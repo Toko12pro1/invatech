@@ -2,7 +2,7 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaClipboardCheck, FaMapMarkerAlt, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
+import { FaClipboardCheck, FaMapMarkerAlt, FaReceipt, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
 import Reveal from "./Reveal";
 import { whatsappLink } from "../data/marketplace";
 
@@ -20,6 +20,8 @@ class ProductCard extends React.Component {
       innovatech_stock: t("shop.product.traceLevels.innovatechStock"),
     };
     const verificationLabel = levelLabels[product.verificationLevel] || t("shop.product.traceLevels.pending");
+    const consultationType = product.isFastDealActive || product.negotiable ? "negotiate_purchase" : "product_check";
+    const consultationLink = `/consult?product=${encodeURIComponent(name)}&request=${consultationType}&seller=${encodeURIComponent(product.storeName)}`;
     const itemMessage = `Hi Innovatech, I would like help with this item.\n\nProduct: ${name}\nPrice shown: ${product.formatPrice()}\nStore: ${product.storeName}\nLocation: ${product.storeLocation}\n\nPlease confirm availability, help verify it or guide me on the best way to buy.`;
 
     return (
@@ -45,10 +47,10 @@ class ProductCard extends React.Component {
               <span className="product-card-verified"><FaShieldAlt aria-hidden="true" /> {verificationLabel}</span>
             </div>
             <span className="product-card-location">{product.storeLocation}</span>
-            <div className="product-card-consultant">
+            <Link className="product-card-consultant product-card-consultant--link" to={consultationLink}>
               <FaClipboardCheck aria-hidden="true" />
               <span>{product.isFastDealActive ? t("shop.product.fastDealHelp") : product.negotiable ? t("shop.product.negotiable") : t("shop.product.verifyBeforeBuy")}</span>
-            </div>
+            </Link>
             <details className="product-traceability">
               <summary><FaShieldAlt aria-hidden="true" /> {t("shop.product.traceability")}</summary>
               <div className="product-traceability-body">
@@ -62,6 +64,14 @@ class ProductCard extends React.Component {
                 </dl>
                 <small>{t("shop.product.traceabilityWarning")}</small>
               </div>
+            </details>
+            <details className="product-purchase-policy">
+              <summary><FaReceipt aria-hidden="true" /> {t("shop.product.beforeBuy")}</summary>
+              <ul>
+                <li>{t("shop.product.beforeBuyPoint1")}</li>
+                <li>{t("shop.product.beforeBuyPoint2")}</li>
+                <li>{t("shop.product.beforeBuyPoint3")}</li>
+              </ul>
             </details>
             <div className="product-price">
               <span>{product.formatPrice()}</span>
@@ -77,6 +87,9 @@ class ProductCard extends React.Component {
             >
               <FaWhatsapp aria-hidden="true" /> {t("shop.product.chat")}
             </a>
+            <Link className="product-purchase-link" to={`/consult?product=${encodeURIComponent(name)}&request=purchase_trace&seller=${encodeURIComponent(product.storeName)}`}>
+              <FaReceipt aria-hidden="true" /> {t("shop.product.trackPurchase")}
+            </Link>
             <Link className="product-consult-link" to={`/consult?product=${encodeURIComponent(name)}&request=negotiate_purchase&seller=${encodeURIComponent(product.storeName)}`}>
               <FaClipboardCheck aria-hidden="true" /> {t("shop.product.negotiate")}
             </Link>

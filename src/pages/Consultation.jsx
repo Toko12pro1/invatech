@@ -6,6 +6,7 @@ import {
   FaClipboardCheck,
   FaHandshake,
   FaLightbulb,
+  FaReceipt,
   FaShieldAlt,
   FaTools,
   FaWhatsapp,
@@ -31,6 +32,12 @@ const REQUEST_TYPES = [
     labelKey: "consultation.requestTypes.negotiatePurchase.label",
     descriptionKey: "consultation.requestTypes.negotiatePurchase.description",
     icon: FaHandshake,
+  },
+  {
+    id: "purchase_trace",
+    labelKey: "consultation.requestTypes.purchaseTrace.label",
+    descriptionKey: "consultation.requestTypes.purchaseTrace.description",
+    icon: FaReceipt,
   },
   {
     id: "repair_analysis",
@@ -59,7 +66,14 @@ const INITIAL_FORM = {
   legalAccepted: false,
   readyToBuy: false,
   referralCode: "",
+  purchaseStage: "before_purchase",
+  proofType: "store_receipt",
 };
+
+function makeTrackingReference() {
+  const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `INN-${new Date().getFullYear()}-${suffix}`;
+}
 
 export default function Consultation() {
   const { t } = useTranslation();
@@ -68,19 +82,23 @@ export default function Consultation() {
   const [saving, setSaving] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [photoName, setPhotoName] = useState("");
+  const [proofFile, setProofFile] = useState(null);
   const [saveNote, setSaveNote] = useState("");
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const product = params.get("product");
     const request = params.get("request");
     const referralCode = params.get("ref") || "";
-    if (product || request || referralCode) {
+    const stage = params.get("stage");
+    if (product || request || referralCode || stage) {
       setForm((current) => ({
         ...current,
         productName: product || current.productName,
         requestType: REQUEST_TYPES.some((item) => item.id === request) ? request : current.requestType,
         referralCode,
+        purchaseStage: stage === "already_bought" ? "already_bought" : current.purchaseStage,
       }));
     }
 
@@ -103,15 +121,26 @@ export default function Consultation() {
   function updateField(event) {
     const { name, value, type, checked } = event.target;
     setForm((current) => ({ ...current, [name]: type === "checkbox" ? checked : value }));
+    setFormError("");
   }
 
   async function submitRequest(event) {
     event.preventDefault();
+    const isPurchaseTrace = form.requestType === "purchase_trace";
+    if (isPurchaseTrace && form.purchaseStage === "already_bought" && !proofFile) {
+      setFormError(t("consultation.form.proofRequired"));
+      return;
+    }
     setSaving(true);
+    setFormError("");
 
     const selectedType = REQUEST_TYPES.find((item) => item.id === form.requestType);
     const legalAcceptedAt = new Date().toISOString();
     const isFreeNegotiation = form.requestType === "negotiate_purchase";
+    const referralCode = isFreeNegotiation ? null : form.referralCode.trim() || null;
+    const hasReferral = Boolean(referralCode);
+    const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const trackingReference = makeTrackingReference();
     const message = `Hi Innovatech, I would like an Innovatech Check.
 
 Request: ${selectedType ? t(selectedType.labelKey) : form.requestType}
@@ -122,17 +151,21 @@ Seller / store: ${form.sellerName || "Not specified"}
 City: ${form.city || "Not specified"}
 Link: ${form.productLink || "No link"}
 Details: ${form.notes || "I will explain in the chat."}
-Referral code: ${form.referralCode || "None"}
+Referral code: ${isFreeNegotiation ? "Not counted for negotiation" : form.referralCode || "None"}
 Photo: ${photoName ? `${photoName} (I will send it in this WhatsApp chat)` : "I will send a photo in this chat if needed."}
+Tracking reference: ${trackingReference}
 
 ${isFreeNegotiation
   ? "I am ready to buy if the store confirms availability and a final price. I understand that the negotiation is free, the store decides the final price and Innovatech does not guarantee a discount."
   : "Please confirm the consulting fee before starting. I understand that Innovatech will clearly say what was checked and will not claim to have bought or verified something it did not inspect."}
 I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_VERSION}.`;
 
-    window.open(whatsappLink(message), "_blank", "noopener,noreferrer");
+    if (!isPurchaseTrace) {
+      window.open(whatsappLink(message), "_blank", "noopener,noreferrer");
+    }
 
     const { error } = await supabase.from("consultation_requests").insert({
+      id: requestId,
       user_id: session?.user?.id || null,
       request_type: form.requestType,
       customer_name: form.name,
@@ -144,16 +177,49 @@ I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_V
       notes: form.notes || null,
       fee_acknowledged: isFreeNegotiation ? false : form.feeAcknowledged,
       ready_to_buy: isFreeNegotiation && form.readyToBuy,
-      referral_code: form.referralCode.trim() || null,
+      referral_code: referralCode,
+      tracking_reference: trackingReference,
       terms_version: LEGAL_VERSION,
       terms_accepted_at: legalAcceptedAt,
       privacy_accepted_at: legalAcceptedAt,
       status: "pending",
     });
 
+    if (error) {
+      setSaveNote(isPurchaseTrace ? t("consultation.form.saveError") : t("consultation.form.whatsappReady"));
+      setSubmitted(true);
+      setSaving(false);
+      return;
+    }
+
+    let proofError = null;
+    if (isPurchaseTrace && proofFile) {
+      const safeFileName = proofFile.name.toLowerCase().replace(/[^a-z0-9.]+/g, "-").replace(/^-|-$/g, "") || "purchase-proof";
+      const storagePath = `proofs/${requestId}/${Date.now()}-${safeFileName}`;
+      const upload = await supabase.storage.from("purchase-proofs").upload(storagePath, proofFile, {
+        cacheControl: "3600",
+        contentType: proofFile.type,
+        upsert: false,
+      });
+      proofError = upload.error;
+      if (!proofError) {
+        const proofInsert = await supabase.from("purchase_proofs").insert({
+          consultation_request_id: requestId,
+          user_id: session?.user?.id || null,
+          proof_type: form.proofType,
+          storage_path: storagePath,
+          original_filename: proofFile.name,
+          mime_type: proofFile.type,
+        });
+        proofError = proofInsert.error;
+      }
+    }
+
     setSaveNote(
-      error
-        ? "Your WhatsApp chat is ready. If you selected a photo, send it in that chat so we can review it."
+      proofError
+        ? t("consultation.form.proofUploadError")
+        : isPurchaseTrace
+          ? t(hasReferral ? "consultation.success.purchaseSaved" : "consultation.success.purchaseTracked", { reference: trackingReference })
         : isFreeNegotiation
           ? "Your free negotiation request is recorded. We will contact the store and return with its final price and availability."
           : "Your request is recorded, and the WhatsApp chat is ready for the next details."
@@ -196,6 +262,19 @@ I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_V
                     })}
                   </div>
 
+                  {form.requestType === "purchase_trace" && (
+                    <div className="purchase-policy-callout">
+                      <strong>{t("consultation.purchasePolicy.title")}</strong>
+                      <ul>
+                        <li>{t("consultation.purchasePolicy.point1")}</li>
+                        <li>{t("consultation.purchasePolicy.point2")}</li>
+                        <li>{t("consultation.purchasePolicy.point3")}</li>
+                        <li>{t("consultation.purchasePolicy.point4")}</li>
+                        <li>{t("consultation.purchasePolicy.point5")}</li>
+                      </ul>
+                    </div>
+                  )}
+
                   <div className="consultation-form-grid">
                     <div className="form-row"><label htmlFor="consult-name">{t("consultation.form.name")}</label><input id="consult-name" name="name" value={form.name} onChange={updateField} required /></div>
                     <div className="form-row"><label htmlFor="consult-phone">{t("consultation.form.phone")}</label><input id="consult-phone" name="phone" value={form.phone} onChange={updateField} placeholder="+237 ..." required /></div>
@@ -211,14 +290,30 @@ I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_V
                   <div className="form-row"><label htmlFor="consult-referral">{t("consultation.form.referral")}</label><input id="consult-referral" name="referralCode" value={form.referralCode} onChange={updateField} placeholder="e.g. INN-ABC123" /></div>
                   <div className="form-row"><label htmlFor="consult-notes">{t("consultation.form.notes")}</label><textarea id="consult-notes" name="notes" value={form.notes} onChange={updateField} rows="4" placeholder={t("consultation.form.notesPlaceholder")} /></div>
 
-                  <label className="consultation-photo-field" htmlFor="consult-photo"><FaClipboardCheck aria-hidden="true" /><span><strong>{photoName || t("consultation.form.photoTitle")}</strong><small>{t("consultation.form.photoHint")}</small></span><input id="consult-photo" type="file" accept="image/*" capture="environment" onChange={(event) => setPhotoName(event.target.files?.[0]?.name || "")} /></label>
+                  {form.requestType === "purchase_trace" && (
+                    <>
+                      <div className="consultation-purchase-options">
+                        <span className="consultation-small-note">{t("consultation.form.purchaseStageLabel")}</span>
+                        <label><input name="purchaseStage" type="radio" value="before_purchase" checked={form.purchaseStage === "before_purchase"} onChange={updateField} /> {t("consultation.form.beforePurchase")}</label>
+                        <label><input name="purchaseStage" type="radio" value="already_bought" checked={form.purchaseStage === "already_bought"} onChange={updateField} /> {t("consultation.form.alreadyBought")}</label>
+                      </div>
+                      <div className="consultation-form-grid">
+                        <div className="form-row"><label htmlFor="consult-proof-type">{t("consultation.form.proofType")}</label><select id="consult-proof-type" name="proofType" value={form.proofType} onChange={updateField}><option value="store_receipt">{t("consultation.form.storeReceipt")}</option><option value="mobile_money">{t("consultation.form.mobileMoney")}</option></select></div>
+                        <label className="consultation-photo-field" htmlFor="consult-photo"><FaReceipt aria-hidden="true" /><span><strong>{photoName || t("consultation.form.proofTitle")}</strong><small>{t("consultation.form.proofHint")}</small></span><input id="consult-photo" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment" onChange={(event) => { const file = event.target.files?.[0] || null; setProofFile(file); setPhotoName(file?.name || ""); setFormError(""); }} /></label>
+                      </div>
+                    </>
+                  )}
+                  {form.requestType !== "purchase_trace" && <label className="consultation-photo-field" htmlFor="consult-photo"><FaClipboardCheck aria-hidden="true" /><span><strong>{photoName || t("consultation.form.photoTitle")}</strong><small>{t("consultation.form.photoHint")}</small></span><input id="consult-photo" type="file" accept="image/*" capture="environment" onChange={(event) => setPhotoName(event.target.files?.[0]?.name || "")} /></label>}
                   {form.requestType === "negotiate_purchase" ? (
                     <label className="consultation-fee-check"><input name="readyToBuy" type="checkbox" checked={form.readyToBuy} onChange={updateField} required /><span>{t("consultation.form.readyToBuy")}</span></label>
                   ) : (
-                    <label className="consultation-fee-check"><input name="feeAcknowledged" type="checkbox" checked={form.feeAcknowledged} onChange={updateField} required /><span>{t("consultation.form.feeAcknowledged")}</span></label>
+                    form.requestType === "purchase_trace"
+                      ? <label className="consultation-fee-check"><input name="readyToBuy" type="checkbox" checked={form.readyToBuy} onChange={updateField} required /><span>{t("consultation.form.purchaseAcknowledgement")}</span></label>
+                      : <label className="consultation-fee-check"><input name="feeAcknowledged" type="checkbox" checked={form.feeAcknowledged} onChange={updateField} required /><span>{t("consultation.form.feeAcknowledged")}</span></label>
                   )}
-                  <label className="legal-consent-check"><input name="legalAccepted" type="checkbox" checked={form.legalAccepted} onChange={updateField} required /><span>{t("consultation.form.legalBefore")} <Link to="/terms">{t("consultation.form.terms")}</Link> {t("consultation.form.legalAnd")} <Link to="/privacy">{t("consultation.form.privacy")}</Link>.</span></label>
-                  <button type="submit" className="btn btn--primary" disabled={saving}><FaWhatsapp aria-hidden="true" /> {saving ? t("consultation.form.preparing") : t("consultation.form.submit")}</button>
+                  {formError && <p className="form-error">{formError}</p>}
+                  <label className="legal-consent-check"><input name="legalAccepted" type="checkbox" checked={form.legalAccepted} onChange={updateField} required /><span>{t("consultation.form.legalBefore")} <Link to="/terms#purchase-tracking">{t("consultation.form.terms")}</Link> {t("consultation.form.legalAnd")} <Link to="/privacy">{t("consultation.form.privacy")}</Link>.</span></label>
+                  <button type="submit" className="btn btn--primary" disabled={saving}>{form.requestType === "purchase_trace" ? <FaReceipt aria-hidden="true" /> : <FaWhatsapp aria-hidden="true" />} {saving ? t("consultation.form.preparing") : form.requestType === "purchase_trace" ? t("consultation.form.submitPurchase") : t("consultation.form.submit")}</button>
                 </form>
               )}
             </Reveal>

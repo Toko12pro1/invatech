@@ -21,6 +21,7 @@ export default function Privacy() {
             <ul>
               <li>Contact details: name, phone/WhatsApp number and email.</li>
               <li>Request details: city, product or repair information, seller name, links, photos and messages you choose to send.</li>
+              <li>Purchase evidence: a receipt/invoice photo or Mobile Money transaction screenshot that you choose to upload for traceability and reward review.</li>
               <li>Account details: email, password authentication data, name, phone and referral code.</li>
               <li>Service records: consultation status, agreed fee, traceability reference, repair or software project information and support history.</li>
               <li>Technical information supplied by hosting, authentication and security services, such as device/browser information and logs.</li>
@@ -32,6 +33,7 @@ export default function Privacy() {
               <li>To answer questions, open a WhatsApp conversation and provide requested consulting, repair, software or marketplace support.</li>
               <li>To create and secure an optional account and connect a referral code to the correct person.</li>
               <li>To review store and product listings, maintain traceability and handle complaints, refunds or disputes.</li>
+              <li>To compare a submitted receipt or Mobile Money proof with the tracked store, product and referral record before considering a reward.</li>
               <li>To send service messages about a request, order, account or referral reward.</li>
               <li>To protect the website, prevent fraud and meet legal or accounting obligations.</li>
             </ul>
@@ -41,7 +43,7 @@ export default function Privacy() {
             <p>We process information only for a stated service purpose, with your consent where required, to perform a requested contract or pre-contract step, to comply with a legal obligation, or to protect our legitimate service and security interests where permitted. You may withdraw consent for optional processing; withdrawal does not undo processing already carried out lawfully.</p>
 
             <h2>5. Sharing and service providers</h2>
-            <p>We share only what is needed with the named partner store, our authorised team members and service providers that help us host the website, authenticate accounts, store requests, send email or open WhatsApp. The current website uses Supabase for database/authentication and Vercel for hosting. WhatsApp and other providers process information under their own terms and privacy notices. We may disclose information where required by a lawful request, to protect people, or to investigate fraud.</p>
+            <p>We share only what is needed with the named partner store, our authorised team members and service providers that help us host the website, authenticate accounts, store requests, send email or open WhatsApp. A proof document is private and is not displayed publicly; access is limited to the people who need it for verification, support, accounting or dispute handling. The current website uses Supabase for database/authentication and Vercel for hosting. WhatsApp and other providers process information under their own terms and privacy notices. We may disclose information where required by a lawful request, to protect people, or to investigate fraud.</p>
 
             <h2>6. Retention and security</h2>
             <p>We keep information only for as long as necessary for the stated purpose, a live customer relationship, accounting, dispute handling or a legal requirement. We use access controls, Row Level Security, limited staff access and reasonable technical measures. No online service can promise absolute security; please contact us promptly if you believe your account or conversation has been exposed.</p>
