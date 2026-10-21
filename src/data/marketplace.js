@@ -1,8 +1,19 @@
-import Product from "../models/Product";
+﻿import Product from "../models/Product";
 
 export const WHATSAPP_NUMBER = "237651162373";
 
 export const PARTNER_STORES = [
+  {
+    id: "etech-store",
+    name: "Etech Store",
+    category: "Smartphones, laptops & accessories",
+    location: "Biyem-Assi, Yaoundé, Centre Region, Cameroon",
+    responseTime: "Contact Innovatech for availability",
+    description: "Etech Store is an electronics store based in Biyem-Assi, Yaoundé, Cameroon. We specialize in smartphones, laptops and electronic accessories. Our goal is to help customers find quality devices at affordable prices, with friendly service and convenient communication through WhatsApp.",
+    image: "/images/etech-store.png",
+    accent: "navy",
+    whatsapp: "2376XXXXXXXX",
+  },
   {
     id: "mobi-tech-centre",
     name: "MobiTech Centre",
@@ -185,6 +196,8 @@ export function getDemoProducts() {
   return DEMO_PRODUCTS.map(toMarketplaceProduct);
 }
 
-export function whatsappLink(message = "Hi Innovatech, I would like to know more.") {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+export function whatsappLink(message = "Hi Innovatech, I would like to know more.", number = WHATSAPP_NUMBER) {
+  const digits = String(number || "").replace(/\D/g, "");
+  const recipient = digits.length >= 10 && !String(number).includes("X") ? digits : WHATSAPP_NUMBER;
+  return `https://wa.me/${recipient}?text=${encodeURIComponent(message)}`;
 }

@@ -259,6 +259,12 @@
       "results": "résultats",
       "hint": "Choisissez une boutique, un lieu ou un budget pour affiner votre recherche."
     },
+    "help": {
+      "title": "Besoin d'aide avant d'acheter ?",
+      "subtitle": "Envoyez-nous le produit, le prix ou la boutique : nous pouvons vérifier, négocier ou vous conseiller.",
+      "button": "Demander l'aide d'Innovatech",
+      "whatsapp": "Discuter sur WhatsApp"
+    },
     "cta": {
       "title": "Vous cherchez quelque chose de précis, ou souhaitez échanger un appareil ?",
       "subtitle": "Écrivez-nous sur WhatsApp — nous nous réapprovisionnons régulièrement et pouvons sourcer sur demande."

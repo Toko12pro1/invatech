@@ -259,6 +259,12 @@
       "results": "results",
       "hint": "Choose a store, area or budget to narrow your search."
     },
+    "help": {
+      "title": "Want us to help before you buy?",
+      "subtitle": "Send us the product, price or store and we can check it, negotiate or guide you.",
+      "button": "Ask Innovatech to help",
+      "whatsapp": "Chat on WhatsApp"
+    },
     "cta": {
       "title": "Looking for something specific, or want to trade in a device?",
       "subtitle": "Message us on WhatsApp — we restock regularly and can source on request."

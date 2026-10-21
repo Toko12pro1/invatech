@@ -5,6 +5,7 @@ import {
   FaArrowRight,
   FaBolt,
   FaCheckCircle,
+  FaClipboardCheck,
   FaSearch,
   FaShieldAlt,
   FaStore,
@@ -231,6 +232,20 @@ class Shop extends BasePage {
               <p className="shop-filter-summary">
                 <strong>{filtered.length}</strong> {filtered.length === 1 ? t("shop.filters.result") : t("shop.filters.results")} · {t("shop.filters.hint")}
               </p>
+            </Reveal>
+
+            <Reveal className="shop-help-panel">
+              <div className="shop-help-copy">
+                <span className="shop-help-icon"><FaClipboardCheck aria-hidden="true" /></span>
+                <div>
+                  <strong>{t("shop.help.title")}</strong>
+                  <p>{t("shop.help.subtitle")}</p>
+                </div>
+              </div>
+              <div className="shop-help-actions">
+                <Link to="/consult" className="btn btn--primary">{t("shop.help.button")} <FaArrowRight /></Link>
+                <a href={whatsappLink("Hi Innovatech, I need help choosing or checking a product.")} target="_blank" rel="noreferrer" className="btn btn--ghost"><FaWhatsapp /> {t("shop.help.whatsapp")}</a>
+              </div>
             </Reveal>
 
             {loading ? (
