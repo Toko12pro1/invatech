@@ -15,8 +15,13 @@ export default class Product {
     this.storeName = row.store_name || "Innovatech Verified Hub";
     this.storeLocation = row.store_location || "Yaoundé, Cameroon";
     this.verificationStatus = row.verification_status || "verified";
+    this.verificationLevel = row.verification_level || (this.verificationStatus === "verified" ? "store_reviewed" : "seller_listed");
+    this.verificationScope = Array.isArray(row.verification_scope) ? row.verification_scope : [];
+    this.verifiedBy = row.verified_by || null;
+    this.verificationReference = row.verification_reference || null;
+    this.lastCheckedAt = row.last_checked_at || row.verified_at || null;
     this.negotiable = Boolean(row.negotiable);
-    this.verificationNote = row.verification_note || "Checked by Innovatech";
+    this.verificationNote = row.verification_note || null;
     this.fastDeal = Boolean(row.fast_deal);
     this.fastDealNote = row.fast_deal_note || "Seller needs a quick sale";
     this.fastDealExpiresAt = row.fast_deal_expires_at || null;
@@ -59,6 +64,11 @@ export default class Product {
       store_name: this.storeName,
       store_location: this.storeLocation,
       verification_status: this.verificationStatus,
+      verification_level: this.verificationLevel,
+      verification_scope: this.verificationScope,
+      verified_by: this.verifiedBy,
+      verification_reference: this.verificationReference,
+      last_checked_at: this.lastCheckedAt,
       negotiable: this.negotiable,
       verification_note: this.verificationNote,
       fast_deal: this.fastDeal,

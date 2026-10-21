@@ -6,6 +6,8 @@ import Reveal from "../components/Reveal";
 import { supabase } from "../lib/supabaseClient";
 import { whatsappLink } from "../data/marketplace";
 
+const LEGAL_VERSION = "2026-10-21";
+
 function makeLocalCode() {
   return `INN-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 }
@@ -14,7 +16,7 @@ export default function Account() {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [mode, setMode] = useState("signup");
-  const [form, setForm] = useState({ fullName: "", phone: "", email: "", password: "" });
+  const [form, setForm] = useState({ fullName: "", phone: "", email: "", password: "", legalAccepted: false });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
@@ -66,10 +68,15 @@ export default function Account() {
     setError("");
     setMessage("");
     if (mode === "signup") {
+      if (!form.legalAccepted) {
+        setError("Please accept the Terms of Service and Privacy Notice to create an account.");
+        setSubmitting(false);
+        return;
+      }
       const { data, error: signupError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
-        options: { data: { full_name: form.fullName, phone: form.phone } },
+        options: { data: { full_name: form.fullName, phone: form.phone, terms_version: LEGAL_VERSION, legal_accepted_at: new Date().toISOString() } },
       });
       if (signupError) {
         setError(signupError.message);
@@ -108,6 +115,7 @@ export default function Account() {
 
   const code = profile?.referral_code || localCode;
   const name = profile?.full_name || session?.user?.user_metadata?.full_name || "Innovatech member";
+  const referralLink = code ? `${window.location.origin}/consult?request=negotiate_purchase&ref=${encodeURIComponent(code)}` : `${window.location.origin}/consult?request=negotiate_purchase`;
 
   return (
     <main>
@@ -126,7 +134,7 @@ export default function Account() {
                 <div className="account-welcome"><span className="account-avatar"><FaUserCircle /></span><div><span className="eyebrow">Member account</span><h2>Welcome, {name}</h2><p>Your account keeps your referral identity connected to your activity.</p></div></div>
                 <div className="account-code-card">
                   <div><span className="voucher-label">Your referral code</span><strong>{code || "Preparing..."}</strong><small>Share this code when someone shops through Innovatech.</small></div>
-                  <div className="account-code-actions"><button className="btn btn--ghost" onClick={copyCode}><FaCopy /> {copied ? "Copied" : "Copy"}</button><a className="btn btn--primary" href={whatsappLink(`Join me on Innovatech. Use my referral code ${code} when you shop from a verified store.`)} target="_blank" rel="noreferrer"><FaWhatsapp /> Share</a></div>
+                  <div className="account-code-actions"><button className="btn btn--ghost" onClick={copyCode}><FaCopy /> {copied ? "Copied" : "Copy"}</button><a className="btn btn--primary" href={whatsappLink(`Ready to buy? Innovatech can negotiate with a partner store for free when you are ready to buy. Use my referral code ${code}: ${referralLink}`)} target="_blank" rel="noreferrer"><FaWhatsapp /> Share</a></div>
                 </div>
                 {message && <p className="seller-message seller-message--success"><FaCheckCircle /> {message}</p>}
                 <div className="account-detail-list"><div><span>Email</span><strong>{session.user.email}</strong></div><div><span>Phone</span><strong>{profile?.phone || session.user.user_metadata?.phone || "Add it when you contact us"}</strong></div></div>
@@ -145,6 +153,7 @@ export default function Account() {
                   {mode === "signup" && <><div className="form-row"><label htmlFor="account-full-name">Full name</label><input id="account-full-name" name="fullName" value={form.fullName} onChange={updateField} required /></div><div className="form-row"><label htmlFor="account-phone">Phone / WhatsApp</label><input id="account-phone" name="phone" value={form.phone} onChange={updateField} placeholder="+237 ..." required /></div></>}
                   <div className="form-row"><label htmlFor="account-email">Email</label><input id="account-email" name="email" type="email" value={form.email} onChange={updateField} required /></div>
                   <div className="form-row"><label htmlFor="account-password">Password</label><input id="account-password" name="password" type="password" minLength="6" value={form.password} onChange={updateField} required /></div>
+                  {mode === "signup" && <label className="legal-consent-check"><input name="legalAccepted" type="checkbox" checked={form.legalAccepted} onChange={(event) => setForm((current) => ({ ...current, legalAccepted: event.target.checked }))} required /><span>I agree to the <Link to="/terms">Terms of Service</Link> and acknowledge the <Link to="/privacy">Privacy Notice</Link>.</span></label>}
                   {error && <p className="form-error">{error}</p>}{message && <p className="seller-message seller-message--success"><FaCheckCircle /> {message}</p>}
                   <button type="submit" className="btn btn--primary" disabled={submitting}>{submitting ? "Please wait..." : mode === "signup" ? "Create account" : "Sign in"}</button>
                 </form>

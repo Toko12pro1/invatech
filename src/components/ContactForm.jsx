@@ -1,6 +1,7 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
 import { FaPaperPlane, FaEnvelope } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const WHATSAPP_NUMBER = "237651162373";
 const CONTACT_EMAIL = "hello@innovatech.cm";
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
   phone: "",
   serviceIndex: 0,
   message: "",
+  legalAccepted: false,
   errors: {},
 };
 
@@ -33,6 +35,7 @@ class ContactForm extends React.Component {
     if (!this.state.name.trim()) errors.name = t("contact.form.errors.name");
     if (!this.state.phone.trim()) errors.phone = t("contact.form.errors.phone");
     if (!this.state.message.trim()) errors.message = t("contact.form.errors.message");
+    if (!this.state.legalAccepted) errors.legalAccepted = "Please accept the Terms and Privacy Notice.";
     this.setState({ errors });
     return Object.keys(errors).length === 0;
   }
@@ -43,7 +46,8 @@ class ContactForm extends React.Component {
       `Hello Innovatech, my name is ${name}.\n` +
       `Contact: ${phone}\n` +
       `Service: ${serviceLabel}\n\n` +
-      `${message}`
+      `${message}\n\n` +
+      `I accepted the Innovatech Terms of Service and Privacy Notice.`
     );
   }
 
@@ -66,7 +70,7 @@ class ContactForm extends React.Component {
   }
 
   render() {
-    const { name, phone, serviceIndex, message, errors } = this.state;
+    const { name, phone, serviceIndex, message, legalAccepted, errors } = this.state;
     const { t } = this.props;
     const serviceOptions = t("contact.form.serviceOptions", { returnObjects: true });
 
@@ -77,6 +81,12 @@ class ContactForm extends React.Component {
           <input id="name" name="name" type="text" value={name} onChange={this.handleChange} placeholder={t("contact.form.namePlaceholder")} />
           {errors.name && <span className="form-error">{errors.name}</span>}
         </div>
+
+        <label className="legal-consent-check">
+          <input name="legalAccepted" type="checkbox" checked={legalAccepted} onChange={(event) => this.setState({ legalAccepted: event.target.checked })} />
+          <span>I agree to the <Link to="/terms">Terms of Service</Link> and acknowledge the <Link to="/privacy">Privacy Notice</Link>.</span>
+        </label>
+        {errors.legalAccepted && <span className="form-error">{errors.legalAccepted}</span>}
 
         <div className="form-row">
           <label htmlFor="phone">{t("contact.form.phone")}</label>

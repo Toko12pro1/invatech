@@ -12,25 +12,26 @@ import { supabase } from "../lib/supabaseClient";
 class PartnerForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "", phone: "", location: "", products: "", productName: "", price: "", submitted: false };
+    this.state = { name: "", phone: "", location: "", products: "", productName: "", price: "", legalAccepted: false, submitted: false };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    const { name, value, type, checked } = event.target;
+    this.setState({ [name]: type === "checkbox" ? checked : value });
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const { name, phone, location, products, productName, price } = this.state;
-    const message = `Hi Innovatech, I would like to list my store and a product on your marketplace.\n\nStore: ${name}\nPhone: ${phone}\nLocation: ${location}\nProduct to review: ${productName}\nExpected price: ${price} FCFA\nOther products: ${products}`;
+    const message = `Hi Innovatech, I would like to list my store and a product on your marketplace.\n\nStore: ${name}\nPhone: ${phone}\nLocation: ${location}\nProduct to review: ${productName}\nExpected price: ${price} FCFA\nOther products: ${products}\n\nI accepted the Innovatech Terms of Service and Privacy Notice.`;
     this.setState({ submitted: true });
     window.open(whatsappLink(message), "_blank", "noopener,noreferrer");
   }
 
   render() {
-    const { name, phone, location, products, productName, price, submitted } = this.state;
+    const { name, phone, location, products, productName, price, legalAccepted, submitted } = this.state;
     if (submitted) {
       return (
         <div className="partner-form-success">
@@ -69,6 +70,7 @@ class PartnerForm extends React.Component {
           <textarea id="partner-products" name="products" value={products} onChange={this.handleChange} rows="3" placeholder="Phones, laptops, accessories..." />
         </div>
         <button type="submit" className="btn btn--primary"><FaWhatsapp /> Submit product for review</button>
+        <label className="legal-consent-check"><input name="legalAccepted" type="checkbox" checked={legalAccepted} onChange={this.handleChange} required /><span>I agree to the <Link to="/terms">Terms of Service</Link> and acknowledge the <Link to="/privacy">Privacy Notice</Link>.</span></label>
       </form>
     );
   }

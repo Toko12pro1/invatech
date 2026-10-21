@@ -16,6 +16,8 @@ import SectionHeading from "../components/SectionHeading";
 import { whatsappLink } from "../data/marketplace";
 import { supabase } from "../lib/supabaseClient";
 
+const LEGAL_VERSION = "2026-10-21";
+
 const REQUEST_TYPES = [
   {
     id: "product_check",
@@ -25,8 +27,8 @@ const REQUEST_TYPES = [
   },
   {
     id: "negotiate_purchase",
-    label: "Buy or bargain for me",
-    description: "We contact the seller and help you reach a fair price.",
+    label: "Free negotiation (ready to buy)",
+    description: "We contact the store at no consulting fee if you are ready to buy.",
     icon: FaHandshake,
   },
   {
@@ -53,6 +55,9 @@ const INITIAL_FORM = {
   city: "Yaoundé",
   notes: "",
   feeAcknowledged: false,
+  legalAccepted: false,
+  readyToBuy: false,
+  referralCode: "",
 };
 
 export default function Consultation() {
@@ -64,8 +69,18 @@ export default function Consultation() {
   const [saveNote, setSaveNote] = useState("");
 
   useEffect(() => {
-    const product = new URLSearchParams(window.location.search).get("product");
-    if (product) setForm((current) => ({ ...current, productName: product }));
+    const params = new URLSearchParams(window.location.search);
+    const product = params.get("product");
+    const request = params.get("request");
+    const referralCode = params.get("ref") || "";
+    if (product || request || referralCode) {
+      setForm((current) => ({
+        ...current,
+        productName: product || current.productName,
+        requestType: REQUEST_TYPES.some((item) => item.id === request) ? request : current.requestType,
+        referralCode,
+      }));
+    }
 
     let active = true;
     supabase.auth.getSession().then(({ data }) => {
@@ -93,6 +108,8 @@ export default function Consultation() {
     setSaving(true);
 
     const selectedType = REQUEST_TYPES.find((item) => item.id === form.requestType);
+    const legalAcceptedAt = new Date().toISOString();
+    const isFreeNegotiation = form.requestType === "negotiate_purchase";
     const message = `Hi Innovatech, I would like an Innovatech Check.
 
 Request: ${selectedType?.label || form.requestType}
@@ -103,11 +120,14 @@ Seller / store: ${form.sellerName || "Not specified"}
 City: ${form.city || "Not specified"}
 Link: ${form.productLink || "No link"}
 Details: ${form.notes || "I will explain in the chat."}
+Referral code: ${form.referralCode || "None"}
 Photo: ${photoName ? `${photoName} (I will send it in this WhatsApp chat)` : "I will send a photo in this chat if needed."}
 
-Please confirm the consulting fee before starting. I understand that Innovatech will clearly say what was checked and will not claim to have bought or verified something it did not inspect.`;
+${isFreeNegotiation
+  ? "I am ready to buy if the store confirms availability and a final price. I understand that the negotiation is free, the store decides the final price and Innovatech does not guarantee a discount."
+  : "Please confirm the consulting fee before starting. I understand that Innovatech will clearly say what was checked and will not claim to have bought or verified something it did not inspect."}
+I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_VERSION}.`;
 
-    // Open WhatsApp during the button action so mobile browsers do not block it.
     window.open(whatsappLink(message), "_blank", "noopener,noreferrer");
 
     const { error } = await supabase.from("consultation_requests").insert({
@@ -120,14 +140,21 @@ Please confirm the consulting fee before starting. I understand that Innovatech 
       seller_name: form.sellerName || null,
       city: form.city || null,
       notes: form.notes || null,
-      fee_acknowledged: form.feeAcknowledged,
+      fee_acknowledged: isFreeNegotiation ? false : form.feeAcknowledged,
+      ready_to_buy: isFreeNegotiation && form.readyToBuy,
+      referral_code: form.referralCode.trim() || null,
+      terms_version: LEGAL_VERSION,
+      terms_accepted_at: legalAcceptedAt,
+      privacy_accepted_at: legalAcceptedAt,
       status: "pending",
     });
 
     setSaveNote(
       error
         ? "Your WhatsApp chat is ready. If you selected a photo, send it in that chat so we can review it."
-        : "Your request is recorded, and the WhatsApp chat is ready for the next details."
+        : isFreeNegotiation
+          ? "Your free negotiation request is recorded. We will contact the store and return with its final price and availability."
+          : "Your request is recorded, and the WhatsApp chat is ready for the next details."
     );
     setSubmitted(true);
     setSaving(false);
@@ -135,21 +162,10 @@ Please confirm the consulting fee before starting. I understand that Innovatech 
 
   return (
     <main>
-      <PageHero
-        image="/images/hero-services.jpg"
-        eyebrow="Innovatech Check"
-        title="Get a second opinion before you spend."
-        subtitle="Ask us to check a product, negotiate for you, analyse a repair or guide you through a technology decision."
-      />
-
+      <PageHero image="/images/hero-services.jpg" eyebrow="Innovatech Check" title="Get a second opinion before you spend." subtitle="Ask us to check a product, negotiate for you, analyse a repair or guide you through a technology decision." />
       <section className="section consultation-section">
         <div className="container">
-          <SectionHeading
-            eyebrow="One clear process"
-            title="Tell us what you need help with."
-            subtitle="Choose a service, share the basics and continue the conversation on WhatsApp. Photos can be sent there after you submit."
-          />
-
+          <SectionHeading eyebrow="One clear process" title="Tell us what you need help with." subtitle="Choose a service, share the basics and continue the conversation on WhatsApp. Photos can be sent there after you submit." />
           <div className="consultation-grid">
             <Reveal className="consultation-form-card">
               {submitted ? (
@@ -158,7 +174,7 @@ Please confirm the consulting fee before starting. I understand that Innovatech 
                   <span className="eyebrow">Request started</span>
                   <h2>WhatsApp is ready.</h2>
                   <p>{saveNote}</p>
-                  <p className="consultation-small-note">We will confirm the fee and the exact scope before any paid analysis or negotiation begins.</p>
+                  <p className="consultation-small-note">We confirm the store's final price before you commit to the purchase. Paid analysis or consulting starts only after the fee and scope are agreed.</p>
                   <div className="form-actions">
                     <Link to="/shop" className="btn btn--secondary">Continue shopping <FaArrowRight /></Link>
                     <button className="btn btn--ghost" onClick={() => { setSubmitted(false); setForm(INITIAL_FORM); setPhotoName(""); }}>Start another request</button>
@@ -169,73 +185,33 @@ Please confirm the consulting fee before starting. I understand that Innovatech 
                   <div className="consultation-type-grid">
                     {REQUEST_TYPES.map((type) => {
                       const Icon = type.icon;
-                      return (
-                        <button
-                          type="button"
-                          key={type.id}
-                          className={`consultation-type ${form.requestType === type.id ? "consultation-type--active" : ""}`}
-                          onClick={() => setForm((current) => ({ ...current, requestType: type.id }))}
-                        >
-                          <Icon aria-hidden="true" />
-                          <strong>{type.label}</strong>
-                          <span>{type.description}</span>
-                        </button>
-                      );
+                      return <button type="button" key={type.id} className={`consultation-type ${form.requestType === type.id ? "consultation-type--active" : ""}`} onClick={() => setForm((current) => ({ ...current, requestType: type.id }))}><Icon aria-hidden="true" /><strong>{type.label}</strong><span>{type.description}</span></button>;
                     })}
                   </div>
 
                   <div className="consultation-form-grid">
-                    <div className="form-row">
-                      <label htmlFor="consult-name">Your name</label>
-                      <input id="consult-name" name="name" value={form.name} onChange={updateField} required />
-                    </div>
-                    <div className="form-row">
-                      <label htmlFor="consult-phone">Phone / WhatsApp</label>
-                      <input id="consult-phone" name="phone" value={form.phone} onChange={updateField} placeholder="+237 ..." required />
-                    </div>
+                    <div className="form-row"><label htmlFor="consult-name">Your name</label><input id="consult-name" name="name" value={form.name} onChange={updateField} required /></div>
+                    <div className="form-row"><label htmlFor="consult-phone">Phone / WhatsApp</label><input id="consult-phone" name="phone" value={form.phone} onChange={updateField} placeholder="+237 ..." required /></div>
                   </div>
-
                   <div className="consultation-form-grid">
-                    <div className="form-row">
-                      <label htmlFor="consult-product">Product or service</label>
-                      <input id="consult-product" name="productName" value={form.productName} onChange={updateField} placeholder="e.g. iPhone 13 Pro" />
-                    </div>
-                    <div className="form-row">
-                      <label htmlFor="consult-city">City / area</label>
-                      <input id="consult-city" name="city" value={form.city} onChange={updateField} placeholder="e.g. Yaoundé" />
-                    </div>
+                    <div className="form-row"><label htmlFor="consult-product">Product or service</label><input id="consult-product" name="productName" value={form.productName} onChange={updateField} placeholder="e.g. iPhone 13 Pro" /></div>
+                    <div className="form-row"><label htmlFor="consult-city">City / area</label><input id="consult-city" name="city" value={form.city} onChange={updateField} placeholder="e.g. Yaoundé" /></div>
                   </div>
-
                   <div className="consultation-form-grid">
-                    <div className="form-row">
-                      <label htmlFor="consult-seller">Seller or store (optional)</label>
-                      <input id="consult-seller" name="sellerName" value={form.sellerName} onChange={updateField} placeholder="Name or marketplace link" />
-                    </div>
-                    <div className="form-row">
-                      <label htmlFor="consult-link">Product link (optional)</label>
-                      <input id="consult-link" name="productLink" type="url" value={form.productLink} onChange={updateField} placeholder="https://..." />
-                    </div>
+                    <div className="form-row"><label htmlFor="consult-seller">Seller or store (optional)</label><input id="consult-seller" name="sellerName" value={form.sellerName} onChange={updateField} placeholder="Name or marketplace link" /></div>
+                    <div className="form-row"><label htmlFor="consult-link">Product link (optional)</label><input id="consult-link" name="productLink" type="url" value={form.productLink} onChange={updateField} placeholder="https://..." /></div>
                   </div>
+                  <div className="form-row"><label htmlFor="consult-referral">Referral code (optional)</label><input id="consult-referral" name="referralCode" value={form.referralCode} onChange={updateField} placeholder="e.g. INN-ABC123" /></div>
+                  <div className="form-row"><label htmlFor="consult-notes">What should we check or negotiate?</label><textarea id="consult-notes" name="notes" value={form.notes} onChange={updateField} rows="4" placeholder="Tell us the price, the problem, your budget or anything you already know." /></div>
 
-                  <div className="form-row">
-                    <label htmlFor="consult-notes">What should we check or negotiate?</label>
-                    <textarea id="consult-notes" name="notes" value={form.notes} onChange={updateField} rows="4" placeholder="Tell us the price, the problem, your budget or anything you already know." />
-                  </div>
-
-                  <label className="consultation-photo-field" htmlFor="consult-photo">
-                    <FaClipboardCheck aria-hidden="true" />
-                    <span><strong>{photoName || "Have a photo? Select it from your phone"}</strong><small>We do not upload it here; send the photo in the WhatsApp chat that opens next.</small></span>
-                    <input id="consult-photo" type="file" accept="image/*" capture="environment" onChange={(event) => setPhotoName(event.target.files?.[0]?.name || "")} />
-                  </label>
-
-                  <label className="consultation-fee-check">
-                    <input name="feeAcknowledged" type="checkbox" checked={form.feeAcknowledged} onChange={updateField} required />
-                    <span>I understand that the consulting fee is confirmed with me before work starts.</span>
-                  </label>
-
-                  <button type="submit" className="btn btn--primary" disabled={saving}>
-                    <FaWhatsapp aria-hidden="true" /> {saving ? "Preparing your request..." : "Continue on WhatsApp"}
-                  </button>
+                  <label className="consultation-photo-field" htmlFor="consult-photo"><FaClipboardCheck aria-hidden="true" /><span><strong>{photoName || "Have a photo? Select it from your phone"}</strong><small>We do not upload it here; send the photo in the WhatsApp chat that opens next.</small></span><input id="consult-photo" type="file" accept="image/*" capture="environment" onChange={(event) => setPhotoName(event.target.files?.[0]?.name || "")} /></label>
+                  {form.requestType === "negotiate_purchase" ? (
+                    <label className="consultation-fee-check"><input name="readyToBuy" type="checkbox" checked={form.readyToBuy} onChange={updateField} required /><span>I am ready to buy if the store confirms availability and the final price. The negotiation is free; the purchase price is decided by the store.</span></label>
+                  ) : (
+                    <label className="consultation-fee-check"><input name="feeAcknowledged" type="checkbox" checked={form.feeAcknowledged} onChange={updateField} required /><span>I understand that the consulting fee is confirmed with me before work starts.</span></label>
+                  )}
+                  <label className="legal-consent-check"><input name="legalAccepted" type="checkbox" checked={form.legalAccepted} onChange={updateField} required /><span>I agree to the <Link to="/terms">Terms of Service</Link> and acknowledge the <Link to="/privacy">Privacy Notice</Link>.</span></label>
+                  <button type="submit" className="btn btn--primary" disabled={saving}><FaWhatsapp aria-hidden="true" /> {saving ? "Preparing your request..." : "Continue on WhatsApp"}</button>
                 </form>
               )}
             </Reveal>
@@ -244,14 +220,9 @@ Please confirm the consulting fee before starting. I understand that Innovatech 
               <span className="consultation-trust-icon"><FaShieldAlt aria-hidden="true" /></span>
               <span className="eyebrow">Our promise</span>
               <h2>Honest help, not a fake guarantee.</h2>
-              <p>We may charge for our time and analysis. That fee is discussed first, so you know exactly what you are paying for.</p>
-              <ul className="checklist">
-                <li>We say what we checked and what we could not check.</li>
-                <li>We do not pretend to own or have tested a product.</li>
-                <li>We disclose the next step before you commit money.</li>
-                <li>For repairs, a final guarantee comes only after physical inspection.</li>
-              </ul>
-              <div className="consultation-trust-note"><FaWhatsapp aria-hidden="true" /><span>We are building our reputation through transparent advice and accountable conversations.</span></div>
+              <p>Ready-to-buy negotiation is free. Verification, repair analysis and broader consulting fees are discussed first, so you know exactly what you are paying for.</p>
+              <ul className="checklist"><li>We say what we checked and what we could not check.</li><li>We do not pretend to own or have tested a product.</li><li>We disclose the next step before you commit money.</li><li>For repairs, a final guarantee comes only after physical inspection.</li></ul>
+              <div className="consultation-trust-note"><FaWhatsapp aria-hidden="true" /><span>The store decides the final price. We report it clearly and keep the referral connected to the confirmed sale.</span></div>
             </Reveal>
           </div>
         </div>

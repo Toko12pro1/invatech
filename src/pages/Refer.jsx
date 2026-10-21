@@ -61,8 +61,11 @@ export default function Refer() {
     }
   }
 
+  const negotiationLink = code
+    ? `${window.location.origin}/consult?request=negotiate_purchase&ref=${encodeURIComponent(code)}`
+    : `${window.location.origin}/consult?request=negotiate_purchase`;
   const shareMessage = code
-    ? `Join me on Innovatech Marketplace. Use my referral code ${code} when you shop from a verified partner store.`
+    ? `Ready to buy a product? Innovatech can negotiate with a partner store for free when you are ready to buy. Use my referral code ${code}: ${negotiationLink}`
     : "Join me on Innovatech Marketplace and shop from verified partner stores.";
 
   return (

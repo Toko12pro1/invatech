@@ -78,7 +78,7 @@ class Footer extends React.Component {
 
         <div className="footer-bottom container">
           <p>&copy; {year} Innovatech Engineering Solutions. {t("footer.rights")}</p>
-          <p className="footer-bottom-sub">{t("footer.tagline")}</p>
+          <p className="footer-bottom-sub"><Link to="/terms">Terms of Service</Link><span>·</span><Link to="/privacy">Privacy Notice</Link><span>·</span>{t("footer.tagline")}</p>
         </div>
       </footer>
     );
