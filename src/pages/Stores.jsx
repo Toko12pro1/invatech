@@ -174,6 +174,7 @@ export default class Stores extends BasePage {
               <h3>List a product with us</h3>
               <p>Send your store and first product details over WhatsApp. We will review, verify and publish approved listings.</p>
               <PartnerForm />
+              <p className="seller-access-note">Already approved as a partner? <Link to="/admin/seller">Open your seller workspace</Link></p>
             </Reveal>
           </div>
         </section>

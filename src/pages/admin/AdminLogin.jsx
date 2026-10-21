@@ -40,7 +40,7 @@ class AdminLogin extends React.Component {
         <form className="admin-login-card" onSubmit={this.handleSubmit}>
           <img src="/images/logo-icon.svg" alt="" width={48} height={48} />
           <h1>Innovatech Admin</h1>
-          <p>Sign in to manage products, WiFi packages and vouchers.</p>
+          <p>Sign in to post products, update prices and manage the Innovatech marketplace.</p>
 
           <div className="form-row">
             <label htmlFor="email">Email</label>

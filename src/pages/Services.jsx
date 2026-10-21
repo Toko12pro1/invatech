@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { FaSearch, FaFileInvoiceDollar, FaWrench, FaCheckCircle } from "react-icons/fa";
+import { FaSearch, FaFileInvoiceDollar, FaWrench, FaCheckCircle, FaShieldAlt, FaWhatsapp, FaClipboardCheck } from "react-icons/fa";
 import BasePage from "../components/BasePage";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import ServiceCard from "../components/ServiceCard";
 import services from "../data/services";
+import { whatsappLink } from "../data/marketplace";
 
 const PROCESS_ICONS = [FaSearch, FaFileInvoiceDollar, FaWrench, FaCheckCircle];
 
@@ -53,6 +54,34 @@ class Services extends BasePage {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        <section className="section consultant-section">
+          <div className="container split">
+            <Reveal className="split-content">
+              <span className="eyebrow">Innovatech consultant</span>
+              <h2>Send a photo before you spend money.</h2>
+              <p>
+                Not sure if a product is worth the price, or if a repair can really be fixed? Send
+                us a photo and the story. We analyse the situation, explain the realistic options
+                and help you negotiate or choose the right repair path.
+              </p>
+              <ul className="checklist">
+                <li>Product checks before you buy</li>
+                <li>Repair diagnosis before you pay</li>
+                <li>Clear next steps and honest expectations</li>
+              </ul>
+            </Reveal>
+            <Reveal className="consultant-card" delay={0.1}>
+              <span className="consultant-card-icon"><FaShieldAlt /></span>
+              <h3>One clear conversation can save you money.</h3>
+              <p>We do not promise what has not been tested. We tell you what we can verify, what needs inspection and what the next step should be.</p>
+              <div className="consultant-card-actions">
+                <Link to="/consult" className="btn btn--primary"><FaClipboardCheck /> Start an Innovatech Check</Link>
+                <a href={whatsappLink("Hi Innovatech, I need help analysing a product or repair. I will send a photo and the details.")} target="_blank" rel="noreferrer" className="btn btn--outline-light"><FaWhatsapp /> Chat directly</a>
+              </div>
+            </Reveal>
           </div>
         </section>
 

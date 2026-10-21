@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { FaArrowRight, FaCheckCircle, FaShieldAlt, FaStore, FaWhatsapp } from "react-icons/fa";
+import { FaArrowRight, FaBolt, FaCheckCircle, FaShieldAlt, FaStore, FaWhatsapp } from "react-icons/fa";
 import BasePage from "../components/BasePage";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
@@ -10,7 +10,7 @@ import ProductCard from "../components/ProductCard";
 import { supabase } from "../lib/supabaseClient";
 import { getDemoProducts, PARTNER_STORES, toMarketplaceProduct, whatsappLink } from "../data/marketplace";
 
-const CATEGORIES = ["All", "Smartphones", "Wearables", "Audio", "Cameras", "Gaming"];
+const CATEGORIES = ["All", "Fast Deals", "Smartphones", "Wearables", "Audio", "Cameras", "Gaming"];
 
 class Shop extends BasePage {
   constructor(props) {
@@ -44,6 +44,7 @@ class Shop extends BasePage {
   getFilteredProducts() {
     const { activeCategory, products } = this.state;
     if (activeCategory === "All") return products;
+    if (activeCategory === "Fast Deals") return products.filter((product) => product.isFastDealActive);
     return products.filter((product) => product.category === activeCategory);
   }
 
@@ -73,15 +74,26 @@ class Shop extends BasePage {
                   We connect you to trusted local stores. Before you buy through Innovatech, we
                   confirm the product, test it where possible, and help you chat with the seller.
                 </p>
-                <Link to="/stores" className="btn btn--secondary">
-                  Meet our partner stores <FaArrowRight aria-hidden="true" />
-                </Link>
+                <div className="marketplace-trust-actions">
+                  <Link to="/stores" className="btn btn--secondary">
+                    Meet our partner stores <FaArrowRight aria-hidden="true" />
+                  </Link>
+                  <Link to="/consult" className="btn btn--outline-light">
+                    Ask us to check first <FaShieldAlt aria-hidden="true" />
+                  </Link>
+                </div>
               </div>
               <div className="marketplace-trust-list">
                 <div><FaShieldAlt /><span><strong>Verified listing</strong>We confirm the product and seller.</span></div>
                 <div><FaCheckCircle /><span><strong>Tested before handover</strong>We help you buy with confidence.</span></div>
                 <div><FaWhatsapp /><span><strong>Real human support</strong>Ask questions on WhatsApp.</span></div>
               </div>
+            </Reveal>
+
+            <Reveal className="fast-deal-banner">
+              <div className="fast-deal-banner-icon"><FaBolt /></div>
+              <div><strong>Fast Deals</strong><span>Some sellers need quick cash, so they list below-market prices. We help verify the item and negotiate fairly.</span></div>
+              <button className="btn btn--dark" onClick={() => this.setCategory("Fast Deals")}>See Fast Deals <FaArrowRight /></button>
             </Reveal>
 
             <Reveal className="shop-filters">
@@ -91,7 +103,7 @@ class Shop extends BasePage {
                   className={`filter-pill ${this.state.activeCategory === category ? "filter-pill--active" : ""}`}
                   onClick={() => this.setCategory(category)}
                 >
-                  {t(`shop.categories.${category}`)}
+                  {category === "Fast Deals" ? <><FaBolt aria-hidden="true" /> {category}</> : t(`shop.categories.${category}`)}
                 </button>
               ))}
             </Reveal>

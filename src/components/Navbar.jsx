@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaBars, FaTimes, FaWhatsapp } from "react-icons/fa";
+import { FaBars, FaTimes, FaUserCircle, FaWhatsapp } from "react-icons/fa";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -70,6 +70,9 @@ class Navbar extends React.Component {
 
           <div className="navbar-actions">
             <LanguageSwitcher />
+            <NavLink to="/account" className="btn btn--ghost navbar-account">
+              <FaUserCircle aria-hidden="true" /> {t("nav.account", "Account")}
+            </NavLink>
             <a
               href="https://wa.me/237651162373"
               target="_blank"
@@ -120,6 +123,13 @@ class Navbar extends React.Component {
                 className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
               >
                 {t("nav.refer", "Refer & Earn")}
+              </NavLink>
+              <NavLink
+                to="/account"
+                onClick={this.closeMenu}
+                className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
+              >
+                <FaUserCircle /> {t("nav.account", "Account")}
               </NavLink>
               <LanguageSwitcher className="lang-switch--mobile" />
               <NavLink to="/contact" onClick={this.closeMenu} className="btn btn--primary navbar-mobile-cta">

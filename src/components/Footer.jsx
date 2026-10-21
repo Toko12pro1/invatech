@@ -47,6 +47,8 @@ class Footer extends React.Component {
               <li><Link to="/stores">{t("nav.stores", "Stores")}</Link></li>
               <li><Link to="/portfolio">{t("nav.portfolio", "Portfolio")}</Link></li>
               <li><Link to="/refer">{t("nav.refer", "Refer & Earn")}</Link></li>
+              <li><Link to="/account">{t("nav.account", "Account")}</Link></li>
+              <li><Link to="/consult">{t("nav.consult", "Ask a Consultant")}</Link></li>
               <li><Link to="/wifi-zone">{t("nav.wifiZone")}</Link></li>
               <li><Link to="/contact">{t("nav.contact")}</Link></li>
             </ul>

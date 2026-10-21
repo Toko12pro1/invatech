@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowRight, FaGift, FaLink, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
+import { FaArrowRight, FaGift, FaLink, FaShieldAlt, FaUserCircle, FaWhatsapp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import { whatsappLink } from "../data/marketplace";
+import { supabase } from "../lib/supabaseClient";
 
 function buildReferralCode(name) {
   const cleanName = name.replace(/[^a-z0-9]/gi, "").toUpperCase().slice(0, 5) || "INNOVA";
@@ -15,12 +16,32 @@ export default function Refer() {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [copied, setCopied] = useState(false);
+  const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const savedCode = window.localStorage.getItem("innovatech-referral-code");
     if (savedCode) setCode(savedCode);
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      if (data.session) loadProfile(data.session);
+    });
+    const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+      if (nextSession) loadProfile(nextSession);
+      else setProfile(null);
+    });
+    return () => data.subscription.unsubscribe();
   }, []);
+
+  async function loadProfile(currentSession) {
+    const { data } = await supabase.from("referral_profiles").select("referral_code, full_name").eq("id", currentSession.user.id).maybeSingle();
+    if (data) {
+      setProfile(data);
+      setCode(data.referral_code);
+    }
+  }
 
   function generateCode(event) {
     event.preventDefault();
@@ -101,14 +122,22 @@ export default function Refer() {
             <span className="referral-card-icon"><FaGift /></span>
             <span className="eyebrow eyebrow--light">Create your code</span>
             <h3>Ready to share?</h3>
-            <p>Enter your name and we will create a code you can send immediately.</p>
-            <form onSubmit={generateCode} className="partner-form">
-              <div className="form-row">
-                <label htmlFor="referral-name">Your name</label>
-                <input id="referral-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. Emmanuel" required />
-              </div>
-              <button type="submit" className="btn btn--primary">Generate referral code</button>
-            </form>
+            <p>{session ? "Your account owns this code, so your referrals can be connected to you." : "Create a free account to keep your referral code connected to you and make rewards accountable."}</p>
+            {session ? (
+              <div className="referral-account-linked"><FaUserCircle /><span><strong>{profile?.full_name || "Account connected"}</strong><small>Persistent referral identity</small></span><Link to="/account" className="btn btn--ghost">Manage account</Link></div>
+            ) : (
+              <>
+                <Link to="/account" className="btn btn--primary referral-account-cta"><FaUserCircle /> Create an account</Link>
+                <div className="referral-or"><span>or try a temporary code</span></div>
+                <form onSubmit={generateCode} className="partner-form">
+                  <div className="form-row">
+                    <label htmlFor="referral-name">Your name</label>
+                    <input id="referral-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. Emmanuel" required />
+                  </div>
+                  <button type="submit" className="btn btn--ghost">Generate temporary code</button>
+                </form>
+              </>
+            )}
             {code && (
               <div className="referral-result">
                 <span className="voucher-label">Your code</span>

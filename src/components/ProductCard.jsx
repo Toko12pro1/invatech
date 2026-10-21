@@ -1,6 +1,7 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
 import Reveal from "./Reveal";
 
@@ -9,7 +10,7 @@ class ProductCard extends React.Component {
     const { product, index = 0, t, i18n } = this.props;
     const name = product.getName(i18n.resolvedLanguage || i18n.language);
     const message = encodeURIComponent(
-      `Hi Innovatech, I'm interested in the ${name} from ${product.storeName}. Please confirm availability and the verified condition.`
+      `Hi Innovatech, I'm interested in the ${name} from ${product.storeName}. Please confirm availability, the verified condition and whether you can negotiate the price.${product.isFastDealActive ? " This is a Fast Deal listing." : ""}`
     );
 
     return (
@@ -25,6 +26,7 @@ class ProductCard extends React.Component {
                 -{product.discountPercent}%
               </span>
             )}
+            {product.isFastDealActive && <span className="product-fast-deal-badge">Fast Deal</span>}
           </div>
           <div className="product-card-body">
             <span className="product-condition">{t(`common.conditions.${product.condition}`)}</span>
@@ -34,6 +36,10 @@ class ProductCard extends React.Component {
               <span className="product-card-verified"><FaShieldAlt aria-hidden="true" /> Checked</span>
             </div>
             <span className="product-card-location">{product.storeLocation}</span>
+            <div className="product-card-consultant">
+              <FaShieldAlt aria-hidden="true" />
+              <span>{product.isFastDealActive ? "Fast Deal · ask us to negotiate" : product.negotiable ? "Negotiable through Innovatech" : "Ask us to verify before you buy"}</span>
+            </div>
             <div className="product-price">
               <span>{product.formatPrice()}</span>
               {product.isOnSale && (
@@ -48,6 +54,9 @@ class ProductCard extends React.Component {
             >
               <FaWhatsapp aria-hidden="true" /> {t("common.enquire")}
             </a>
+            <Link className="product-consult-link" to={`/consult?product=${encodeURIComponent(name)}`}>
+              Need a check or negotiation?
+            </Link>
           </div>
         </motion.article>
       </Reveal>

@@ -15,6 +15,11 @@ export default class Product {
     this.storeName = row.store_name || "Innovatech Verified Hub";
     this.storeLocation = row.store_location || "Yaoundé, Cameroon";
     this.verificationStatus = row.verification_status || "verified";
+    this.negotiable = Boolean(row.negotiable);
+    this.verificationNote = row.verification_note || "Checked by Innovatech";
+    this.fastDeal = Boolean(row.fast_deal);
+    this.fastDealNote = row.fast_deal_note || "Seller needs a quick sale";
+    this.fastDealExpiresAt = row.fast_deal_expires_at || null;
   }
 
   getName(lang) {
@@ -23,6 +28,12 @@ export default class Product {
 
   get isOnSale() {
     return Boolean(this.oldPrice && this.oldPrice > this.price);
+  }
+
+  get isFastDealActive() {
+    if (!this.fastDeal) return false;
+    if (!this.fastDealExpiresAt) return true;
+    return new Date(this.fastDealExpiresAt).getTime() > Date.now();
   }
 
   get discountPercent() {
@@ -48,6 +59,11 @@ export default class Product {
       store_name: this.storeName,
       store_location: this.storeLocation,
       verification_status: this.verificationStatus,
+      negotiable: this.negotiable,
+      verification_note: this.verificationNote,
+      fast_deal: this.fastDeal,
+      fast_deal_note: this.fastDealNote,
+      fast_deal_expires_at: this.fastDealExpiresAt,
       sort_order: this.sortOrder || 0,
       active: this.active !== false,
     };

@@ -9,6 +9,8 @@ import Shop from "./pages/Shop";
 import Stores from "./pages/Stores";
 import Refer from "./pages/Refer";
 import Portfolio from "./pages/Portfolio";
+import Account from "./pages/Account";
+import Consultation from "./pages/Consultation";
 import WifiZone from "./pages/WifiZone";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -16,6 +18,7 @@ import RequireAuth from "./components/admin/RequireAuth";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminProducts from "./pages/admin/AdminProducts";
+import SellerWorkspace from "./pages/admin/SellerWorkspace";
 import AdminWifiPackages from "./pages/admin/AdminWifiPackages";
 import AdminVouchers from "./pages/admin/AdminVouchers";
 
@@ -44,6 +47,8 @@ export default class App extends React.Component {
             <Route path="/stores" element={<Stores />} />
             <Route path="/refer" element={<Refer />} />
             <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/consult" element={<Consultation />} />
             <Route path="/wifi-zone" element={<WifiZone />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
@@ -58,7 +63,8 @@ export default class App extends React.Component {
               </RequireAuth>
             }
           >
-            <Route index element={<Navigate to="products" replace />} />
+            <Route index element={<Navigate to="seller" replace />} />
+            <Route path="seller" element={<SellerWorkspace />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="wifi-packages" element={<AdminWifiPackages />} />
             <Route path="vouchers" element={<AdminVouchers />} />
