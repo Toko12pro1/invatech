@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { FaArrowRight, FaBolt, FaCheckCircle, FaShieldAlt, FaStore, FaWhatsapp } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaBolt,
+  FaCheckCircle,
+  FaSearch,
+  FaShieldAlt,
+  FaStore,
+  FaTimes,
+  FaWhatsapp,
+} from "react-icons/fa";
 import BasePage from "../components/BasePage";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
@@ -15,8 +24,20 @@ const CATEGORIES = ["All", "Fast Deals", "Smartphones", "Wearables", "Audio", "C
 class Shop extends BasePage {
   constructor(props) {
     super(props);
-    this.state = { activeCategory: "All", products: [], loading: true };
+    this.state = {
+      activeCategory: "All",
+      products: [],
+      loading: true,
+      search: "",
+      store: "All",
+      location: "All",
+      minPrice: "",
+      maxPrice: "",
+      sortBy: "featured",
+    };
     this.setCategory = this.setCategory.bind(this);
+    this.setFilter = this.setFilter.bind(this);
+    this.resetFilters = this.resetFilters.bind(this);
   }
 
   componentDidMount() {
@@ -41,17 +62,66 @@ class Shop extends BasePage {
     this.setState({ activeCategory: category });
   }
 
+  setFilter(event) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  }
+
+  resetFilters() {
+    this.setState({
+      activeCategory: "All",
+      search: "",
+      store: "All",
+      location: "All",
+      minPrice: "",
+      maxPrice: "",
+      sortBy: "featured",
+    });
+  }
+
+  getFilterOptions(field) {
+    return [...new Set(this.state.products.map((product) => product[field]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  }
+
   getFilteredProducts() {
-    const { activeCategory, products } = this.state;
-    if (activeCategory === "All") return products;
-    if (activeCategory === "Fast Deals") return products.filter((product) => product.isFastDealActive);
-    return products.filter((product) => product.category === activeCategory);
+    const { activeCategory, products, search, store, location, minPrice, maxPrice, sortBy } = this.state;
+    const searchTerm = search.trim().toLowerCase();
+    const minimum = minPrice === "" ? null : Number(minPrice);
+    const maximum = maxPrice === "" ? null : Number(maxPrice);
+
+    const filtered = products.filter((product) => {
+      const searchableText = [
+        product.nameEn,
+        product.nameFr,
+        product.category,
+        product.storeName,
+        product.storeLocation,
+      ].filter(Boolean).join(" ").toLowerCase();
+      const matchesSearch = !searchTerm || searchableText.includes(searchTerm);
+      const matchesCategory = activeCategory === "All"
+        || (activeCategory === "Fast Deals" ? product.isFastDealActive : product.category === activeCategory);
+      const matchesStore = store === "All" || product.storeName === store;
+      const matchesLocation = location === "All" || product.storeLocation === location;
+      const matchesMinimum = minimum === null || product.price >= minimum;
+      const matchesMaximum = maximum === null || product.price <= maximum;
+
+      return matchesSearch && matchesCategory && matchesStore && matchesLocation && matchesMinimum && matchesMaximum;
+    });
+
+    return [...filtered].sort((a, b) => {
+      if (sortBy === "price-low") return a.price - b.price;
+      if (sortBy === "price-high") return b.price - a.price;
+      if (sortBy === "name") return a.getName("en").localeCompare(b.getName("en"));
+      return (a.sortOrder || 0) - (b.sortOrder || 0);
+    });
   }
 
   renderPage() {
     const filtered = this.getFilteredProducts();
     const { t } = this.props;
-    const { loading } = this.state;
+    const { loading, search, store, location, minPrice, maxPrice, sortBy } = this.state;
+    const stores = this.getFilterOptions("storeName");
+    const locations = this.getFilterOptions("storeLocation");
 
     return (
       <>
@@ -106,6 +176,61 @@ class Shop extends BasePage {
                   {category === "Fast Deals" ? <><FaBolt aria-hidden="true" /> {category}</> : t(`shop.categories.${category}`)}
                 </button>
               ))}
+            </Reveal>
+
+            <Reveal className="shop-filter-panel">
+              <div className="shop-search-row">
+                <label className="shop-search-field" htmlFor="shop-search">
+                  <FaSearch aria-hidden="true" />
+                  <input
+                    id="shop-search"
+                    name="search"
+                    value={search}
+                    onChange={this.setFilter}
+                    placeholder={t("shop.filters.searchPlaceholder")}
+                  />
+                </label>
+                <button type="button" className="shop-clear-filters" onClick={this.resetFilters}>
+                  <FaTimes aria-hidden="true" /> {t("shop.filters.clear")}
+                </button>
+              </div>
+
+              <div className="shop-filter-grid">
+                <label className="shop-filter-control">
+                  <span>{t("shop.filters.store")}</span>
+                  <select name="store" value={store} onChange={this.setFilter}>
+                    <option value="All">{t("shop.filters.allStores")}</option>
+                    {stores.map((storeName) => <option key={storeName} value={storeName}>{storeName}</option>)}
+                  </select>
+                </label>
+                <label className="shop-filter-control">
+                  <span>{t("shop.filters.location")}</span>
+                  <select name="location" value={location} onChange={this.setFilter}>
+                    <option value="All">{t("shop.filters.allLocations")}</option>
+                    {locations.map((storeLocation) => <option key={storeLocation} value={storeLocation}>{storeLocation}</option>)}
+                  </select>
+                </label>
+                <label className="shop-filter-control">
+                  <span>{t("shop.filters.minPrice")}</span>
+                  <input name="minPrice" type="number" min="0" value={minPrice} onChange={this.setFilter} placeholder="0" />
+                </label>
+                <label className="shop-filter-control">
+                  <span>{t("shop.filters.maxPrice")}</span>
+                  <input name="maxPrice" type="number" min="0" value={maxPrice} onChange={this.setFilter} placeholder="No limit" />
+                </label>
+                <label className="shop-filter-control">
+                  <span>{t("shop.filters.sort")}</span>
+                  <select name="sortBy" value={sortBy} onChange={this.setFilter}>
+                    <option value="featured">{t("shop.filters.featured")}</option>
+                    <option value="price-low">{t("shop.filters.priceLow")}</option>
+                    <option value="price-high">{t("shop.filters.priceHigh")}</option>
+                    <option value="name">{t("shop.filters.name")}</option>
+                  </select>
+                </label>
+              </div>
+              <p className="shop-filter-summary">
+                <strong>{filtered.length}</strong> {filtered.length === 1 ? t("shop.filters.result") : t("shop.filters.results")} · {t("shop.filters.hint")}
+              </p>
             </Reveal>
 
             {loading ? (

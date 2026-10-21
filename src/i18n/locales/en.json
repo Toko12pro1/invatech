@@ -241,6 +241,24 @@
       "Cameras": "Cameras",
       "Gaming": "Gaming"
     },
+    "filters": {
+      "searchPlaceholder": "Search product, store or area",
+      "clear": "Clear filters",
+      "store": "Store",
+      "allStores": "All stores",
+      "location": "Location",
+      "allLocations": "All locations",
+      "minPrice": "Minimum price (FCFA)",
+      "maxPrice": "Maximum price (FCFA)",
+      "sort": "Sort by",
+      "featured": "Featured",
+      "priceLow": "Price: low to high",
+      "priceHigh": "Price: high to low",
+      "name": "Product name",
+      "result": "result",
+      "results": "results",
+      "hint": "Choose a store, area or budget to narrow your search."
+    },
     "cta": {
       "title": "Looking for something specific, or want to trade in a device?",
       "subtitle": "Message us on WhatsApp — we restock regularly and can source on request."

@@ -1017,6 +1017,95 @@ p {
   margin-bottom: 40px;
 }
 
+.shop-filter-panel {
+  margin-bottom: 34px;
+  padding: 20px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.shop-search-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.shop-search-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  color: var(--color-gray-400);
+  background: var(--color-gray-50);
+}
+
+.shop-search-field input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  color: var(--color-navy);
+  background: transparent;
+}
+
+.shop-clear-filters {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  color: var(--color-gray-700);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.shop-clear-filters:hover {
+  color: var(--color-orange);
+}
+
+.shop-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.shop-filter-control {
+  display: grid;
+  gap: 7px;
+}
+
+.shop-filter-control span {
+  color: var(--color-gray-700);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.shop-filter-control select,
+.shop-filter-control input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  color: var(--color-navy);
+  background: var(--color-white);
+}
+
+.shop-filter-summary {
+  margin: 16px 0 0;
+  color: var(--color-gray-400);
+  font-size: 0.8rem;
+}
+
+.shop-filter-summary strong {
+  color: var(--color-navy);
+}
+
 .fast-deal-banner {
   display: flex;
   align-items: center;
@@ -3078,6 +3167,7 @@ p {
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   .marketplace-trust-panel { grid-template-columns: 1fr; gap: 28px; }
+  .shop-filter-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .consultation-grid { grid-template-columns: 1fr; max-width: 760px; }
   .portfolio-grid { grid-template-columns: 1fr 1fr; }
   .portfolio-card--1 { grid-row: auto; }
@@ -3123,6 +3213,9 @@ p {
   .marketplace-intro-header,
   .portfolio-intro { grid-template-columns: 1fr; display: grid; gap: 20px; align-items: start; }
   .marketplace-trust-panel { padding: 28px 22px; }
+  .shop-search-row { align-items: stretch; flex-direction: column; }
+  .shop-filter-grid { grid-template-columns: 1fr 1fr; }
+  .shop-clear-filters { justify-content: center; }
   .marketplace-trust-copy h2 { font-size: 1.65rem; }
   .consultation-form-card,
   .consultation-trust-card { padding: 28px 22px; }

@@ -241,6 +241,24 @@
       "Cameras": "Appareils Photo",
       "Gaming": "Gaming"
     },
+    "filters": {
+      "searchPlaceholder": "Rechercher un produit, une boutique ou un quartier",
+      "clear": "Effacer les filtres",
+      "store": "Boutique",
+      "allStores": "Toutes les boutiques",
+      "location": "Lieu",
+      "allLocations": "Tous les lieux",
+      "minPrice": "Prix minimum (FCFA)",
+      "maxPrice": "Prix maximum (FCFA)",
+      "sort": "Trier par",
+      "featured": "À la une",
+      "priceLow": "Prix : du moins cher au plus cher",
+      "priceHigh": "Prix : du plus cher au moins cher",
+      "name": "Nom du produit",
+      "result": "résultat",
+      "results": "résultats",
+      "hint": "Choisissez une boutique, un lieu ou un budget pour affiner votre recherche."
+    },
     "cta": {
       "title": "Vous cherchez quelque chose de précis, ou souhaitez échanger un appareil ?",
       "subtitle": "Écrivez-nous sur WhatsApp — nous nous réapprovisionnons régulièrement et pouvons sourcer sur demande."
