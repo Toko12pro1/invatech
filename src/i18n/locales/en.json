@@ -4,6 +4,7 @@
     "about": "About",
     "services": "Services",
     "shop": "Marketplace",
+    "fastDeals": "Fast Deals",
     "stores": "Stores",
     "achievements": "Achievements",
     "refer": "Refer & Earn",
@@ -233,6 +234,44 @@
       "eyebrow": "Browse",
       "title": "Available Devices"
     },
+    "trust": {
+      "eyebrow": "A safer way to buy",
+      "title": "Shop from stores we know, with a team that checks first.",
+      "subtitle": "We connect you to trusted local stores. Before you buy through Innovatech, we confirm the product, test it where possible, and help you chat with the seller.",
+      "stores": "Meet our partner stores",
+      "check": "Ask us to check first",
+      "verifiedTitle": "Verified listing",
+      "verifiedText": "We confirm the product and seller.",
+      "testedTitle": "Tested before handover",
+      "testedText": "We help you buy with confidence.",
+      "supportTitle": "Real human support",
+      "supportText": "Ask questions on WhatsApp."
+    },
+    "fastDealBanner": {
+      "title": "Fast Deals",
+      "text": "Some sellers need quick cash, so they list below-market prices. We help verify the item and negotiate fairly.",
+      "button": "See Fast Deals"
+    },
+    "loading": "Loading...",
+    "empty": {
+      "title": "No products in this category yet",
+      "subtitle": "Tell us what you are looking for and we will search our partner stores for you.",
+      "button": "Ask on WhatsApp",
+      "whatsappMessage": "Hi Innovatech, I'm looking for a product that is not currently listed."
+    },
+    "network": {
+      "eyebrow": "Our network",
+      "title": "The stores behind the listings",
+      "subtitle": "You are not buying from an anonymous page. You can see who you are buying from and chat with them directly.",
+      "verified": "Verified partner"
+    },
+    "fastDeals": {
+      "hero": {
+        "eyebrow": "Fast Deals",
+        "title": "Good devices. Urgent prices.",
+        "subtitle": "These listings are marked for quick sale. We help you confirm the item and negotiate fairly before you commit."
+      }
+    },
     "categories": {
       "All": "All",
       "Smartphones": "Smartphones",
@@ -267,11 +306,86 @@
     },
     "product": {
       "chat": "Chat with us about this item",
-      "negotiate": "Ask us to negotiate the price"
+      "negotiate": "Ask us to negotiate the price",
+      "fastDeal": "Fast Deal",
+      "fastDealHelp": "Fast Deal · ask us to negotiate",
+      "negotiable": "Negotiable through Innovatech",
+      "verifyBeforeBuy": "Ask us to verify before you buy",
+      "traceability": "See traceability",
+      "traceabilityDescription": "The listing status and the exact scope of any Innovatech check are shown here.",
+      "traceabilityWarning": "Ask us for a fresh physical check before paying. A listing review is not the same as a device test.",
+      "level": "Level",
+      "lastChecked": "Last checked",
+      "recordedBy": "Recorded by",
+      "reference": "Reference",
+      "scope": "Scope",
+      "traceLevels": {
+        "sellerListed": "Seller listing",
+        "storeReviewed": "Store reviewed",
+        "physicallyChecked": "Physically checked",
+        "innovatechStock": "Innovatech stock",
+        "pending": "Traceability pending"
+      }
     },
     "cta": {
       "title": "Looking for something specific, or want to trade in a device?",
       "subtitle": "Message us on WhatsApp — we restock regularly and can source on request."
+    }
+  },
+  "consultation": {
+    "hero": {
+      "eyebrow": "Innovatech Check",
+      "title": "Get a second opinion before you spend.",
+      "subtitle": "Ask us to check a product, negotiate for you, analyse a repair or guide you through a technology decision."
+    },
+    "section": {
+      "eyebrow": "One clear process",
+      "title": "Tell us what you need help with.",
+      "subtitle": "Choose a service, share the basics and continue the conversation on WhatsApp. Photos can be sent there after you submit."
+    },
+    "requestTypes": {
+      "productCheck": { "label": "Check a product", "description": "We review the phone or electronics before you spend money." },
+      "negotiatePurchase": { "label": "Free negotiation (ready to buy)", "description": "We contact the store at no consulting fee if you are ready to buy." },
+      "repairAnalysis": { "label": "Analyse a repair", "description": "We assess the problem and explain the realistic next step." },
+      "businessAdvice": { "label": "Technology advice", "description": "Get practical guidance for software, devices or a business need." }
+    },
+    "success": {
+      "eyebrow": "Request started",
+      "title": "WhatsApp is ready.",
+      "note": "We confirm the store's final price before you commit to the purchase. Paid analysis or consulting starts only after the fee and scope are agreed.",
+      "continueShopping": "Continue shopping",
+      "another": "Start another request"
+    },
+    "form": {
+      "name": "Your name",
+      "phone": "Phone / WhatsApp",
+      "product": "Product or service",
+      "city": "City / area",
+      "seller": "Seller or store (optional)",
+      "link": "Product link (optional)",
+      "referral": "Referral code (optional)",
+      "notes": "What should we check or negotiate?",
+      "notesPlaceholder": "Tell us the price, the problem, your budget or anything you already know.",
+      "photoTitle": "Have a photo? Select it from your phone",
+      "photoHint": "We do not upload it here; send the photo in the WhatsApp chat that opens next.",
+      "readyToBuy": "I am ready to buy if the store confirms availability and the final price. The negotiation is free; the purchase price is decided by the store.",
+      "feeAcknowledged": "I understand that the consulting fee is confirmed with me before work starts.",
+      "legalBefore": "I agree to the",
+      "terms": "Terms of Service",
+      "legalAnd": "and acknowledge the",
+      "privacy": "Privacy Notice",
+      "preparing": "Preparing your request...",
+      "submit": "Continue on WhatsApp"
+    },
+    "trust": {
+      "eyebrow": "Our promise",
+      "title": "Honest help, not a fake guarantee.",
+      "subtitle": "Ready-to-buy negotiation is free. Verification, repair analysis and broader consulting fees are discussed first, so you know exactly what you are paying for.",
+      "point1": "We say what we checked and what we could not check.",
+      "point2": "We do not pretend to own or have tested a product.",
+      "point3": "We disclose the next step before you commit money.",
+      "point4": "For repairs, a final guarantee comes only after physical inspection.",
+      "note": "The store decides the final price. We report it clearly and keep the referral connected to the confirmed sale."
     }
   },
   "achievements": {

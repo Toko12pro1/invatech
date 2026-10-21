@@ -8,7 +8,10 @@ class LanguageSwitcher extends React.Component {
   }
 
   setLang(lang) {
+    if (lang === this.props.i18n.resolvedLanguage) return;
+    const scrollY = window.scrollY;
     this.props.i18n.changeLanguage(lang);
+    window.requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: "auto" }));
   }
 
   render() {
@@ -18,6 +21,7 @@ class LanguageSwitcher extends React.Component {
     return (
       <div className={`lang-switch ${className}`} role="group" aria-label="Language">
         <button
+          type="button"
           className={`lang-switch-btn ${current === "en" ? "lang-switch-btn--active" : ""}`}
           onClick={() => this.setLang("en")}
           aria-pressed={current === "en"}
@@ -26,6 +30,7 @@ class LanguageSwitcher extends React.Component {
         </button>
         <span className="lang-switch-divider">|</span>
         <button
+          type="button"
           className={`lang-switch-btn ${current === "fr" ? "lang-switch-btn--active" : ""}`}
           onClick={() => this.setLang("fr")}
           aria-pressed={current === "fr"}

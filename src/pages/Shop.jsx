@@ -26,7 +26,7 @@ class Shop extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      activeCategory: "All",
+      activeCategory: props.initialCategory || "All",
       products: [],
       loading: true,
       search: "",
@@ -70,7 +70,7 @@ class Shop extends BasePage {
 
   resetFilters() {
     this.setState({
-      activeCategory: "All",
+      activeCategory: this.props.initialCategory || "All",
       search: "",
       store: "All",
       location: "All",
@@ -121,6 +121,8 @@ class Shop extends BasePage {
     const filtered = this.getFilteredProducts();
     const { t } = this.props;
     const { loading, search, store, location, minPrice, maxPrice, sortBy } = this.state;
+    const isFastDealPage = this.props.initialCategory === "Fast Deals";
+    const heroCopy = isFastDealPage ? "shop.fastDeals.hero" : "shop.hero";
     const stores = this.getFilterOptions("storeName");
     const locations = this.getFilterOptions("storeLocation");
 
@@ -128,9 +130,9 @@ class Shop extends BasePage {
       <>
         <PageHero
           image="/images/hero-shop.jpg"
-          eyebrow={t("shop.hero.eyebrow")}
-          title={t("shop.hero.title")}
-          subtitle={t("shop.hero.subtitle")}
+          eyebrow={t(`${heroCopy}.eyebrow`)}
+          title={t(`${heroCopy}.title`)}
+          subtitle={t(`${heroCopy}.subtitle`)}
         />
 
         <section className="section">
@@ -139,32 +141,29 @@ class Shop extends BasePage {
 
             <Reveal className="marketplace-trust-panel">
               <div className="marketplace-trust-copy">
-                <span className="eyebrow">A safer way to buy</span>
-                <h2>Shop from stores we know, with a team that checks first.</h2>
-                <p>
-                  We connect you to trusted local stores. Before you buy through Innovatech, we
-                  confirm the product, test it where possible, and help you chat with the seller.
-                </p>
+                <span className="eyebrow">{t("shop.trust.eyebrow")}</span>
+                <h2>{t("shop.trust.title")}</h2>
+                <p>{t("shop.trust.subtitle")}</p>
                 <div className="marketplace-trust-actions">
                   <Link to="/stores" className="btn btn--secondary">
-                    Meet our partner stores <FaArrowRight aria-hidden="true" />
+                    {t("shop.trust.stores")} <FaArrowRight aria-hidden="true" />
                   </Link>
                   <Link to="/consult" className="btn btn--outline-light">
-                    Ask us to check first <FaShieldAlt aria-hidden="true" />
+                    {t("shop.trust.check")} <FaShieldAlt aria-hidden="true" />
                   </Link>
                 </div>
               </div>
               <div className="marketplace-trust-list">
-                <div><FaShieldAlt /><span><strong>Verified listing</strong>We confirm the product and seller.</span></div>
-                <div><FaCheckCircle /><span><strong>Tested before handover</strong>We help you buy with confidence.</span></div>
-                <div><FaWhatsapp /><span><strong>Real human support</strong>Ask questions on WhatsApp.</span></div>
+                <div><FaShieldAlt /><span><strong>{t("shop.trust.verifiedTitle")}</strong>{t("shop.trust.verifiedText")}</span></div>
+                <div><FaCheckCircle /><span><strong>{t("shop.trust.testedTitle")}</strong>{t("shop.trust.testedText")}</span></div>
+                <div><FaWhatsapp /><span><strong>{t("shop.trust.supportTitle")}</strong>{t("shop.trust.supportText")}</span></div>
               </div>
             </Reveal>
 
             <Reveal className="fast-deal-banner">
               <div className="fast-deal-banner-icon"><FaBolt /></div>
-              <div><strong>Fast Deals</strong><span>Some sellers need quick cash, so they list below-market prices. We help verify the item and negotiate fairly.</span></div>
-              <button className="btn btn--dark" onClick={() => this.setCategory("Fast Deals")}>See Fast Deals <FaArrowRight /></button>
+              <div><strong>{t("shop.fastDealBanner.title")}</strong><span>{t("shop.fastDealBanner.text")}</span></div>
+              <Link className="btn btn--dark" to="/fast-deals">{t("shop.fastDealBanner.button")} <FaArrowRight /></Link>
             </Reveal>
 
             <Reveal className="shop-filters">
@@ -219,15 +218,6 @@ class Shop extends BasePage {
                   <span>{t("shop.filters.maxPrice")}</span>
                   <input name="maxPrice" type="number" min="0" value={maxPrice} onChange={this.setFilter} placeholder="No limit" />
                 </label>
-                <label className="shop-filter-control">
-                  <span>{t("shop.filters.sort")}</span>
-                  <select name="sortBy" value={sortBy} onChange={this.setFilter}>
-                    <option value="featured">{t("shop.filters.featured")}</option>
-                    <option value="price-low">{t("shop.filters.priceLow")}</option>
-                    <option value="price-high">{t("shop.filters.priceHigh")}</option>
-                    <option value="name">{t("shop.filters.name")}</option>
-                  </select>
-                </label>
               </div>
               <p className="shop-filter-summary">
                 <strong>{filtered.length}</strong> {filtered.length === 1 ? t("shop.filters.result") : t("shop.filters.results")} · {t("shop.filters.hint")}
@@ -248,8 +238,24 @@ class Shop extends BasePage {
               </div>
             </Reveal>
 
+            <div className="shop-results-toolbar">
+              <div className="shop-results-count">
+                <strong>{filtered.length}</strong> {filtered.length === 1 ? t("shop.filters.result") : t("shop.filters.results")}
+                {isFastDealPage && <span className="shop-results-label"><FaBolt aria-hidden="true" /> Fast Deals only</span>}
+              </div>
+              <label className="shop-sort-control">
+                <span>{t("shop.filters.sort")}</span>
+                <select name="sortBy" value={sortBy} onChange={this.setFilter}>
+                  <option value="featured">{t("shop.filters.featured")}</option>
+                  <option value="price-low">{t("shop.filters.priceLow")}</option>
+                  <option value="price-high">{t("shop.filters.priceHigh")}</option>
+                  <option value="name">{t("shop.filters.name")}</option>
+                </select>
+              </label>
+            </div>
+
             {loading ? (
-              <p>Loading…</p>
+              <p>{t("shop.loading")}</p>
             ) : filtered.length ? (
               <div className="grid grid--3">
                 {filtered.map((product, index) => (
@@ -259,10 +265,10 @@ class Shop extends BasePage {
             ) : (
               <div className="empty-state">
                 <FaStore aria-hidden="true" />
-                <h3>No products in this category yet</h3>
-                <p>Tell us what you are looking for and we will search our partner stores for you.</p>
-                <a className="btn btn--primary" href={whatsappLink("Hi Innovatech, I'm looking for a product that is not currently listed.")} target="_blank" rel="noreferrer">
-                  Ask on WhatsApp <FaWhatsapp aria-hidden="true" />
+                <h3>{t("shop.empty.title")}</h3>
+                <p>{t("shop.empty.subtitle")}</p>
+                <a className="btn btn--primary" href={whatsappLink(t("shop.empty.whatsappMessage"))} target="_blank" rel="noreferrer">
+                  {t("shop.empty.button")} <FaWhatsapp aria-hidden="true" />
                 </a>
               </div>
             )}
@@ -272,16 +278,16 @@ class Shop extends BasePage {
         <section className="section section--alt marketplace-stores-preview">
           <div className="container">
             <SectionHeading
-              eyebrow="Our network"
-              title="The stores behind the listings"
-              subtitle="You are not buying from an anonymous page. You can see who you are buying from and chat with them directly."
+              eyebrow={t("shop.network.eyebrow")}
+              title={t("shop.network.title")}
+              subtitle={t("shop.network.subtitle")}
             />
             <div className="grid grid--3">
               {PARTNER_STORES.map((store) => (
                 <article className="store-mini-card" key={store.id}>
                   <img src={store.image} alt="" />
                   <div>
-                    <span className="store-verified"><FaShieldAlt /> Verified partner</span>
+                    <span className="store-verified"><FaShieldAlt /> {t("shop.network.verified")}</span>
                     <h3>{store.name}</h3>
                     <p>{store.category} · {store.location}</p>
                   </div>

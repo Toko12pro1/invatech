@@ -11,15 +11,15 @@ class ProductCard extends React.Component {
     const { product, index = 0, t, i18n } = this.props;
     const name = product.getName(i18n.resolvedLanguage || i18n.language);
     const checkedDate = product.lastCheckedAt
-      ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(product.lastCheckedAt))
+      ? new Intl.DateTimeFormat(i18n.resolvedLanguage || i18n.language || "en", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(product.lastCheckedAt))
       : null;
     const levelLabels = {
-      seller_listed: "Seller listing",
-      store_reviewed: "Store reviewed",
-      innovatech_checked: "Physically checked",
-      innovatech_stock: "Innovatech stock",
+      seller_listed: t("shop.product.traceLevels.sellerListed"),
+      store_reviewed: t("shop.product.traceLevels.storeReviewed"),
+      innovatech_checked: t("shop.product.traceLevels.physicallyChecked"),
+      innovatech_stock: t("shop.product.traceLevels.innovatechStock"),
     };
-    const verificationLabel = levelLabels[product.verificationLevel] || "Traceability pending";
+    const verificationLabel = levelLabels[product.verificationLevel] || t("shop.product.traceLevels.pending");
     const itemMessage = `Hi Innovatech, I would like help with this item.\n\nProduct: ${name}\nPrice shown: ${product.formatPrice()}\nStore: ${product.storeName}\nLocation: ${product.storeLocation}\n\nPlease confirm availability, help verify it or guide me on the best way to buy.`;
 
     return (
@@ -35,7 +35,7 @@ class ProductCard extends React.Component {
                 -{product.discountPercent}%
               </span>
             )}
-            {product.isFastDealActive && <span className="product-fast-deal-badge">Fast Deal</span>}
+            {product.isFastDealActive && <span className="product-fast-deal-badge">{t("shop.product.fastDeal")}</span>}
           </div>
           <div className="product-card-body">
             <span className="product-condition">{t(`common.conditions.${product.condition}`)}</span>
@@ -47,20 +47,20 @@ class ProductCard extends React.Component {
             <span className="product-card-location">{product.storeLocation}</span>
             <div className="product-card-consultant">
               <FaClipboardCheck aria-hidden="true" />
-              <span>{product.isFastDealActive ? "Fast Deal · ask us to negotiate" : product.negotiable ? "Negotiable through Innovatech" : "Ask us to verify before you buy"}</span>
+              <span>{product.isFastDealActive ? t("shop.product.fastDealHelp") : product.negotiable ? t("shop.product.negotiable") : t("shop.product.verifyBeforeBuy")}</span>
             </div>
             <details className="product-traceability">
-              <summary><FaShieldAlt aria-hidden="true" /> See traceability</summary>
+              <summary><FaShieldAlt aria-hidden="true" /> {t("shop.product.traceability")}</summary>
               <div className="product-traceability-body">
-                <p>{product.verificationNote || "The listing status and the exact scope of any Innovatech check are shown here."}</p>
+                <p>{product.verificationNote || t("shop.product.traceabilityDescription")}</p>
                 <dl>
-                  <div><dt>Level</dt><dd>{verificationLabel}</dd></div>
-                  {checkedDate && <div><dt>Last checked</dt><dd>{checkedDate}</dd></div>}
-                  {product.verifiedBy && <div><dt>Recorded by</dt><dd>{product.verifiedBy}</dd></div>}
-                  {product.verificationReference && <div><dt>Reference</dt><dd>{product.verificationReference}</dd></div>}
-                  {product.verificationScope.length > 0 && <div><dt>Scope</dt><dd>{product.verificationScope.join(" · ")}</dd></div>}
+                  <div><dt>{t("shop.product.level")}</dt><dd>{verificationLabel}</dd></div>
+                  {checkedDate && <div><dt>{t("shop.product.lastChecked")}</dt><dd>{checkedDate}</dd></div>}
+                  {product.verifiedBy && <div><dt>{t("shop.product.recordedBy")}</dt><dd>{product.verifiedBy}</dd></div>}
+                  {product.verificationReference && <div><dt>{t("shop.product.reference")}</dt><dd>{product.verificationReference}</dd></div>}
+                  {product.verificationScope.length > 0 && <div><dt>{t("shop.product.scope")}</dt><dd>{product.verificationScope.join(" · ")}</dd></div>}
                 </dl>
-                <small>Ask us for a fresh physical check before paying. A listing review is not the same as a device test.</small>
+                <small>{t("shop.product.traceabilityWarning")}</small>
               </div>
             </details>
             <div className="product-price">

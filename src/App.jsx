@@ -47,6 +47,7 @@ export default class App extends React.Component {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/fast-deals" element={<Shop initialCategory="Fast Deals" />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/refer" element={<Refer />} />
             <Route path="/achievements" element={<Portfolio />} />

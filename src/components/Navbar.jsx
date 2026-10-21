@@ -9,6 +9,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 const NAV_LINKS = [
   { to: "/", key: "home", end: true },
   { to: "/shop", key: "shop" },
+  { to: "/fast-deals", key: "fastDeals" },
   { to: "/stores", key: "stores" },
   { to: "/achievements", key: "achievements" },
   { to: "/services", key: "services" },

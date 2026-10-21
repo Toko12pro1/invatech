@@ -4,6 +4,7 @@
     "about": "À Propos",
     "services": "Services",
     "shop": "Marketplace",
+    "fastDeals": "Bonnes affaires",
     "stores": "Boutiques partenaires",
     "achievements": "Réalisations",
     "refer": "Parrainer",
@@ -233,6 +234,44 @@
       "eyebrow": "Parcourir",
       "title": "Appareils Disponibles"
     },
+    "trust": {
+      "eyebrow": "Acheter en confiance",
+      "title": "Achetez auprès de boutiques connues, avec une équipe qui vérifie d'abord.",
+      "subtitle": "Nous vous mettons en relation avec des boutiques locales fiables. Avant un achat via Innovatech, nous confirmons le produit, le testons lorsque c'est possible et vous aidons à échanger avec le vendeur.",
+      "stores": "Voir nos boutiques partenaires",
+      "check": "Demander une vérification",
+      "verifiedTitle": "Annonce vérifiée",
+      "verifiedText": "Nous confirmons le produit et le vendeur.",
+      "testedTitle": "Testé avant remise",
+      "testedText": "Nous vous aidons à acheter en confiance.",
+      "supportTitle": "Assistance humaine",
+      "supportText": "Posez vos questions sur WhatsApp."
+    },
+    "fastDealBanner": {
+      "title": "Bonnes affaires",
+      "text": "Certains vendeurs ont besoin d'argent rapidement et proposent donc des prix inférieurs au marché. Nous vous aidons à vérifier l'article et à négocier correctement.",
+      "button": "Voir les bonnes affaires"
+    },
+    "loading": "Chargement...",
+    "empty": {
+      "title": "Aucun produit dans cette catégorie pour le moment",
+      "subtitle": "Dites-nous ce que vous cherchez et nous interrogerons nos boutiques partenaires.",
+      "button": "Demander sur WhatsApp",
+      "whatsappMessage": "Bonjour Innovatech, je cherche un produit qui n'est pas encore affiché."
+    },
+    "network": {
+      "eyebrow": "Notre réseau",
+      "title": "Les boutiques derrière les annonces",
+      "subtitle": "Vous n'achetez pas auprès d'une page anonyme. Vous pouvez voir le vendeur et échanger directement avec lui.",
+      "verified": "Partenaire vérifié"
+    },
+    "fastDeals": {
+      "hero": {
+        "eyebrow": "Bonnes affaires",
+        "title": "De bons appareils, à prix urgent.",
+        "subtitle": "Ces annonces sont proposées pour une vente rapide. Nous vous aidons à confirmer l'article et à négocier correctement avant de vous engager."
+      }
+    },
     "categories": {
       "All": "Tout",
       "Smartphones": "Smartphones",
@@ -267,11 +306,86 @@
     },
     "product": {
       "chat": "Discuter avec nous de cet article",
-      "negotiate": "Demander une négociation du prix"
+      "negotiate": "Demander une négociation du prix",
+      "fastDeal": "Bonne affaire",
+      "fastDealHelp": "Bonne affaire · demandez une négociation",
+      "negotiable": "Négociable avec Innovatech",
+      "verifyBeforeBuy": "Demandez une vérification avant d'acheter",
+      "traceability": "Voir la traçabilité",
+      "traceabilityDescription": "Le statut de l'annonce et le périmètre exact de toute vérification Innovatech sont affichés ici.",
+      "traceabilityWarning": "Demandez une vérification physique récente avant de payer. Une annonce examinée n'est pas la même chose qu'un appareil testé.",
+      "level": "Niveau",
+      "lastChecked": "Dernière vérification",
+      "recordedBy": "Enregistré par",
+      "reference": "Référence",
+      "scope": "Périmètre",
+      "traceLevels": {
+        "sellerListed": "Annonce du vendeur",
+        "storeReviewed": "Boutique examinée",
+        "physicallyChecked": "Vérifié physiquement",
+        "innovatechStock": "Stock Innovatech",
+        "pending": "Traçabilité en attente"
+      }
     },
     "cta": {
       "title": "Vous cherchez quelque chose de précis, ou souhaitez échanger un appareil ?",
       "subtitle": "Écrivez-nous sur WhatsApp — nous nous réapprovisionnons régulièrement et pouvons sourcer sur demande."
+    }
+  },
+  "consultation": {
+    "hero": {
+      "eyebrow": "Vérification Innovatech",
+      "title": "Demandez un deuxième avis avant de dépenser.",
+      "subtitle": "Demandez-nous de vérifier un produit, de négocier pour vous, d'analyser une réparation ou de vous guider dans une décision technologique."
+    },
+    "section": {
+      "eyebrow": "Un processus simple",
+      "title": "Dites-nous comment nous pouvons vous aider.",
+      "subtitle": "Choisissez un service, partagez les informations essentielles et poursuivez la discussion sur WhatsApp. Vous pourrez envoyer les photos après l'envoi."
+    },
+    "requestTypes": {
+      "productCheck": { "label": "Vérifier un produit", "description": "Nous examinons le téléphone ou l'appareil avant que vous ne dépensiez." },
+      "negotiatePurchase": { "label": "Négociation gratuite (prêt à acheter)", "description": "Nous contactons la boutique sans frais de conseil si vous êtes prêt à acheter." },
+      "repairAnalysis": { "label": "Analyser une réparation", "description": "Nous évaluons le problème et expliquons l'étape suivante réaliste." },
+      "businessAdvice": { "label": "Conseil technologique", "description": "Obtenez des conseils pratiques pour vos logiciels, appareils ou besoins professionnels." }
+    },
+    "success": {
+      "eyebrow": "Demande commencée",
+      "title": "WhatsApp est prêt.",
+      "note": "Nous confirmons le prix final de la boutique avant que vous ne vous engagiez. Toute analyse ou consultation payante commence seulement après accord sur le tarif et le périmètre.",
+      "continueShopping": "Continuer les achats",
+      "another": "Faire une autre demande"
+    },
+    "form": {
+      "name": "Votre nom",
+      "phone": "Téléphone / WhatsApp",
+      "product": "Produit ou service",
+      "city": "Ville / quartier",
+      "seller": "Vendeur ou boutique (facultatif)",
+      "link": "Lien du produit (facultatif)",
+      "referral": "Code de parrainage (facultatif)",
+      "notes": "Que devons-nous vérifier ou négocier ?",
+      "notesPlaceholder": "Indiquez le prix, le problème, votre budget ou toute information utile.",
+      "photoTitle": "Vous avez une photo ? Sélectionnez-la sur votre téléphone",
+      "photoHint": "Nous ne la téléversons pas ici ; envoyez-la dans la discussion WhatsApp qui s'ouvrira.",
+      "readyToBuy": "Je suis prêt à acheter si la boutique confirme la disponibilité et le prix final. La négociation est gratuite ; le prix d'achat est fixé par la boutique.",
+      "feeAcknowledged": "Je comprends que le tarif de consultation sera confirmé avec moi avant le début du travail.",
+      "legalBefore": "J'accepte les",
+      "terms": "Conditions générales",
+      "legalAnd": "et reconnais la",
+      "privacy": "Notice de confidentialité",
+      "preparing": "Préparation de votre demande...",
+      "submit": "Continuer sur WhatsApp"
+    },
+    "trust": {
+      "eyebrow": "Notre engagement",
+      "title": "Une aide honnête, pas une fausse garantie.",
+      "subtitle": "La négociation lorsque vous êtes prêt à acheter est gratuite. Les frais de vérification, d'analyse et de conseil sont d'abord expliqués clairement.",
+      "point1": "Nous indiquons ce que nous avons vérifié et ce que nous n'avons pas pu vérifier.",
+      "point2": "Nous ne prétendons pas posséder ou avoir testé un produit sans l'avoir fait.",
+      "point3": "Nous expliquons l'étape suivante avant que vous ne dépensiez.",
+      "point4": "Pour une réparation, la garantie finale vient seulement après inspection physique.",
+      "note": "La boutique fixe le prix final. Nous vous le communiquons clairement et gardons le parrainage lié à la vente confirmée."
     }
   },
   "achievements": {
