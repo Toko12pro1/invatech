@@ -53,14 +53,21 @@ export default function Account() {
       const { data } = await supabase.auth.getSession();
       if (!active) return;
       setSession(data.session);
-      if (data.session) loadProfile(data.session);
-      setLoading(false);
+      if (data.session) await loadProfile(data.session);
+      else setLoading(false);
     }
     loadSession();
     const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      if (nextSession) loadProfile(nextSession);
-      else setProfile(null);
+      if (nextSession) {
+        setLoading(true);
+        loadProfile(nextSession);
+      } else {
+        setProfile(null);
+        setOwnerApplication(null);
+        setReferralEvents([]);
+        setLoading(false);
+      }
     });
     return () => {
       active = false;
@@ -80,6 +87,7 @@ export default function Account() {
     if (data) {
       setProfile(data);
       window.localStorage.setItem("innovatech-referral-code", data.referral_code);
+      setLoading(false);
       return;
     }
     const key = `innovatech-referral-code-${userId}`;
@@ -87,6 +95,7 @@ export default function Account() {
     window.localStorage.setItem(key, saved);
     window.localStorage.setItem("innovatech-referral-code", saved);
     setLocalCode(saved);
+    setLoading(false);
   }
 
   function updateField(event) {
@@ -170,21 +179,42 @@ export default function Account() {
 
   const code = profile?.referral_code || localCode;
   const name = profile?.full_name || session?.user?.user_metadata?.full_name || "Innovatech member";
+  const isStoreOwner = ownerApplication?.status === "approved"
+    || ownerApplication?.status === "pending"
+    || session?.user?.user_metadata?.account_type === "store_owner";
   const referralLink = code ? `${window.location.origin}/consult?request=purchase_trace&ref=${encodeURIComponent(code)}` : `${window.location.origin}/consult?request=purchase_trace`;
 
   return (
     <main id="main-content">
       <PageHero
         image="/images/hero-home.jpg"
-        eyebrow="Your Innovatech account"
-        title="Keep your referrals and conversations accountable."
-        subtitle="Create one simple account so your referral code belongs to you, your activity is easier to track and support can recognise you."
+        eyebrow={isStoreOwner ? "Your store-owner account" : "Your Innovatech account"}
+        title={isStoreOwner ? "Run your store from one place." : "Keep your referrals and conversations accountable."}
+        subtitle={isStoreOwner ? "Manage your approved store, products and listing activity without the buyer referral tools." : "Create one simple account so your referral code belongs to you, your activity is easier to track and support can recognise you."}
       />
 
       <section className="section">
         <div className="container">
           {loading ? <p>Loading account...</p> : session ? (
-            <div className="account-dashboard">
+            isStoreOwner ? <div className="account-dashboard account-dashboard--owner">
+              <Reveal className="account-main-card">
+                <div className="account-welcome"><span className="account-avatar"><FaUserCircle /></span><div><span className="eyebrow">Store-owner account</span><h2>Welcome, {name}</h2><p>Your business account is separate from the customer referral experience.</p></div></div>
+                {message && <p className="seller-message seller-message--success"><FaCheckCircle /> {message}</p>}
+                <div className="owner-application-card">
+                  <div><span className="eyebrow">Your store</span><h3>{ownerApplication?.business_name || session.user.user_metadata?.business_name || "Store application"}</h3><p>{ownerApplication?.category || session.user.user_metadata?.business_category || "Marketplace store"} Â· {ownerApplication?.location || session.user.user_metadata?.business_location || "Location pending"}</p></div>
+                  <span className={`admin-status admin-status--${ownerApplication?.status || "pending"}`}>{ownerApplication?.status || "pending"}</span>
+                  {ownerApplication?.status === "approved" && <Link to="/admin/seller" className="btn btn--primary">Open seller workspace <FaArrowRight /></Link>}
+                  {ownerApplication?.status === "pending" && <small>Innovatech is reviewing your store before listings can go live.</small>}
+                  {ownerApplication?.status === "rejected" && <small>{ownerApplication.review_note || "Please contact Innovatech to update the application."}</small>}
+                </div>
+                <div className="account-detail-list"><div><span>Email</span><strong>{session.user.email}</strong></div><div><span>Phone / WhatsApp</span><strong>{profile?.phone || session.user.user_metadata?.phone || "Add it when you contact us"}</strong></div></div>
+              </Reveal>
+              <Reveal className="account-side-card account-side-card--owner" delay={0.1}>
+                <span className="feature-icon"><FaShieldAlt /></span><h3>Store-owner tools</h3><ul className="checklist"><li>Post and update product listings</li><li>Manage prices and Fast Deals</li><li>Keep your store information accurate</li></ul>
+                {ownerApplication?.status === "approved" && <Link to="/admin/seller" className="btn btn--secondary">Go to seller workspace <FaArrowRight /></Link>}
+                <button className="account-signout" onClick={signOut}><FaSignOutAlt /> Sign out</button>
+              </Reveal>
+            </div> : <div className="account-dashboard">
               <Reveal className="account-main-card">
                 <div className="account-welcome"><span className="account-avatar"><FaUserCircle /></span><div><span className="eyebrow">Member account</span><h2>Welcome, {name}</h2><p>Your account keeps your referral identity connected to your activity.</p></div></div>
                 <div className="account-code-card">

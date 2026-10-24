@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaBars, FaTimes, FaShieldAlt, FaUserCircle, FaWhatsapp } from "react-icons/fa";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { supabase } from "../lib/supabaseClient";
 
 const NAV_LINKS = [
   { to: "/", key: "home", end: true },
@@ -17,21 +18,45 @@ const NAV_LINKS = [
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, scrolled: false };
+    this.state = { menuOpen: false, scrolled: false, storeOwnerMode: false };
     this.menuButtonRef = React.createRef();
     this.handleScroll = this.handleScroll.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
     this.handleMobileKeyDown = this.handleMobileKeyDown.bind(this);
+    this.syncAccountMode = this.syncAccountMode.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScroll();
+    supabase.auth.getSession().then(({ data }) => this.syncAccountMode(data.session));
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      window.setTimeout(() => this.syncAccountMode(session), 0);
+    });
+    this.authSubscription = data.subscription;
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+    this.authSubscription?.unsubscribe();
+  }
+
+  async syncAccountMode(session) {
+    if (!session) {
+      this.setState({ storeOwnerMode: false });
+      return;
+    }
+    if (session.user.user_metadata?.account_type === "store_owner") {
+      this.setState({ storeOwnerMode: true });
+      return;
+    }
+    const { data } = await supabase
+      .from("store_owner_applications")
+      .select("status")
+      .eq("user_id", session.user.id)
+      .maybeSingle();
+    this.setState({ storeOwnerMode: data?.status === "approved" || data?.status === "pending" });
   }
 
   handleScroll() {
@@ -58,8 +83,11 @@ class Navbar extends React.Component {
   }
 
   render() {
-    const { menuOpen, scrolled } = this.state;
+    const { menuOpen, scrolled, storeOwnerMode } = this.state;
     const { t } = this.props;
+    const navLinks = storeOwnerMode
+      ? [{ to: "/admin/seller", label: "Seller workspace" }]
+      : NAV_LINKS.map((link) => ({ ...link, label: t(`nav.${link.key}`) }));
 
     return (
       <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
@@ -67,37 +95,37 @@ class Navbar extends React.Component {
           <Logo />
 
           <nav className="navbar-links" aria-label="Primary">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 end={Boolean(link.end)}
                 className={({ isActive }) => `navbar-link ${isActive ? "navbar-link--active" : ""}`}
               >
-                {t(`nav.${link.key}`)}
+                {link.label}
               </NavLink>
             ))}
           </nav>
 
           <div className="navbar-actions">
             <LanguageSwitcher />
-            <NavLink to="/admin/login" className="navbar-admin-link">
+            {!storeOwnerMode && <NavLink to="/admin/login" className="navbar-admin-link">
               <FaShieldAlt aria-hidden="true" /> Admin sign in
-            </NavLink>
+            </NavLink>}
             <NavLink to="/account" className="btn btn--ghost navbar-account">
-              <FaUserCircle aria-hidden="true" /> {t("nav.account", "Account")}
+              <FaUserCircle aria-hidden="true" /> {storeOwnerMode ? "Store account" : t("nav.account", "Account")}
             </NavLink>
-            <a
+            {!storeOwnerMode && <a
               href="https://wa.me/237651162373"
               target="_blank"
               rel="noreferrer"
               className="btn btn--ghost navbar-whatsapp"
             >
               <FaWhatsapp aria-hidden="true" /> {t("nav.whatsappUs")}
-            </a>
-            <NavLink to="/consult" className="btn btn--primary">
+            </a>}
+            {!storeOwnerMode && <NavLink to="/consult" className="btn btn--primary">
               {t("nav.consult")}
-            </NavLink>
+            </NavLink>}
           </div>
 
           <button
@@ -125,7 +153,7 @@ class Navbar extends React.Component {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               aria-label="Mobile"
             >
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
@@ -133,34 +161,34 @@ class Navbar extends React.Component {
                   onClick={this.closeMenu}
                   className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
                 >
-                  {t(`nav.${link.key}`)}
+                  {link.label}
                 </NavLink>
               ))}
-              <NavLink
+              {!storeOwnerMode && <NavLink
                 to="/refer"
                 onClick={this.closeMenu}
                 className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
               >
                 {t("nav.refer", "Refer & Earn")}
-              </NavLink>
+              </NavLink>}
               <NavLink
                 to="/account"
                 onClick={this.closeMenu}
                 className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
               >
-                <FaUserCircle /> {t("nav.account", "Account")}
+                <FaUserCircle /> {storeOwnerMode ? "Store account" : t("nav.account", "Account")}
               </NavLink>
-              <NavLink
+              {!storeOwnerMode && <NavLink
                 to="/admin/login"
                 onClick={this.closeMenu}
                 className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
               >
                 <FaShieldAlt /> Admin sign in
-              </NavLink>
+              </NavLink>}
               <LanguageSwitcher className="lang-switch--mobile" />
-              <NavLink to="/consult" onClick={this.closeMenu} className="btn btn--primary navbar-mobile-cta">
+              {!storeOwnerMode && <NavLink to="/consult" onClick={this.closeMenu} className="btn btn--primary navbar-mobile-cta">
                 {t("nav.consult")}
-              </NavLink>
+              </NavLink>}
             </motion.nav>
           )}
         </AnimatePresence>
