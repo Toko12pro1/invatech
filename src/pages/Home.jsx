@@ -106,9 +106,9 @@ class Home extends BasePage {
 
         <section className="stats-bar">
           <div className="container stats-grid">
-            <StatCounter value={3} label={t("home.stats.years")} />
-            <StatCounter value={4200} label={t("home.stats.devicesRepaired")} suffix="+" />
-            <StatCounter value={3100} label={t("home.stats.happyClients")} suffix="+" />
+            <StatCounter value={1} label={t("home.stats.years")} />
+            <StatCounter value={50} label={t("home.stats.devicesRepaired")} suffix="+" />
+            <StatCounter value={50} label={t("home.stats.happyClients")} suffix="+" />
             <StatCounter value={1} label={t("home.stats.schoolPlatform")} suffix="" />
           </div>
         </section>
