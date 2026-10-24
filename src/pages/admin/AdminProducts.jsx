@@ -331,7 +331,7 @@ export default class AdminProducts extends React.Component {
 
                 <label className="form-row form-row--checkbox"><span><input type="checkbox" name="negotiable" checked={Boolean(form.negotiable)} onChange={this.handleChange} /> Price is negotiable</span></label>
                 <label className="form-row form-row--checkbox"><span><input type="checkbox" name="fast_deal" checked={Boolean(form.fast_deal)} onChange={this.handleChange} /> Mark as Fast Deal</span></label>
-                {form.fast_deal && <div className="admin-form-grid"><div className="form-row"><label>Fast Deal reason</label><input name="fast_deal_note" value={form.fast_deal_note} onChange={this.handleChange} placeholder="Why is this price urgent?" /></div><div className="form-row"><label>Deal ends</label><input name="fast_deal_expires_at" type="date" value={form.fast_deal_expires_at} onChange={this.handleChange} required /></div></div>}
+                {form.fast_deal && <div className="admin-form-grid"><div className="form-row"><label>Deal ends</label><input name="fast_deal_expires_at" type="date" value={form.fast_deal_expires_at} onChange={this.handleChange} required /></div></div>}
 
                 <div className="admin-form-grid">
                   <div className="form-row">

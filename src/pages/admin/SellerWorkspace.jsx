@@ -56,6 +56,7 @@ export default class SellerWorkspace extends React.Component {
       stores: PARTNER_STORES,
       loading: true,
       usingDemo: false,
+      isAdmin: false,
       ownerMode: false,
       ownerApplication: null,
       selectedIds: [],
@@ -107,17 +108,22 @@ export default class SellerWorkspace extends React.Component {
     await supabase.rpc("deactivate_expired_fast_deals");
     const { data: userResult } = await supabase.auth.getUser();
     const user = userResult?.user;
+    const { data: adminResult } = user
+      ? await supabase.rpc("is_admin")
+      : { data: false };
+    const isAdmin = adminResult === true;
     const { data: ownerApplication } = user
       ? await supabase.from("store_owner_applications").select("*").eq("user_id", user.id).maybeSingle()
       : { data: null };
-    const ownerMode = ownerApplication?.status === "approved";
+    const ownerMode = !isAdmin && ownerApplication?.status === "approved";
 
-    if (ownerApplication && !ownerMode) {
+    if (!isAdmin && ownerApplication && !ownerMode) {
       this.setState({
         products: [],
         stores: [],
         loading: false,
         usingDemo: false,
+        isAdmin,
         ownerMode: true,
         ownerApplication,
         selectedIds: [],
@@ -145,7 +151,7 @@ export default class SellerWorkspace extends React.Component {
 
     if (error || storesError) {
       if (ownerMode) {
-        this.setState({ products: [], stores: liveStores, loading: false, usingDemo: false, ownerMode: true, ownerApplication, selectedIds: [], draftPrices: {}, error: error?.message || storesError?.message || "We could not load your store workspace." });
+        this.setState({ products: [], stores: liveStores, loading: false, usingDemo: false, isAdmin, ownerMode: true, ownerApplication, selectedIds: [], draftPrices: {}, error: error?.message || storesError?.message || "We could not load your store workspace." });
         return;
       }
       const localProducts = this.getLocalRows();
@@ -157,6 +163,7 @@ export default class SellerWorkspace extends React.Component {
         stores: liveStores,
         loading: false,
         usingDemo: true,
+        isAdmin,
         ownerMode: false,
         ownerApplication: null,
         selectedIds: [],
@@ -171,6 +178,7 @@ export default class SellerWorkspace extends React.Component {
       stores: liveStores,
       loading: false,
       usingDemo: false,
+      isAdmin,
       ownerMode,
       ownerApplication,
       selectedIds: [],
@@ -265,13 +273,14 @@ export default class SellerWorkspace extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const { form, usingDemo, products } = this.state;
+    const { form, usingDemo, products, isAdmin } = this.state;
     if (!form.image_url) {
       this.setState({ error: "Add one clear product photo first." });
       return;
     }
 
     this.setState({ saving: true, error: "", notice: "" });
+    const canPublishImmediately = usingDemo || isAdmin;
     const payload = {
       name_en: form.name_en,
       name_fr: form.name_fr || form.name_en,
@@ -286,9 +295,9 @@ export default class SellerWorkspace extends React.Component {
       fast_deal_note: form.fast_deal_note || null,
       fast_deal_expires_at: form.fast_deal && form.fast_deal_expires_at ? `${form.fast_deal_expires_at}T23:59:59Z` : null,
       fast_deal_expired_at: form.fast_deal ? null : undefined,
-      verification_status: usingDemo ? "verified" : "pending",
-      listing_status: usingDemo ? "approved" : "pending",
-      active: usingDemo ? true : false,
+      verification_status: canPublishImmediately ? "verified" : "pending",
+      listing_status: canPublishImmediately ? "approved" : "pending",
+      active: canPublishImmediately,
       sort_order: products.length + 1,
     };
 
@@ -310,7 +319,13 @@ export default class SellerWorkspace extends React.Component {
       this.setState({ saving: false, error: error.message });
       return;
     }
-    this.setState({ saving: false, formVisible: false, notice: form.id ? "Product updated." : "Product sent for Innovatech review." });
+    this.setState({
+      saving: false,
+      formVisible: false,
+      notice: form.id
+        ? (isAdmin ? "Product published." : "Product updated.")
+        : (isAdmin ? "Product published and visible in the shop." : "Product sent for Innovatech review."),
+    });
     this.loadData();
   }
 
@@ -424,7 +439,7 @@ export default class SellerWorkspace extends React.Component {
   }
 
   render() {
-    const { products, stores, loading, ownerMode, ownerApplication, selectedIds, bulkMode, bulkValue, formVisible, form, uploading, saving, error, notice } = this.state;
+    const { products, stores, loading, isAdmin, ownerMode, ownerApplication, selectedIds, bulkMode, bulkValue, formVisible, form, uploading, saving, error, notice } = this.state;
     if (!loading && ownerMode && ownerApplication?.status !== "approved") {
       return (
         <div className="seller-workspace">
@@ -443,7 +458,7 @@ export default class SellerWorkspace extends React.Component {
           <div>
             <span className="eyebrow">Seller workspace</span>
             <h1>{ownerMode ? "Manage your store products simply." : "Manage your products simply."}</h1>
-            <p>{ownerMode ? "Your listings are linked to your approved store and remain hidden until Innovatech reviews them." : "Take a photo, add a clear price and let Innovatech help verify, negotiate and present it properly."}</p>
+            <p>{ownerMode ? "Your listings are linked to your approved store and remain hidden until Innovatech reviews them." : isAdmin ? "Publish trusted listings directly and keep the marketplace current." : "Take a photo, add a clear price and let Innovatech help verify, negotiate and present it properly."}</p>
           </div>
           <button className="btn btn--primary" onClick={this.openCreate}><FaPlus /> Post a product</button>
         </div>
@@ -451,7 +466,7 @@ export default class SellerWorkspace extends React.Component {
         <div className="seller-trust-strip">
           <div><FaCamera /><span><strong>Photo first</strong>Use your phone camera to add a product in seconds.</span></div>
           <div><FaTools /><span><strong>Consult us</strong>We can analyse a product or repair before the customer pays.</span></div>
-          <div><FaShieldAlt /><span><strong>Review before publish</strong>Innovatech checks the listing and supports the conversation.</span></div>
+          <div><FaShieldAlt /><span><strong>{isAdmin ? "Publish with control" : "Review before publish"}</strong>{isAdmin ? "Your admin listings go live immediately and remain editable." : "Innovatech checks the listing and supports the conversation."}</span></div>
         </div>
 
         <div className="seller-stats">
@@ -521,10 +536,10 @@ export default class SellerWorkspace extends React.Component {
                 <div className="form-row"><label>Store</label><select name="store_id" value={form.store_id} onChange={this.handleChange}><option value="">Innovatech will connect this listing during review</option>{stores.map((store) => <option key={store.id} value={store.id}>{store.name}</option>)}</select></div>
                 <label className="seller-negotiable-toggle"><input type="checkbox" name="negotiable" checked={form.negotiable} onChange={this.handleChange} /><span><strong>Price is negotiable</strong><small>Innovatech can help discuss a fair price with the customer.</small></span></label>
                 <label className="seller-fast-deal-toggle"><input type="checkbox" name="fast_deal" checked={form.fast_deal} onChange={this.handleChange} /><span><strong>Mark as Fast Deal</strong><small>Use this when the seller needs a quick sale or the price is below the usual market price.</small></span></label>
-                {form.fast_deal && <div className="seller-form-grid seller-fast-deal-fields"><div className="form-row"><label>Why is it a Fast Deal?</label><input name="fast_deal_note" value={form.fast_deal_note} onChange={this.handleChange} placeholder="e.g. Seller needs cash urgently" /></div><div className="form-row"><label>Deal ends</label><input name="fast_deal_expires_at" type="date" value={form.fast_deal_expires_at} onChange={this.handleChange} required /></div></div>}
-                {!this.state.usingDemo && <p className="seller-review-note"><FaShieldAlt /> New listings stay hidden until Innovatech reviews them.</p>}
+                {form.fast_deal && <div className="seller-form-grid seller-fast-deal-fields"><div className="form-row"><label>Deal ends</label><input name="fast_deal_expires_at" type="date" value={form.fast_deal_expires_at} onChange={this.handleChange} required /></div></div>}
+                {!this.state.usingDemo && !isAdmin && <p className="seller-review-note"><FaShieldAlt /> New listings stay hidden until Innovatech reviews them.</p>}
                 {error && <p className="form-error">{error}</p>}
-                <div className="form-actions"><button type="submit" className="btn btn--primary" disabled={saving || uploading}><FaSave /> {uploading ? "Uploading photo..." : saving ? "Saving..." : form.id ? "Save changes" : "Send for review"}</button><button type="button" className="btn btn--ghost" onClick={this.closeForm}>Cancel</button></div>
+                <div className="form-actions"><button type="submit" className="btn btn--primary" disabled={saving || uploading}><FaSave /> {uploading ? "Uploading photo..." : saving ? "Saving..." : form.id ? "Save changes" : isAdmin ? "Publish product" : "Send for review"}</button><button type="button" className="btn btn--ghost" onClick={this.closeForm}>Cancel</button></div>
               </form>
             </div>
           </div>
