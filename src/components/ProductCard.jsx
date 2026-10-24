@@ -74,7 +74,7 @@ class ProductCard extends React.Component {
 
     return (
       <Reveal delay={index * 0.06} className="product-card-wrap">
-        <motion.article id={`product-${product.id}`} className={`product-card ${highlighted ? "product-card--highlighted" : ""}`} whileHover={{ y: -6 }}>
+        <motion.article id={`product-${product.id}`} className={`product-card ${highlighted ? "product-card--highlighted" : ""}`} whileHover={{ y: -4 }} transition={{ duration: 0.18, ease: "easeOut" }}>
           <div className="product-card-image">
             <img src={product.image} alt={name} loading="lazy" />
             {product.badge && (

@@ -13,8 +13,8 @@ class ServiceCard extends React.Component {
       <Reveal delay={index * 0.08} className="service-card-wrap">
         <motion.article
           className={`service-card ${detailed ? "service-card--detailed" : ""}`}
-          whileHover={{ y: -8 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          whileHover={{ y: -4 }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
         >
           <div className="service-card-image">
             <img src={service.image} alt="" loading="lazy" />
