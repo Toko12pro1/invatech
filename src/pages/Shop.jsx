@@ -58,7 +58,7 @@ class Shop extends BasePage {
     await supabase.rpc("deactivate_expired_fast_deals");
     const { data, error } = await supabase
       .from("products")
-      .select("*, stores(name, location)")
+      .select("*, stores(name, location, whatsapp)")
       .eq("active", true)
       .order("sort_order");
     if (error || !data?.length) {

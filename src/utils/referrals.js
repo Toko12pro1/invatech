@@ -56,9 +56,14 @@ export function getStoredReferralCode() {
 }
 
 export function buildProductShareLink(productId, referralCode = getStoredReferralCode()) {
-  const params = new URLSearchParams();
-  if (productId) params.set("productId", productId);
-  if (referralCode) params.set("ref", String(referralCode).trim().toUpperCase());
-  const path = `/shop${params.toString() ? `?${params.toString()}` : ""}`;
+  const productPath = productId ? `/share/product/${encodeURIComponent(productId)}` : "/shop";
+  const path = `${productPath}${referralCode ? `?ref=${encodeURIComponent(String(referralCode).trim().toUpperCase())}` : ""}`;
+  return typeof window === "undefined" ? path : `${window.location.origin}${path}`;
+}
+
+export function buildStoreShareLink(storeId, referralCode = getStoredReferralCode()) {
+  if (!storeId) return typeof window === "undefined" ? "/stores" : `${window.location.origin}/stores`;
+  const referral = referralCode ? `?ref=${encodeURIComponent(String(referralCode).trim().toUpperCase())}` : "";
+  const path = `/share/store/${encodeURIComponent(storeId)}${referral}`;
   return typeof window === "undefined" ? path : `${window.location.origin}${path}`;
 }

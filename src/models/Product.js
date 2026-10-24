@@ -14,6 +14,7 @@ export default class Product {
     this.listingStatus = row.listing_status || "approved";
     this.storeId = row.store_id || null;
     this.storeName = row.store_name || "Innovatech Verified Hub";
+    this.storeWhatsapp = row.store_whatsapp || row.whatsapp || null;
     this.storeLocation = row.store_location || "Yaoundé, Cameroon";
     this.verificationStatus = row.verification_status || "verified";
     this.verificationLevel = row.verification_level || (this.verificationStatus === "verified" ? "store_reviewed" : "seller_listed");
@@ -70,6 +71,7 @@ export default class Product {
       store_id: this.storeId,
       store_name: this.storeName,
       store_location: this.storeLocation,
+      store_whatsapp: this.storeWhatsapp,
       verification_status: this.verificationStatus,
       verification_level: this.verificationLevel,
       verification_scope: this.verificationScope,

@@ -137,7 +137,7 @@ export default class SellerWorkspace extends React.Component {
       : supabase.from("stores").select("*").eq("active", true).order("name");
     const { data: storesData, error: storesError } = await storesQuery;
     const ownerStoreIds = (storesData || []).map((store) => store.id);
-    let productsQuery = supabase.from("products").select("*, stores(name, location)").order("sort_order");
+    let productsQuery = supabase.from("products").select("*, stores(name, location, whatsapp)").order("sort_order");
     if (ownerMode) productsQuery = productsQuery.in("store_id", ownerStoreIds.length ? ownerStoreIds : ["00000000-0000-0000-0000-000000000000"]);
     const { data, error } = await productsQuery;
 

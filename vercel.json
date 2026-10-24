@@ -1,4 +1,8 @@
 {
   "crons": [{ "path": "/api/keep-alive", "schedule": "15 2 * * *" }],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/share/product/:id", "destination": "/api/share?type=product&id=:id" },
+    { "source": "/share/store/:id", "destination": "/api/share?type=store&id=:id" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

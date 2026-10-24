@@ -17,7 +17,7 @@ import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import { whatsappLink } from "../data/marketplace";
 import { supabase } from "../lib/supabaseClient";
-import { buildProductShareLink, getStoredReferralCode, rememberReferralAttribution } from "../utils/referrals";
+import { buildProductShareLink, buildStoreShareLink, getStoredReferralCode, rememberReferralAttribution } from "../utils/referrals";
 import { validateImageFile } from "../utils/fileValidation";
 
 const LEGAL_VERSION = "2026-10-21";
@@ -61,6 +61,7 @@ const INITIAL_FORM = {
   phone: "",
   productName: "",
   productId: "",
+  storeId: "",
   productLink: "",
   sellerName: "",
   city: "Yaoundé",
@@ -93,6 +94,7 @@ export default function Consultation() {
     const params = new URLSearchParams(window.location.search);
     const product = params.get("product");
     const productId = params.get("productId") || "";
+    const storeId = params.get("storeId") || "";
     const request = params.get("request");
     const referralCode = params.get("ref") || "";
     const stage = params.get("stage");
@@ -103,6 +105,7 @@ export default function Consultation() {
         ...current,
         productName: product || current.productName,
         productId: productId || current.productId,
+        storeId: storeId || current.storeId,
         productLink: productId ? buildProductShareLink(productId) : current.productLink,
         requestType: REQUEST_TYPES.some((item) => item.id === request) ? request : current.requestType,
         referralCode: referralCode || current.referralCode || storedReferralCode,
@@ -172,6 +175,7 @@ export default function Consultation() {
     const referralCode = isFreeNegotiation ? null : form.referralCode.trim().toUpperCase() || getStoredReferralCode() || null;
     const hasReferral = Boolean(referralCode);
     const productLink = form.productLink || (form.productId ? buildProductShareLink(form.productId) : null);
+    const storeLink = form.storeId ? buildStoreShareLink(form.storeId, null) : null;
     const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
     const trackingReference = makeTrackingReference();
     const message = `Hi Innovatech, I would like an Innovatech Check.
@@ -183,6 +187,7 @@ Product or service: ${form.productName || "Not specified"}
 Seller / store: ${form.sellerName || "Not specified"}
 City: ${form.city || "Not specified"}
 Link: ${productLink || "No link"}
+Store page: ${storeLink || "No linked store page"}
 Details: ${form.notes || "I will explain in the chat."}
 Referral code: ${isFreeNegotiation ? "Not counted for negotiation" : form.referralCode || "None"}
 Photo: ${photoName ? `${photoName} (I will send it in this WhatsApp chat)` : "I will send a photo in this chat if needed."}

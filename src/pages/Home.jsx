@@ -39,7 +39,7 @@ class Home extends BasePage {
   async loadFeaturedProducts() {
     const { data, error } = await supabase
       .from("products")
-      .select("*, stores(name, location)")
+      .select("*, stores(name, location, whatsapp)")
       .eq("active", true)
       .order("sort_order")
       .limit(3);

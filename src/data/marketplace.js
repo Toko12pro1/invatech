@@ -196,16 +196,18 @@ export const TEAM_MEMBER_WORK = [
 ];
 
 export function toMarketplaceProduct(row, index = 0) {
-  const fallbackStore = PARTNER_STORES[index % PARTNER_STORES.length];
   const relatedStoreValue = row.stores || row.store;
   const relatedStore = Array.isArray(relatedStoreValue) ? relatedStoreValue[0] : relatedStoreValue;
+  const databaseProductId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(row.id || ""));
+  const fallbackStore = databaseProductId ? null : PARTNER_STORES[index % PARTNER_STORES.length];
   const store = PARTNER_STORES.find((item) => item.id === row.store_id) || relatedStore || fallbackStore;
 
   return new Product({
     ...row,
-    store_id: row.store_id || store.id,
-    store_name: repairMojibake(row.store_name || store.name),
-    store_location: repairMojibake(row.store_location || store.location),
+    store_id: row.store_id || null,
+    store_name: repairMojibake(row.store_name || store?.name || "Innovatech Verified Hub"),
+    store_location: repairMojibake(row.store_location || store?.location || "YaoundÃ©, Cameroon"),
+    store_whatsapp: row.store_whatsapp || store?.whatsapp || null,
     verification_status: row.verification_status || "verified",
   });
 }

@@ -31,6 +31,8 @@ import AdminStoreOwnerApplications from "./pages/admin/AdminStoreOwnerApplicatio
 import MetaPixelTracker from "./components/MetaPixelTracker";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import ProductSharePage from "./pages/ProductSharePage";
+import StoreSharePage from "./pages/StoreSharePage";
 
 class PublicLayout extends React.Component {
   render() {
@@ -57,6 +59,8 @@ export default class App extends React.Component {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/product/:id" element={<ProductSharePage />} />
+            <Route path="/store/:id" element={<StoreSharePage />} />
             <Route path="/fast-deals" element={<Shop initialCategory="Fast Deals" />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/refer" element={<Refer />} />

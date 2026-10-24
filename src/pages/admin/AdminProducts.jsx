@@ -232,6 +232,7 @@ export default class AdminProducts extends React.Component {
                   <th></th>
                   <th>Name</th>
                   <th>Category</th>
+                  <th>Store</th>
                   <th>Price</th>
                   <th>Condition</th>
                   <th>Badge</th>
@@ -246,6 +247,7 @@ export default class AdminProducts extends React.Component {
                     <td><img src={product.image} alt="" className="admin-table-thumb" /></td>
                     <td>{product.nameEn}</td>
                     <td>{product.category}</td>
+                    <td>{product.storeId ? product.storeName : <span className="admin-unlinked-store">No store linked</span>}</td>
                     <td>
                       {product.formatPrice()}
                       {product.isOnSale && <span className="admin-table-old"> {product.formatPrice(product.oldPrice)}</span>}
