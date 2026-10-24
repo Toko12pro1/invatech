@@ -488,6 +488,7 @@ p {
 .hero-title {
   max-width: 680px;
   margin-bottom: 20px;
+  color: var(--color-white);
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
@@ -499,11 +500,36 @@ p {
   text-wrap: pretty;
 }
 
-.hero-actions {
+.hero-paths {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 720px;
+  margin-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.32);
+}
+
+.hero-path {
+  min-height: 68px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 24px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  color: var(--color-white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-path + .hero-path {
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.hero-path:hover {
+  color: var(--color-yellow);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }
 
 /* Page hero (inner pages) */
@@ -3665,6 +3691,9 @@ p {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .cta-banner-inner { flex-direction: column; align-items: flex-start; text-align: left; }
   .hero { min-height: 72vh; }
+  .hero-paths { grid-template-columns: 1fr; }
+  .hero-path + .hero-path { border-left: 0; border-top: 1px solid rgba(255, 255, 255, 0.22); }
+  .hero-path { min-height: 56px; padding: 14px 0; }
   .marketplace-intro-header,
   .portfolio-intro { grid-template-columns: 1fr; display: grid; gap: 20px; align-items: start; }
   .marketplace-trust-panel { padding: 28px 22px; }

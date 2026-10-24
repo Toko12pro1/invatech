@@ -9,8 +9,6 @@ import LanguageSwitcher from "./LanguageSwitcher";
 const NAV_LINKS = [
   { to: "/", key: "home", end: true },
   { to: "/shop", key: "shop" },
-  { to: "/fast-deals", key: "fastDeals" },
-  { to: "/stores", key: "stores" },
   { to: "/achievements", key: "achievements" },
   { to: "/services", key: "services" },
   { to: "/contact", key: "contact" },
@@ -20,9 +18,11 @@ class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { menuOpen: false, scrolled: false };
+    this.menuButtonRef = React.createRef();
     this.handleScroll = this.handleScroll.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+    this.handleMobileKeyDown = this.handleMobileKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +45,16 @@ class Navbar extends React.Component {
 
   closeMenu() {
     this.setState({ menuOpen: false });
+  }
+
+  handleMobileKeyDown(event) {
+    if (event.key === "Escape") this.closeMenu();
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.menuOpen && !this.state.menuOpen) {
+      window.requestAnimationFrame(() => this.menuButtonRef.current?.focus());
+    }
   }
 
   render() {
@@ -82,14 +92,15 @@ class Navbar extends React.Component {
             >
               <FaWhatsapp aria-hidden="true" /> {t("nav.whatsappUs")}
             </a>
-            <NavLink to="/contact" className="btn btn--primary">
-              {t("nav.getQuote")}
+            <NavLink to="/consult" className="btn btn--primary">
+              {t("nav.consult")}
             </NavLink>
           </div>
 
           <button
             type="button"
             className="navbar-burger"
+            ref={this.menuButtonRef}
             onClick={this.toggleMenu}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
@@ -104,6 +115,7 @@ class Navbar extends React.Component {
             <motion.nav
               id="mobile-navigation"
               className="navbar-mobile"
+              onKeyDown={this.handleMobileKeyDown}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -136,8 +148,8 @@ class Navbar extends React.Component {
                 <FaUserCircle /> {t("nav.account", "Account")}
               </NavLink>
               <LanguageSwitcher className="lang-switch--mobile" />
-              <NavLink to="/contact" onClick={this.closeMenu} className="btn btn--primary navbar-mobile-cta">
-                {t("nav.getQuote")}
+              <NavLink to="/consult" onClick={this.closeMenu} className="btn btn--primary navbar-mobile-cta">
+                {t("nav.consult")}
               </NavLink>
             </motion.nav>
           )}

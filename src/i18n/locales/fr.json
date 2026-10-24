@@ -12,7 +12,6 @@
     "consult": "Demander conseil",
     "wifiZone": "Zone WiFi",
     "contact": "Contact",
-    "getQuote": "Demander un Devis",
     "whatsappUs": "Nous Écrire sur WhatsApp"
   },
   "footer": {
@@ -46,9 +45,14 @@
   "home": {
     "hero": {
       "eyebrow": "Innovatech Engineering Solutions",
-      "title": "Nous Réparons, Construisons et Vendons la Technologie qui Fait Tourner le Cameroun",
-      "subtitle": "Réparation de téléphones et d'électronique, vente d'appareils vérifiés et développement de logiciels sur mesure — le tout au sein d'une seule équipe d'ingénieurs. Fière société mère de <1>Skolar</1>.",
-      "exploreServices": "Découvrir Nos Services"
+      "title": "Réparez, achetez ou construisez en toute confiance.",
+      "subtitle": "Une équipe d'ingénierie locale pour réparer vos appareils, vérifier vos achats et créer des logiciels utiles. Fière société mère de <1>Skolar</1>.",
+      "choosePath": "Choisissez votre besoin",
+      "paths": {
+        "repair": "Réparer un appareil",
+        "shop": "Acheter un appareil vérifié",
+        "consult": "Demander conseil"
+      }
     },
     "promo": {
       "eyebrow": "Découvrez-Nous en Action",

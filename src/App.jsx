@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -47,9 +48,10 @@ class PublicLayout extends React.Component {
 export default class App extends React.Component {
   render() {
     return (
-      <BrowserRouter>
-        <MetaPixelTracker />
-        <Routes>
+      <MotionConfig reducedMotion="user">
+        <BrowserRouter>
+          <MetaPixelTracker />
+          <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -98,8 +100,9 @@ export default class App extends React.Component {
             <Route path="wifi-packages" element={<AdminWifiPackages />} />
             <Route path="vouchers" element={<AdminVouchers />} />
           </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </MotionConfig>
     );
   }
 }

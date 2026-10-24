@@ -82,21 +82,30 @@ class Home extends BasePage {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Trans i18nKey="home.hero.subtitle" t={t}>
-                Phone and electronics repair, verified device sales, and custom software
-                development — all under one engineering team. Proud parent company of
-                <strong>Skolar</strong>.
+                A local engineering team for device repairs, verified electronics and
+                practical software. Proud parent company of <strong>Skolar</strong>.
               </Trans>
             </motion.p>
-            <motion.div
-              className="hero-actions"
+            <motion.nav
+              className="hero-paths"
+              aria-label={t("home.hero.choosePath")}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <Link to="/services" className="btn btn--primary">
-                {t("home.hero.exploreServices")} <FaArrowRight aria-hidden="true" />
+              <Link to="/services" className="hero-path">
+                <span>{t("home.hero.paths.repair")}</span>
+                <FaArrowRight aria-hidden="true" />
               </Link>
-            </motion.div>
+              <Link to="/shop" className="hero-path">
+                <span>{t("home.hero.paths.shop")}</span>
+                <FaArrowRight aria-hidden="true" />
+              </Link>
+              <Link to="/consult" className="hero-path">
+                <span>{t("home.hero.paths.consult")}</span>
+                <FaArrowRight aria-hidden="true" />
+              </Link>
+            </motion.nav>
           </div>
         </section>
 

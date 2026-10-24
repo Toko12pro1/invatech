@@ -12,7 +12,6 @@
     "consult": "Ask a Consultant",
     "wifiZone": "WiFi Zone",
     "contact": "Contact",
-    "getQuote": "Get a Quote",
     "whatsappUs": "WhatsApp Us"
   },
   "footer": {
@@ -46,9 +45,14 @@
   "home": {
     "hero": {
       "eyebrow": "Innovatech Engineering Solutions",
-      "title": "We Repair, Build & Sell the Technology Cameroon Runs On",
-      "subtitle": "Phone and electronics repair, verified device sales, and custom software development — all under one engineering team. Proud parent company of <1>Skolar</1>.",
-      "exploreServices": "Explore Our Services"
+      "title": "Repair, buy or build with confidence.",
+      "subtitle": "A local engineering team for device repairs, verified electronics and practical software. Proud parent company of <1>Skolar</1>.",
+      "choosePath": "Choose what you need",
+      "paths": {
+        "repair": "Repair a device",
+        "shop": "Buy a verified device",
+        "consult": "Ask a consultant"
+      }
     },
     "promo": {
       "eyebrow": "See Us In Action",
