@@ -20,6 +20,7 @@ import ProductCard from "../components/ProductCard";
 import { supabase } from "../lib/supabaseClient";
 import { getDemoProducts, PARTNER_STORES, toMarketplaceProduct, whatsappLink } from "../data/marketplace";
 import { SHOP_CATEGORIES } from "../data/catalog";
+import { rememberReferralAttribution } from "../utils/referrals";
 
 const CATEGORIES = SHOP_CATEGORIES;
 
@@ -36,6 +37,7 @@ class Shop extends BasePage {
       minPrice: "",
       maxPrice: "",
       sortBy: "featured",
+      highlightedProductId: "",
     };
     this.setCategory = this.setCategory.bind(this);
     this.setFilter = this.setFilter.bind(this);
@@ -44,6 +46,11 @@ class Shop extends BasePage {
 
   componentDidMount() {
     super.componentDidMount();
+    const params = new URLSearchParams(window.location.search);
+    const referralCode = params.get("ref");
+    const productId = params.get("productId") || "";
+    if (referralCode) rememberReferralAttribution(referralCode, productId || null);
+    if (productId) this.setState({ highlightedProductId: productId });
     this.loadProducts();
   }
 
@@ -55,10 +62,19 @@ class Shop extends BasePage {
       .eq("active", true)
       .order("sort_order");
     if (error || !data?.length) {
-      this.setState({ products: getDemoProducts(), loading: false });
+      const products = getDemoProducts();
+      this.setState({ products, loading: false }, () => this.scrollToSharedProduct());
       return;
     }
-    this.setState({ products: data.map(toMarketplaceProduct), loading: false });
+    const products = data.map(toMarketplaceProduct);
+    this.setState({ products, loading: false }, () => this.scrollToSharedProduct());
+  }
+
+  scrollToSharedProduct() {
+    const { highlightedProductId } = this.state;
+    if (!highlightedProductId) return;
+    const element = document.getElementById(`product-${highlightedProductId}`);
+    if (element) element.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   setCategory(category) {
@@ -261,7 +277,7 @@ class Shop extends BasePage {
             ) : filtered.length ? (
               <div className="grid grid--3">
                 {filtered.map((product, index) => (
-                  <ProductCard key={product.id} product={product} index={index} />
+                  <ProductCard key={product.id} product={product} index={index} highlighted={product.id === this.state.highlightedProductId} />
                 ))}
               </div>
             ) : (

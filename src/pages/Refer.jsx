@@ -40,6 +40,7 @@ export default function Refer() {
     if (data) {
       setProfile(data);
       setCode(data.referral_code);
+      window.localStorage.setItem("innovatech-referral-code", data.referral_code);
     }
   }
 
@@ -69,7 +70,7 @@ export default function Refer() {
     : "Join me on Innovatech Marketplace and shop from verified partner stores.";
 
   return (
-    <main>
+    <main id="main-content">
       <PageHero
         image="/images/hero-home.jpg"
         eyebrow="Referral programme"

@@ -314,6 +314,9 @@
       "whatsapp": "Discuter sur WhatsApp"
     },
     "product": {
+      "share": "Partager et parrainer",
+      "shareCopied": "Lien du produit copié",
+      "shareCopyFailed": "Copiez le lien du navigateur pour le partager",
       "trackPurchase": "Acheter directement et garder la preuve",
       "beforeBuy": "Avant d'acheter",
       "beforeBuyPoint1": "La boutique reste le vendeur et confirme le prix final, le recu et la garantie.",

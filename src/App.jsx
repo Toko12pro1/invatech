@@ -33,6 +33,7 @@ class PublicLayout extends React.Component {
   render() {
     return (
       <>
+        <a className="skip-link" href="#main-content">Skip to main content</a>
         <Navbar />
         <Outlet />
         <Footer />

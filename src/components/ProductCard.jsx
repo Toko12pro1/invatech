@@ -2,15 +2,45 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaClipboardCheck, FaMapMarkerAlt, FaReceipt, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
+import { FaClipboardCheck, FaMapMarkerAlt, FaReceipt, FaShareAlt, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
 import Reveal from "./Reveal";
 import { whatsappLink } from "../data/marketplace";
 import { trackMetaEvent } from "../lib/metaPixel";
+import { buildProductShareLink, getStoredReferralCode } from "../utils/referrals";
 
 class ProductCard extends React.Component {
-  render() {
-    const { product, index = 0, t, i18n } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = { shareNotice: "" };
+    this.handleShare = this.handleShare.bind(this);
+  }
+
+  async handleShare() {
+    const { product, i18n, t } = this.props;
     const name = product.getName(i18n.resolvedLanguage || i18n.language);
+    const referralCode = getStoredReferralCode();
+    const link = buildProductShareLink(product.id, referralCode);
+    const message = `Check this product on Innovatech: ${name} — ${product.formatPrice()}\n${link}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: name, text: message, url: link });
+      } else {
+        await navigator.clipboard.writeText(link);
+        this.setState({ shareNotice: t("shop.product.shareCopied", "Product link copied") });
+      }
+    } catch (error) {
+      if (error?.name !== "AbortError") {
+        this.setState({ shareNotice: t("shop.product.shareCopyFailed", "Copy the link from your browser to share it") });
+      }
+    }
+  }
+
+  render() {
+    const { product, index = 0, t, i18n, highlighted } = this.props;
+    const { shareNotice } = this.state;
+    const name = product.getName(i18n.resolvedLanguage || i18n.language);
+    const referralCode = getStoredReferralCode();
     const checkedDate = product.lastCheckedAt
       ? new Intl.DateTimeFormat(i18n.resolvedLanguage || i18n.language || "en", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(product.lastCheckedAt))
       : null;
@@ -22,12 +52,21 @@ class ProductCard extends React.Component {
     };
     const verificationLabel = levelLabels[product.verificationLevel] || t("shop.product.traceLevels.pending");
     const consultationType = product.isFastDealActive || product.negotiable ? "negotiate_purchase" : "product_check";
-    const consultationLink = `/consult?product=${encodeURIComponent(name)}&request=${consultationType}&seller=${encodeURIComponent(product.storeName)}`;
+    const consultationParams = new URLSearchParams({ product: name, productId: product.id, request: consultationType, seller: product.storeName });
+    if (referralCode) consultationParams.set("ref", referralCode);
+    const consultationLink = `/consult?${consultationParams.toString()}`;
     const itemMessage = `Hi Innovatech, I would like help with this item.\n\nProduct: ${name}\nPrice shown: ${product.formatPrice()}\nStore: ${product.storeName}\nLocation: ${product.storeLocation}\n\nPlease confirm availability, help verify it or guide me on the best way to buy.`;
+    const shareLink = buildProductShareLink(product.id, referralCode);
+    const purchaseParams = new URLSearchParams({ product: name, productId: product.id, request: "purchase_trace", seller: product.storeName });
+    const negotiateParams = new URLSearchParams({ product: name, productId: product.id, request: "negotiate_purchase", seller: product.storeName });
+    if (referralCode) {
+      purchaseParams.set("ref", referralCode);
+      negotiateParams.set("ref", referralCode);
+    }
 
     return (
       <Reveal delay={index * 0.06} className="product-card-wrap">
-        <motion.article className="product-card" whileHover={{ y: -6 }}>
+        <motion.article id={`product-${product.id}`} className={`product-card ${highlighted ? "product-card--highlighted" : ""}`} whileHover={{ y: -6 }}>
           <div className="product-card-image">
             <img src={product.image} alt={name} loading="lazy" />
             {product.badge && (
@@ -91,10 +130,14 @@ class ProductCard extends React.Component {
             >
               <FaWhatsapp aria-hidden="true" /> {t("shop.product.chat")}
             </a>
-            <Link className="product-purchase-link" to={`/consult?product=${encodeURIComponent(name)}&request=purchase_trace&seller=${encodeURIComponent(product.storeName)}`} onClick={() => trackMetaEvent("Lead", { content_name: name, content_category: product.category, content_type: "purchase_trace" })}>
+            <button type="button" className="product-share-link" onClick={this.handleShare} title={shareLink}>
+              <FaShareAlt aria-hidden="true" /> {t("shop.product.share", "Share & refer")}
+            </button>
+            {shareNotice && <small className="product-share-notice" role="status">{shareNotice}</small>}
+            <Link className="product-purchase-link" to={`/consult?${purchaseParams.toString()}`} onClick={() => trackMetaEvent("Lead", { content_name: name, content_category: product.category, content_type: "purchase_trace" })}>
               <FaReceipt aria-hidden="true" /> {t("shop.product.trackPurchase")}
             </Link>
-            <Link className="product-consult-link" to={`/consult?product=${encodeURIComponent(name)}&request=negotiate_purchase&seller=${encodeURIComponent(product.storeName)}`} onClick={() => trackMetaEvent("Lead", { content_name: name, content_category: product.category, content_type: "negotiation" })}>
+            <Link className="product-consult-link" to={`/consult?${negotiateParams.toString()}`} onClick={() => trackMetaEvent("Lead", { content_name: name, content_category: product.category, content_type: "negotiation" })}>
               <FaClipboardCheck aria-hidden="true" /> {t("shop.product.negotiate")}
             </Link>
           </div>

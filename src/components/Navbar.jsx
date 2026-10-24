@@ -88,18 +88,21 @@ class Navbar extends React.Component {
           </div>
 
           <button
+            type="button"
             className="navbar-burger"
             onClick={this.toggleMenu}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
           >
-            {menuOpen ? <FaTimes /> : <FaBars />}
+            {menuOpen ? <FaTimes aria-hidden="true" /> : <FaBars aria-hidden="true" />}
           </button>
         </div>
 
         <AnimatePresence>
           {menuOpen && (
             <motion.nav
+              id="mobile-navigation"
               className="navbar-mobile"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}

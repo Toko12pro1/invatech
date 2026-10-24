@@ -148,6 +148,24 @@ export const PORTFOLIO_PROJECTS = [
   },
 ];
 
+function repairMojibake(value) {
+  if (typeof value !== "string" || !/[ÃÂâð�]/.test(value)) return value;
+
+  let repaired = value;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const bytes = Uint8Array.from([...repaired].map((character) => character.charCodeAt(0)));
+      const decoded = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+      if (decoded === repaired || decoded.includes("�")) break;
+      repaired = decoded;
+    } catch {
+      break;
+    }
+  }
+
+  return repaired;
+}
+
 // Keep personal work URLs optional. Until a team member supplies one,
 // the achievements page points visitors to the related Innovatech work instead.
 export const TEAM_MEMBER_WORK = [
@@ -186,8 +204,8 @@ export function toMarketplaceProduct(row, index = 0) {
   return new Product({
     ...row,
     store_id: row.store_id || store.id,
-    store_name: row.store_name || store.name,
-    store_location: row.store_location || store.location,
+    store_name: repairMojibake(row.store_name || store.name),
+    store_location: repairMojibake(row.store_location || store.location),
     verification_status: row.verification_status || "verified",
   });
 }

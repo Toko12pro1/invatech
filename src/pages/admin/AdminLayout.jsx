@@ -18,6 +18,7 @@ class AdminLayout extends React.Component {
   render() {
     return (
       <div className="admin-shell">
+        <a className="skip-link" href="#main-content">Skip to main content</a>
         <aside className="admin-sidebar">
           <div className="admin-sidebar-brand">
             <img src="/images/logo-icon.svg" alt="" width={32} height={32} />
@@ -58,7 +59,7 @@ class AdminLayout extends React.Component {
             </button>
           </div>
         </aside>
-        <main className="admin-content">
+        <main id="main-content" className="admin-content">
           <Outlet />
         </main>
       </div>

@@ -6,6 +6,7 @@ import {
   FaEdit,
   FaPlus,
   FaSave,
+  FaShareAlt,
   FaShieldAlt,
   FaStore,
   FaTools,
@@ -19,6 +20,8 @@ import {
   whatsappLink,
 } from "../../data/marketplace";
 import { PRODUCT_CATEGORIES } from "../../data/catalog";
+import { buildProductShareLink, getStoredReferralCode } from "../../utils/referrals";
+import { validateImageFile } from "../../utils/fileValidation";
 
 const CATEGORIES = PRODUCT_CATEGORIES;
 const CONDITIONS = ["New", "Fairly Used"];
@@ -76,6 +79,8 @@ export default class SellerWorkspace extends React.Component {
     this.handleDraftPriceChange = this.handleDraftPriceChange.bind(this);
     this.applyBulkChange = this.applyBulkChange.bind(this);
     this.savePriceChanges = this.savePriceChanges.bind(this);
+    this.copyProductLink = this.copyProductLink.bind(this);
+    this.handleModalKeyDown = this.handleModalKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -175,6 +180,10 @@ export default class SellerWorkspace extends React.Component {
     this.setState({ formVisible: false, error: "" });
   }
 
+  handleModalKeyDown(event) {
+    if (event.key === "Escape") this.closeForm();
+  }
+
   handleChange(event) {
     const { name, value, type, checked } = event.target;
     this.setState((prev) => ({
@@ -185,6 +194,12 @@ export default class SellerWorkspace extends React.Component {
   async handleImageFile(event) {
     const file = event.target.files?.[0];
     if (!file) return;
+    const fileError = validateImageFile(file);
+    if (fileError) {
+      this.setState({ error: fileError });
+      event.target.value = "";
+      return;
+    }
 
     this.setState({ uploading: true, error: "" });
     if (this.state.usingDemo) {
@@ -328,6 +343,16 @@ export default class SellerWorkspace extends React.Component {
     this.loadData();
   }
 
+  async copyProductLink(product) {
+    const link = buildProductShareLink(product.id, getStoredReferralCode());
+    try {
+      await navigator.clipboard.writeText(link);
+      this.setState({ notice: "Product link copied. Share it on WhatsApp." });
+    } catch {
+      this.setState({ error: link, notice: "Copy this product link and share it on WhatsApp." });
+    }
+  }
+
   renderProduct(product) {
     const { selectedIds, draftPrices } = this.state;
     const isSelected = selectedIds.includes(product.id);
@@ -344,6 +369,7 @@ export default class SellerWorkspace extends React.Component {
           {product.negotiable && <em>Negotiable</em>}
           {product.isFastDealActive && <em className="seller-fast-deal-tag">Fast Deal</em>}
           {product.fastDealExpired && <em className="seller-fast-deal-tag seller-fast-deal-tag--ended">Fast Deal ended</em>}
+          <button type="button" className="seller-share-btn" onClick={() => this.copyProductLink(product)}><FaShareAlt /> Share link</button>
         </div>
         <label className="seller-price-input">
           <span>Price (FCFA)</span>
@@ -427,8 +453,8 @@ export default class SellerWorkspace extends React.Component {
 
         {formVisible && (
           <div className="admin-modal-backdrop">
-            <div className="admin-modal seller-modal">
-              <div className="admin-modal-header"><div><span className="eyebrow">{form.id ? "Update listing" : "New listing"}</span><h2>{form.id ? "Edit your product" : "Post a product"}</h2></div><button onClick={this.closeForm} aria-label="Close">×</button></div>
+            <div className="admin-modal seller-modal" role="dialog" aria-modal="true" aria-labelledby="seller-product-dialog-title" tabIndex="-1" onKeyDown={this.handleModalKeyDown}>
+              <div className="admin-modal-header"><div><span className="eyebrow">{form.id ? "Update listing" : "New listing"}</span><h2 id="seller-product-dialog-title">{form.id ? "Edit your product" : "Post a product"}</h2></div><button type="button" onClick={this.closeForm} aria-label="Close">×</button></div>
               <p className="seller-modal-intro">Keep it clear: one good photo, one honest condition and the price you really want.</p>
               <form onSubmit={this.handleSubmit} className="seller-form">
                 <label className="seller-photo-upload">

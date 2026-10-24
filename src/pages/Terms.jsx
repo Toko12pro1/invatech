@@ -10,7 +10,7 @@ function ContactBlock() {
 
 export default function Terms() {
   return (
-    <main>
+    <main id="main-content">
       <PageHero image="/images/hero-services.jpg" eyebrow="Legal information" title="Terms of Service" subtitle="Clear rules for our marketplace, verification, consulting, repairs, referrals and software services." />
       <section className="section legal-section">
         <div className="container legal-layout">

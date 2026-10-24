@@ -15,6 +15,7 @@ export default class BasePage extends React.Component {
   render() {
     return (
       <motion.main
+        id="main-content"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.45, ease: "easeOut" }}

@@ -19,7 +19,7 @@ function Portfolio({ t }) {
   ];
 
   return (
-    <main>
+    <main id="main-content">
       <PageHero
         image="/images/hero-services.jpg"
         eyebrow="Innovatech achievements"

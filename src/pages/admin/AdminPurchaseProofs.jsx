@@ -1,13 +1,14 @@
 import React from "react";
-import { FaCheckCircle, FaExternalLinkAlt, FaMobileAlt, FaReceipt } from "react-icons/fa";
+import { FaCheckCircle, FaExternalLinkAlt, FaMobileAlt, FaReceipt, FaWhatsapp } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
+import { whatsappLink } from "../../data/marketplace";
 
 function formatDate(value) {
   return value ? new Intl.DateTimeFormat("en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "Unknown date";
 }
 
 export default class AdminPurchaseProofs extends React.Component {
-  state = { proofs: [], requests: {}, loading: true, savingId: "", error: "", notice: "" };
+  state = { proofs: [], requests: {}, referrers: {}, loading: true, savingId: "", error: "", notice: "" };
 
   componentDidMount() {
     this.loadProofs();
@@ -23,10 +24,19 @@ export default class AdminPurchaseProofs extends React.Component {
 
     const requestIds = [...new Set((proofs || []).map((proof) => proof.consultation_request_id).filter(Boolean))];
     const { data: requests, error: requestError } = requestIds.length
-      ? await supabase.from("consultation_requests").select("id, customer_name, phone, product_name, seller_name, city, tracking_reference, referral_code").in("id", requestIds)
+      ? await supabase.from("consultation_requests").select("id, customer_name, phone, product_name, product_id, seller_name, city, tracking_reference, referral_code, referrer_id").in("id", requestIds)
       : { data: [], error: null };
     if (requestError) {
       this.setState({ loading: false, error: requestError.message });
+      return;
+    }
+
+    const referrerIds = [...new Set((requests || []).map((request) => request.referrer_id).filter(Boolean))];
+    const { data: referrers, error: referrerError } = referrerIds.length
+      ? await supabase.from("referral_profiles").select("id, full_name, phone, referral_code").in("id", referrerIds)
+      : { data: [], error: null };
+    if (referrerError) {
+      this.setState({ loading: false, error: referrerError.message });
       return;
     }
 
@@ -37,6 +47,7 @@ export default class AdminPurchaseProofs extends React.Component {
     this.setState({
       proofs: signedProofs,
       requests: Object.fromEntries((requests || []).map((request) => [request.id, request])),
+      referrers: Object.fromEntries((referrers || []).map((referrer) => [referrer.id, referrer])),
       loading: false,
     });
   }
@@ -50,11 +61,21 @@ export default class AdminPurchaseProofs extends React.Component {
   };
 
   saveProof = async (proof) => {
+    if (proof.reward_status === "paid" && proof.status !== "confirmed") {
+      this.setState({ error: "Confirm the purchase proof before marking the referral reward paid." });
+      return;
+    }
+    if (proof.reward_status === "paid" && (!Number(proof.reward_amount) || !proof.reward_payment_method || !proof.reward_payment_reference?.trim())) {
+      this.setState({ error: "Paid rewards need an amount, payment method and payment reference." });
+      return;
+    }
     this.setState({ savingId: proof.id, error: "", notice: "" });
     const { error } = await supabase.from("purchase_proofs").update({
       status: proof.status,
       reward_status: proof.reward_status,
       reward_amount: proof.reward_amount ? Number(proof.reward_amount) : null,
+      reward_payment_method: proof.reward_payment_method || null,
+      reward_payment_reference: proof.reward_payment_reference?.trim() || null,
       reviewer_note: proof.reviewer_note || null,
     }).eq("id", proof.id);
     this.setState(error
@@ -63,7 +84,7 @@ export default class AdminPurchaseProofs extends React.Component {
   };
 
   render() {
-    const { proofs, requests, loading, savingId, error, notice } = this.state;
+    const { proofs, requests, referrers, loading, savingId, error, notice } = this.state;
     return (
       <div className="admin-page">
         <div className="admin-page-header">
@@ -86,12 +107,23 @@ export default class AdminPurchaseProofs extends React.Component {
                   <h2>{request?.product_name || "Unspecified product"}</h2>
                   <p><strong>Customer:</strong> {request?.customer_name || "Unknown"} · {request?.phone || "No phone"}</p>
                   <p><strong>Store:</strong> {request?.seller_name || "Not specified"} · <strong>Reference:</strong> {request?.tracking_reference || "No reference"}</p>
+                  {request?.referrer_id && (
+                    <div className="purchase-proof-referrer">
+                      <strong>Referral reward</strong><br />
+                      {referrers[request.referrer_id]?.full_name || "Registered referrer"} · {referrers[request.referrer_id]?.phone || "No phone"}<br />
+                      Code: {request.referral_code || referrers[request.referrer_id]?.referral_code || "Unknown"}
+                      {referrers[request.referrer_id]?.phone && (
+                        <a className="purchase-proof-preview" href={whatsappLink(`Hi ${referrers[request.referrer_id]?.full_name || "there"}, your Innovatech referral for ${request.product_name || "this product"} is ${proof.reward_status === "paid" ? "paid" : proof.reward_status === "eligible" ? "eligible for payment" : "under review"}. Reference: ${request.tracking_reference || proof.id}`, referrers[request.referrer_id].phone)} target="_blank" rel="noreferrer"><FaWhatsapp /> Message referrer</a>
+                      )}
+                    </div>
+                  )}
                   {proof.signedUrl ? <a className="purchase-proof-preview" href={proof.signedUrl} target="_blank" rel="noreferrer"><FaExternalLinkAlt /> Open private proof</a> : <p className="form-error">Private file link unavailable.</p>}
                   <div className="admin-form-grid">
                     <div className="form-row"><label>Status</label><select value={proof.status} onChange={(event) => this.updateLocal(proof.id, "status", event.target.value)}><option value="pending">Pending review</option><option value="confirmed">Sale confirmed</option><option value="rejected">Rejected</option><option value="disputed">Disputed</option></select></div>
                     <div className="form-row"><label>Reward status</label><select value={proof.reward_status} onChange={(event) => this.updateLocal(proof.id, "reward_status", event.target.value)}><option value="pending">Pending</option><option value="eligible">Eligible</option><option value="paid">Paid</option><option value="withheld">Withheld</option></select></div>
                   </div>
                   <div className="form-row"><label>Reward amount (FCFA, 1,000 or more where eligible)</label><input type="number" min="0" step="100" value={proof.reward_amount ?? ""} onChange={(event) => this.updateLocal(proof.id, "reward_amount", event.target.value)} placeholder="e.g. 1000" /></div>
+                  {proof.reward_status === "paid" && <div className="admin-form-grid"><div className="form-row"><label>Payment method</label><select value={proof.reward_payment_method || ""} onChange={(event) => this.updateLocal(proof.id, "reward_payment_method", event.target.value)}><option value="">Choose method</option><option value="mobile_money">Mobile Money</option><option value="cash">Cash</option><option value="bank_transfer">Bank transfer</option><option value="other">Other</option></select></div><div className="form-row"><label>Payment reference</label><input value={proof.reward_payment_reference || ""} onChange={(event) => this.updateLocal(proof.id, "reward_payment_reference", event.target.value)} placeholder="Transaction ID or receipt" /></div></div>}
                   <div className="form-row"><label>Reviewer note</label><textarea rows="2" value={proof.reviewer_note || ""} onChange={(event) => this.updateLocal(proof.id, "reviewer_note", event.target.value)} placeholder="Store confirmed by..." /></div>
                   <button className="btn btn--primary" type="button" disabled={savingId === proof.id} onClick={() => this.saveProof(proof)}>{savingId === proof.id ? "Saving..." : "Save review"}</button>
                 </article>

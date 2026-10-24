@@ -23,6 +23,7 @@ export default function Account() {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const [localCode, setLocalCode] = useState("");
+  const [referralEvents, setReferralEvents] = useState([]);
 
   useEffect(() => {
     let active = true;
@@ -47,14 +48,20 @@ export default function Account() {
 
   async function loadProfile(currentSession) {
     const userId = currentSession.user.id;
-    const { data } = await supabase.from("referral_profiles").select("*").eq("id", userId).maybeSingle();
+    const [{ data }, { data: events }] = await Promise.all([
+      supabase.from("referral_profiles").select("*").eq("id", userId).maybeSingle(),
+      supabase.from("referral_events").select("id, referred_name, order_reference, status, reward_amount, created_at").eq("referrer_id", userId).order("created_at", { ascending: false }).limit(20),
+    ]);
+    setReferralEvents(events || []);
     if (data) {
       setProfile(data);
+      window.localStorage.setItem("innovatech-referral-code", data.referral_code);
       return;
     }
     const key = `innovatech-referral-code-${userId}`;
     const saved = window.localStorage.getItem(key) || makeLocalCode();
     window.localStorage.setItem(key, saved);
+    window.localStorage.setItem("innovatech-referral-code", saved);
     setLocalCode(saved);
   }
 
@@ -103,6 +110,7 @@ export default function Account() {
     await supabase.auth.signOut();
     setSession(null);
     setProfile(null);
+    setReferralEvents([]);
     setMessage("You have been signed out.");
   }
 
@@ -118,7 +126,7 @@ export default function Account() {
   const referralLink = code ? `${window.location.origin}/consult?request=purchase_trace&ref=${encodeURIComponent(code)}` : `${window.location.origin}/consult?request=purchase_trace`;
 
   return (
-    <main>
+    <main id="main-content">
       <PageHero
         image="/images/hero-home.jpg"
         eyebrow="Your Innovatech account"
@@ -138,6 +146,7 @@ export default function Account() {
                 </div>
                 {message && <p className="seller-message seller-message--success"><FaCheckCircle /> {message}</p>}
                 <div className="account-detail-list"><div><span>Email</span><strong>{session.user.email}</strong></div><div><span>Phone</span><strong>{profile?.phone || session.user.user_metadata?.phone || "Add it when you contact us"}</strong></div></div>
+                {referralEvents.length > 0 && <div className="account-referral-history"><div className="account-referral-history-head"><h3>Referral activity</h3><span>Latest 20</span></div><div className="account-referral-history-list">{referralEvents.map((event) => <div className="account-referral-event" key={event.id}><div><strong>{event.referred_name || "Referral"}</strong><small>{event.order_reference || "Purchase reference pending"}</small></div><div><span className={`admin-status admin-status--${event.status}`}>{event.status}</span><strong>{Number(event.reward_amount || 0).toLocaleString()} FCFA</strong></div></div>)}</div></div>}
               </Reveal>
               <Reveal className="account-side-card" delay={0.1}>
                 <span className="feature-icon"><FaGift /></span><h3>How accountability works</h3><ol><li>Your code identifies your referral.</li><li>We confirm the purchase with the partner store.</li><li>Your reward is recorded and we contact you.</li></ol><Link to="/refer" className="btn btn--secondary">Open referral hub <FaArrowRight /></Link><button className="account-signout" onClick={signOut}><FaSignOutAlt /> Sign out</button>

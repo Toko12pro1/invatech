@@ -315,6 +315,9 @@
     },
     "product": {
       "chat": "Chat with us about this item",
+      "share": "Share & refer",
+      "shareCopied": "Product link copied",
+      "shareCopyFailed": "Copy the link from your browser to share it",
       "trackPurchase": "Buy directly & keep proof",
       "beforeBuy": "Before you buy",
       "beforeBuyPoint1": "The store remains the seller and confirms the final price, receipt and warranty.",

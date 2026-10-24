@@ -6,7 +6,7 @@ const UPDATED = "21 October 2026";
 
 export default function Privacy() {
   return (
-    <main>
+    <main id="main-content">
       <PageHero image="/images/hero-services.jpg" eyebrow="Legal information" title="Privacy Notice" subtitle="How Innovatech handles names, phone numbers, account data and product requests." />
       <section className="section legal-section">
         <div className="container legal-layout">

@@ -18,7 +18,7 @@ export default class AppErrorBoundary extends React.Component {
     if (!this.state.hasError) return this.props.children;
 
     return (
-      <main className="app-error-page">
+      <main id="main-content" className="app-error-page">
         <div className="app-error-card">
           <span className="eyebrow">Innovatech</span>
           <h1>Something went wrong on this page.</h1>

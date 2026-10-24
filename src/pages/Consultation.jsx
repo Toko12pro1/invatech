@@ -17,6 +17,8 @@ import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import { whatsappLink } from "../data/marketplace";
 import { supabase } from "../lib/supabaseClient";
+import { buildProductShareLink, getStoredReferralCode, rememberReferralAttribution } from "../utils/referrals";
+import { validateImageFile } from "../utils/fileValidation";
 
 const LEGAL_VERSION = "2026-10-21";
 
@@ -58,6 +60,7 @@ const INITIAL_FORM = {
   name: "",
   phone: "",
   productName: "",
+  productId: "",
   productLink: "",
   sellerName: "",
   city: "Yaoundé",
@@ -89,17 +92,24 @@ export default function Consultation() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const product = params.get("product");
+    const productId = params.get("productId") || "";
     const request = params.get("request");
     const referralCode = params.get("ref") || "";
     const stage = params.get("stage");
-    if (product || request || referralCode || stage) {
+    if (referralCode) rememberReferralAttribution(referralCode, productId || null);
+    const storedReferralCode = getStoredReferralCode();
+    if (product || productId || request || referralCode || stage) {
       setForm((current) => ({
         ...current,
         productName: product || current.productName,
+        productId: productId || current.productId,
+        productLink: productId ? buildProductShareLink(productId) : current.productLink,
         requestType: REQUEST_TYPES.some((item) => item.id === request) ? request : current.requestType,
-        referralCode,
+        referralCode: referralCode || current.referralCode || storedReferralCode,
         purchaseStage: stage === "already_bought" ? "already_bought" : current.purchaseStage,
       }));
+    } else if (storedReferralCode) {
+      setForm((current) => ({ ...current, referralCode: storedReferralCode }));
     }
 
     let active = true;
@@ -124,6 +134,21 @@ export default function Consultation() {
     setFormError("");
   }
 
+  function handleProofFileChange(event) {
+    const file = event.target.files?.[0] || null;
+    const fileError = file ? validateImageFile(file) : "";
+    if (fileError) {
+      setProofFile(null);
+      setPhotoName("");
+      setFormError(fileError);
+      event.target.value = "";
+      return;
+    }
+    setProofFile(file);
+    setPhotoName(file?.name || "");
+    setFormError("");
+  }
+
   async function submitRequest(event) {
     event.preventDefault();
     const isPurchaseTrace = form.requestType === "purchase_trace";
@@ -131,14 +156,22 @@ export default function Consultation() {
       setFormError(t("consultation.form.proofRequired"));
       return;
     }
+    if (proofFile) {
+      const fileError = validateImageFile(proofFile);
+      if (fileError) {
+        setFormError(fileError);
+        return;
+      }
+    }
     setSaving(true);
     setFormError("");
 
     const selectedType = REQUEST_TYPES.find((item) => item.id === form.requestType);
     const legalAcceptedAt = new Date().toISOString();
     const isFreeNegotiation = form.requestType === "negotiate_purchase";
-    const referralCode = isFreeNegotiation ? null : form.referralCode.trim() || null;
+    const referralCode = isFreeNegotiation ? null : form.referralCode.trim().toUpperCase() || getStoredReferralCode() || null;
     const hasReferral = Boolean(referralCode);
+    const productLink = form.productLink || (form.productId ? buildProductShareLink(form.productId) : null);
     const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
     const trackingReference = makeTrackingReference();
     const message = `Hi Innovatech, I would like an Innovatech Check.
@@ -149,7 +182,7 @@ Phone / WhatsApp: ${form.phone}
 Product or service: ${form.productName || "Not specified"}
 Seller / store: ${form.sellerName || "Not specified"}
 City: ${form.city || "Not specified"}
-Link: ${form.productLink || "No link"}
+Link: ${productLink || "No link"}
 Details: ${form.notes || "I will explain in the chat."}
 Referral code: ${isFreeNegotiation ? "Not counted for negotiation" : form.referralCode || "None"}
 Photo: ${photoName ? `${photoName} (I will send it in this WhatsApp chat)` : "I will send a photo in this chat if needed."}
@@ -171,7 +204,8 @@ I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_V
       customer_name: form.name,
       phone: form.phone,
       product_name: form.productName || null,
-      product_link: form.productLink || null,
+      product_link: productLink,
+      product_id: form.productId || null,
       seller_name: form.sellerName || null,
       city: form.city || null,
       notes: form.notes || null,
@@ -229,7 +263,7 @@ I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_V
   }
 
   return (
-    <main>
+    <main id="main-content">
       <PageHero
         image="/images/hero-services.jpg"
         eyebrow={t("consultation.hero.eyebrow")}
@@ -299,7 +333,7 @@ I accepted the Innovatech Terms of Service and Privacy Notice, version ${LEGAL_V
                       </div>
                       <div className="consultation-form-grid">
                         <div className="form-row"><label htmlFor="consult-proof-type">{t("consultation.form.proofType")}</label><select id="consult-proof-type" name="proofType" value={form.proofType} onChange={updateField}><option value="store_receipt">{t("consultation.form.storeReceipt")}</option><option value="mobile_money">{t("consultation.form.mobileMoney")}</option></select></div>
-                        <label className="consultation-photo-field" htmlFor="consult-photo"><FaReceipt aria-hidden="true" /><span><strong>{photoName || t("consultation.form.proofTitle")}</strong><small>{t("consultation.form.proofHint")}</small></span><input id="consult-photo" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment" onChange={(event) => { const file = event.target.files?.[0] || null; setProofFile(file); setPhotoName(file?.name || ""); setFormError(""); }} /></label>
+                        <label className="consultation-photo-field" htmlFor="consult-photo"><FaReceipt aria-hidden="true" /><span><strong>{photoName || t("consultation.form.proofTitle")}</strong><small>{t("consultation.form.proofHint")}</small></span><input id="consult-photo" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment" onChange={handleProofFileChange} /></label>
                       </div>
                     </>
                   )}

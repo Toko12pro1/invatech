@@ -1,8 +1,10 @@
 import React from "react";
-import { FaPlus, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
+import { FaPlus, FaEdit, FaShareAlt, FaTrash, FaTimes } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import Product from "../../models/Product";
 import { PRODUCT_CATEGORIES } from "../../data/catalog";
+import { buildProductShareLink, getStoredReferralCode } from "../../utils/referrals";
+import { validateImageFile } from "../../utils/fileValidation";
 
 const CATEGORIES = PRODUCT_CATEGORIES;
 const CONDITIONS = ["New", "Fairly Used"];
@@ -40,6 +42,7 @@ export default class AdminProducts extends React.Component {
       uploading: false,
       saving: false,
       error: "",
+      notice: "",
     };
     this.openCreateForm = this.openCreateForm.bind(this);
     this.openEditForm = this.openEditForm.bind(this);
@@ -48,6 +51,8 @@ export default class AdminProducts extends React.Component {
     this.handleImageFile = this.handleImageFile.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.copyProductLink = this.copyProductLink.bind(this);
+    this.handleModalKeyDown = this.handleModalKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -104,6 +109,10 @@ export default class AdminProducts extends React.Component {
     this.setState({ formVisible: false });
   }
 
+  handleModalKeyDown(event) {
+    if (event.key === "Escape") this.closeForm();
+  }
+
   handleChange(event) {
     const { name, value, type, checked } = event.target;
     this.setState((prev) => ({
@@ -114,6 +123,12 @@ export default class AdminProducts extends React.Component {
   async handleImageFile(event) {
     const file = event.target.files[0];
     if (!file) return;
+    const fileError = validateImageFile(file);
+    if (fileError) {
+      this.setState({ error: fileError });
+      event.target.value = "";
+      return;
+    }
     this.setState({ uploading: true, error: "" });
     const path = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
     const { error: uploadError } = await supabase.storage.from("product-images").upload(path, file);
@@ -182,8 +197,18 @@ export default class AdminProducts extends React.Component {
     this.loadProducts();
   }
 
+  async copyProductLink(product) {
+    const link = buildProductShareLink(product.id, getStoredReferralCode());
+    try {
+      await navigator.clipboard.writeText(link);
+      this.setState({ notice: "Product link copied. Share it on WhatsApp." });
+    } catch {
+      this.setState({ notice: `Product link: ${link}` });
+    }
+  }
+
   render() {
-    const { products, stores, loading, formVisible, form, uploading, saving, error } = this.state;
+    const { products, stores, loading, formVisible, form, uploading, saving, error, notice } = this.state;
 
     return (
       <div className="admin-page">
@@ -195,6 +220,7 @@ export default class AdminProducts extends React.Component {
         </div>
 
         {error && <p className="form-error">{error}</p>}
+        {notice && <p className="seller-message seller-message--success">{notice}</p>}
 
         {loading ? (
           <p>Loading…</p>
@@ -229,6 +255,7 @@ export default class AdminProducts extends React.Component {
                     <td>{product.isFastDealActive ? "Live" : product.fastDealExpired ? "Ended" : "No"}</td>
                     <td>{product.active !== false ? "Yes" : "No"}</td>
                     <td className="admin-table-actions">
+                      <button onClick={() => this.copyProductLink(product)} aria-label="Copy share link"><FaShareAlt /></button>
                       <button onClick={() => this.openEditForm(product)} aria-label="Edit"><FaEdit /></button>
                       <button onClick={() => this.handleDelete(product)} aria-label="Delete"><FaTrash /></button>
                     </td>
@@ -241,9 +268,9 @@ export default class AdminProducts extends React.Component {
 
         {formVisible && (
           <div className="admin-modal-backdrop">
-            <div className="admin-modal">
+            <div className="admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-product-dialog-title" tabIndex="-1" onKeyDown={this.handleModalKeyDown}>
               <div className="admin-modal-header">
-                <h2>{form.id ? "Edit Product" : "Add Product"}</h2>
+                <h2 id="admin-product-dialog-title">{form.id ? "Edit Product" : "Add Product"}</h2>
                 <button onClick={this.closeForm} aria-label="Close"><FaTimes /></button>
               </div>
 
