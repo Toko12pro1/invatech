@@ -390,6 +390,21 @@ p {
   gap: 14px;
 }
 
+.navbar-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-gray-500);
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.navbar-admin-link:hover {
+  color: var(--color-orange);
+}
+
 .navbar-whatsapp {
   display: none;
 }
