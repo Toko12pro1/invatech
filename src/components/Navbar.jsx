@@ -18,7 +18,7 @@ const NAV_LINKS = [
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, scrolled: false, storeOwnerMode: false };
+    this.state = { menuOpen: false, scrolled: false, storeOwnerMode: false, signedIn: false };
     this.menuButtonRef = React.createRef();
     this.handleScroll = this.handleScroll.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -44,11 +44,11 @@ class Navbar extends React.Component {
 
   async syncAccountMode(session) {
     if (!session) {
-      this.setState({ storeOwnerMode: false });
+      this.setState({ storeOwnerMode: false, signedIn: false });
       return;
     }
     if (session.user.user_metadata?.account_type === "store_owner") {
-      this.setState({ storeOwnerMode: true });
+      this.setState({ storeOwnerMode: true, signedIn: true });
       return;
     }
     const { data } = await supabase
@@ -56,7 +56,7 @@ class Navbar extends React.Component {
       .select("status")
       .eq("user_id", session.user.id)
       .maybeSingle();
-    this.setState({ storeOwnerMode: data?.status === "approved" || data?.status === "pending" });
+    this.setState({ storeOwnerMode: data?.status === "approved" || data?.status === "pending", signedIn: true });
   }
 
   handleScroll() {
@@ -83,8 +83,13 @@ class Navbar extends React.Component {
   }
 
   render() {
-    const { menuOpen, scrolled, storeOwnerMode } = this.state;
+    const { menuOpen, scrolled, storeOwnerMode, signedIn } = this.state;
     const { t } = this.props;
+    const accountLabel = storeOwnerMode
+      ? "Store account"
+      : signedIn
+        ? t("nav.account", "Account")
+        : t("nav.signIn", "Sign in");
     const navLinks = storeOwnerMode
       ? [{ to: "/admin/seller", label: "Seller workspace" }]
       : NAV_LINKS.map((link) => ({ ...link, label: t(`nav.${link.key}`) }));
@@ -113,7 +118,7 @@ class Navbar extends React.Component {
               <FaShieldAlt aria-hidden="true" /> Admin sign in
             </NavLink>}
             <NavLink to="/account" className="btn btn--ghost navbar-account">
-              <FaUserCircle aria-hidden="true" /> {storeOwnerMode ? "Store account" : t("nav.account", "Account")}
+              <FaUserCircle aria-hidden="true" /> {accountLabel}
             </NavLink>
             {!storeOwnerMode && <a
               href="https://wa.me/237651162373"
@@ -176,7 +181,7 @@ class Navbar extends React.Component {
                 onClick={this.closeMenu}
                 className={({ isActive }) => `navbar-mobile-link ${isActive ? "navbar-link--active" : ""}`}
               >
-                <FaUserCircle /> {storeOwnerMode ? "Store account" : t("nav.account", "Account")}
+                <FaUserCircle /> {accountLabel}
               </NavLink>
               {!storeOwnerMode && <NavLink
                 to="/admin/login"
