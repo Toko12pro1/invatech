@@ -56,6 +56,8 @@ export default class SellerWorkspace extends React.Component {
       stores: PARTNER_STORES,
       loading: true,
       usingDemo: false,
+      ownerMode: false,
+      ownerApplication: null,
       selectedIds: [],
       draftPrices: {},
       bulkMode: "percent-down",
@@ -103,20 +105,49 @@ export default class SellerWorkspace extends React.Component {
   async loadData() {
     this.setState({ loading: true, error: "" });
     await supabase.rpc("deactivate_expired_fast_deals");
-    const [{ data, error }, storesResult] = await Promise.all([
-      supabase.from("products").select("*, stores(name, location)").order("sort_order"),
-      supabase.from("stores").select("*").eq("active", true).order("name"),
-    ]);
+    const { data: userResult } = await supabase.auth.getUser();
+    const user = userResult?.user;
+    const { data: ownerApplication } = user
+      ? await supabase.from("store_owner_applications").select("*").eq("user_id", user.id).maybeSingle()
+      : { data: null };
+    const ownerMode = ownerApplication?.status === "approved";
 
-    const liveStores = !storesResult.error && storesResult.data?.length
-      ? storesResult.data.map((store) => ({
+    if (ownerApplication && !ownerMode) {
+      this.setState({
+        products: [],
+        stores: [],
+        loading: false,
+        usingDemo: false,
+        ownerMode: true,
+        ownerApplication,
+        selectedIds: [],
+        draftPrices: {},
+      });
+      return;
+    }
+
+    const storesQuery = ownerMode
+      ? supabase.from("stores").select("*").eq("owner_id", user.id).order("name")
+      : supabase.from("stores").select("*").eq("active", true).order("name");
+    const { data: storesData, error: storesError } = await storesQuery;
+    const ownerStoreIds = (storesData || []).map((store) => store.id);
+    let productsQuery = supabase.from("products").select("*, stores(name, location)").order("sort_order");
+    if (ownerMode) productsQuery = productsQuery.in("store_id", ownerStoreIds.length ? ownerStoreIds : ["00000000-0000-0000-0000-000000000000"]);
+    const { data, error } = await productsQuery;
+
+    const liveStores = !storesError && storesData?.length
+      ? storesData.map((store) => ({
           ...store,
           image: store.image_url,
           responseTime: store.response_time,
         }))
-      : error ? PARTNER_STORES : [];
+      : !ownerMode && error ? PARTNER_STORES : [];
 
-    if (error) {
+    if (error || storesError) {
+      if (ownerMode) {
+        this.setState({ products: [], stores: liveStores, loading: false, usingDemo: false, ownerMode: true, ownerApplication, selectedIds: [], draftPrices: {}, error: error?.message || storesError?.message || "We could not load your store workspace." });
+        return;
+      }
       const localProducts = this.getLocalRows();
       const products = localProducts.length
         ? localProducts.map(toMarketplaceProduct)
@@ -126,6 +157,8 @@ export default class SellerWorkspace extends React.Component {
         stores: liveStores,
         loading: false,
         usingDemo: true,
+        ownerMode: false,
+        ownerApplication: null,
         selectedIds: [],
         draftPrices: Object.fromEntries(products.map((product) => [product.id, product.price])),
       });
@@ -138,6 +171,8 @@ export default class SellerWorkspace extends React.Component {
       stores: liveStores,
       loading: false,
       usingDemo: false,
+      ownerMode,
+      ownerApplication,
       selectedIds: [],
       draftPrices: Object.fromEntries(products.map((product) => [product.id, product.price])),
     });
@@ -210,7 +245,12 @@ export default class SellerWorkspace extends React.Component {
       return;
     }
 
-    const path = `seller-products/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
+    const { data: userResult } = await supabase.auth.getUser();
+    if (!userResult?.user) {
+      this.setState({ uploading: false, error: "Please sign in again before uploading a product photo." });
+      return;
+    }
+    const path = `seller-products/${userResult.user.id}/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
     const { error } = await supabase.storage.from("product-images").upload(path, file);
     if (error) {
       this.setState({ uploading: false, error: error.message });
@@ -384,7 +424,15 @@ export default class SellerWorkspace extends React.Component {
   }
 
   render() {
-    const { products, stores, loading, selectedIds, bulkMode, bulkValue, formVisible, form, uploading, saving, error, notice } = this.state;
+    const { products, stores, loading, ownerMode, ownerApplication, selectedIds, bulkMode, bulkValue, formVisible, form, uploading, saving, error, notice } = this.state;
+    if (!loading && ownerMode && ownerApplication?.status !== "approved") {
+      return (
+        <div className="seller-workspace">
+          <div className="seller-page-header"><div><span className="eyebrow">Store-owner workspace</span><h1>Your application is {ownerApplication?.status || "pending"}.</h1><p>Innovatech must review your store details before you can post products.</p></div><Link to="/account" className="btn btn--ghost"><FaStore /> View account</Link></div>
+          <div className="owner-application-card"><FaShieldAlt aria-hidden="true" /><div><h2>{ownerApplication?.business_name}</h2><p>{ownerApplication?.category} · {ownerApplication?.location}</p><small>{ownerApplication?.review_note || "We will contact you after review."}</small></div></div>
+        </div>
+      );
+    }
     const publishedCount = products.filter((product) => product.verificationStatus === "verified").length;
     const negotiableCount = products.filter((product) => product.negotiable).length;
     const fastDealCount = products.filter((product) => product.isFastDealActive).length;
@@ -394,8 +442,8 @@ export default class SellerWorkspace extends React.Component {
         <div className="seller-page-header">
           <div>
             <span className="eyebrow">Seller workspace</span>
-            <h1>Manage your products simply.</h1>
-            <p>Take a photo, add a clear price and let Innovatech help verify, negotiate and present it properly.</p>
+            <h1>{ownerMode ? "Manage your store products simply." : "Manage your products simply."}</h1>
+            <p>{ownerMode ? "Your listings are linked to your approved store and remain hidden until Innovatech reviews them." : "Take a photo, add a clear price and let Innovatech help verify, negotiate and present it properly."}</p>
           </div>
           <button className="btn btn--primary" onClick={this.openCreate}><FaPlus /> Post a product</button>
         </div>

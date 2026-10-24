@@ -12,7 +12,11 @@ class AdminLogin extends React.Component {
 
   async componentDidMount() {
     const { data } = await supabase.auth.getSession();
-    if (data.session) this.props.navigate("/admin", { replace: true });
+    if (data.session) {
+      await supabase.auth.refreshSession();
+      const { data: isAdmin } = await supabase.rpc("is_admin");
+      this.props.navigate(isAdmin === true ? "/admin" : "/account", { replace: true });
+    }
   }
 
   handleChange(event) {
@@ -27,6 +31,12 @@ class AdminLogin extends React.Component {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       this.setState({ loading: false, error: "Incorrect email or password." });
+      return;
+    }
+    const { data: isAdmin } = await supabase.rpc("is_admin");
+    if (isAdmin !== true) {
+      await supabase.auth.signOut();
+      this.setState({ loading: false, error: "This account does not have Innovatech admin access." });
       return;
     }
     this.props.navigate("/admin", { replace: true });

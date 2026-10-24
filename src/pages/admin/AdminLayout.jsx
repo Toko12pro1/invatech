@@ -1,13 +1,20 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { FaBoxOpen, FaWifi, FaTicketAlt, FaSignOutAlt, FaExternalLinkAlt, FaStore, FaClipboardCheck, FaReceipt, FaTachometerAlt } from "react-icons/fa";
+import { FaBoxOpen, FaWifi, FaTicketAlt, FaSignOutAlt, FaExternalLinkAlt, FaStore, FaClipboardCheck, FaReceipt, FaTachometerAlt, FaUserCheck } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import withNavigate from "../../utils/withNavigate";
 
 class AdminLayout extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { isAdmin: false };
     this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  componentDidMount() {
+    supabase.rpc("is_admin").then(({ data }) => {
+      this.setState({ isAdmin: data === true });
+    });
   }
 
   async handleLogout() {
@@ -16,6 +23,7 @@ class AdminLayout extends React.Component {
   }
 
   render() {
+    const { isAdmin } = this.state;
     return (
       <div className="admin-shell">
         <a className="skip-link" href="#main-content">Skip to main content</a>
@@ -25,30 +33,35 @@ class AdminLayout extends React.Component {
             <span>Innovatech Admin</span>
           </div>
           <nav className="admin-nav">
-            <NavLink to="/admin/dashboard" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
-              <FaTachometerAlt /> Dashboard
-            </NavLink>
             <NavLink to="/admin/seller" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
               <FaStore /> Seller Workspace
             </NavLink>
-            <NavLink to="/admin/stores" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
-              <FaStore /> Partner Stores
-            </NavLink>
-            <NavLink to="/admin/products" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
-              <FaBoxOpen /> Products
-            </NavLink>
-            <NavLink to="/admin/traceability" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
-              <FaClipboardCheck /> Traceability
-            </NavLink>
-            <NavLink to="/admin/purchase-proofs" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
-              <FaReceipt /> Purchase Proofs
-            </NavLink>
-            <NavLink to="/admin/wifi-packages" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
-              <FaWifi /> WiFi Packages
-            </NavLink>
-            <NavLink to="/admin/vouchers" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
-              <FaTicketAlt /> Vouchers
-            </NavLink>
+            {isAdmin && <>
+              <NavLink to="/admin/dashboard" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaTachometerAlt /> Dashboard
+              </NavLink>
+              <NavLink to="/admin/stores" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaStore /> Partner Stores
+              </NavLink>
+              <NavLink to="/admin/store-owner-applications" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaUserCheck /> Store Applications
+              </NavLink>
+              <NavLink to="/admin/products" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaBoxOpen /> Products
+              </NavLink>
+              <NavLink to="/admin/traceability" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaClipboardCheck /> Traceability
+              </NavLink>
+              <NavLink to="/admin/purchase-proofs" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaReceipt /> Purchase Proofs
+              </NavLink>
+              <NavLink to="/admin/wifi-packages" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaWifi /> WiFi Packages
+              </NavLink>
+              <NavLink to="/admin/vouchers" className={({ isActive }) => `admin-nav-link ${isActive ? "admin-nav-link--active" : ""}`}>
+                <FaTicketAlt /> Vouchers
+              </NavLink>
+            </>}
           </nav>
           <div className="admin-sidebar-footer">
             <a href="/" target="_blank" rel="noreferrer" className="admin-nav-link">

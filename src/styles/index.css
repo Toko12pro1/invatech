@@ -3528,6 +3528,73 @@ p {
   margin-top: 8px;
 }
 
+.account-type-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.account-type-card {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  text-align: left;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-navy);
+}
+
+.account-type-card span,
+.owner-application-card small {
+  color: var(--color-gray-700);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.account-type-card--active {
+  border-color: var(--color-orange);
+  box-shadow: 0 0 0 2px rgba(247, 148, 29, 0.14);
+}
+
+.owner-application-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  background: var(--color-cream);
+}
+
+.owner-application-card > div {
+  flex: 1 1 220px;
+}
+
+.owner-application-card h2,
+.owner-application-card h3,
+.owner-application-card p {
+  margin: 0;
+}
+
+.owner-application-card h2,
+.owner-application-card h3 {
+  margin-top: 4px;
+}
+
+.owner-application-card p {
+  color: var(--color-gray-700);
+  font-size: 0.84rem;
+}
+
+.owner-application-card > svg {
+  color: var(--color-orange);
+  font-size: 1.4rem;
+}
+
 .account-explainer p {
   font-size: 0.9rem;
 }
@@ -3581,6 +3648,7 @@ p {
 
 @media (max-width: 640px) {
   .container { padding-left: 16px; padding-right: 16px; }
+  .account-type-picker { grid-template-columns: 1fr; }
   .navbar-inner { padding: 11px 16px; }
   .brand-lockup { max-width: 190px; height: auto; }
   .section { padding: 64px 0; }
@@ -3709,6 +3777,8 @@ p {
 .admin-status { border: 1px solid var(--color-gray-200); border-radius: 999px; padding: 4px 10px; font-size: 0.8rem; font-weight: 700; text-transform: capitalize; }
 .admin-status--pending { color: var(--color-gray-700); }
 .admin-status--paid { color: var(--color-orange); }
+.admin-status--approved { color: #2f9e44; }
+.admin-status--rejected { color: #c92a2a; }
 .admin-status--used { color: #2f9e44; }
 .admin-modal-backdrop { position: fixed; inset: 0; background: rgba(22,32,42,0.6); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 200; }
 .admin-modal { background: var(--color-white); border-radius: var(--radius-lg); padding: 32px; max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto; }

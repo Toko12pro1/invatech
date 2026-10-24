@@ -14,7 +14,8 @@ import Consultation from "./pages/Consultation";
 import WifiZone from "./pages/WifiZone";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import RequireAuth from "./components/admin/RequireAuth";
+import RequireAdmin from "./components/admin/RequireAdmin";
+import RequireSellerAccess from "./components/admin/RequireSellerAccess";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminProducts from "./pages/admin/AdminProducts";
@@ -25,6 +26,7 @@ import AdminTraceability from "./pages/admin/AdminTraceability";
 import AdminPurchaseProofs from "./pages/admin/AdminPurchaseProofs";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminStores from "./pages/admin/AdminStores";
+import AdminStoreOwnerApplications from "./pages/admin/AdminStoreOwnerApplications";
 import MetaPixelTracker from "./components/MetaPixelTracker";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
@@ -69,17 +71,27 @@ export default class App extends React.Component {
 
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
+            path="/admin/seller"
+            element={
+              <RequireSellerAccess>
+                <AdminLayout />
+              </RequireSellerAccess>
+            }
+          >
+            <Route index element={<SellerWorkspace />} />
+          </Route>
+          <Route
             path="/admin"
             element={
-              <RequireAuth>
+              <RequireAdmin>
                 <AdminLayout />
-              </RequireAuth>
+              </RequireAdmin>
             }
           >
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<AdminOverview />} />
-            <Route path="seller" element={<SellerWorkspace />} />
             <Route path="stores" element={<AdminStores />} />
+            <Route path="store-owner-applications" element={<AdminStoreOwnerApplications />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="traceability" element={<AdminTraceability />} />
             <Route path="purchase-proofs" element={<AdminPurchaseProofs />} />

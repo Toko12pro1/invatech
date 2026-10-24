@@ -16,3 +16,14 @@ export const PRODUCT_CATEGORIES = [
 ];
 
 export const SHOP_CATEGORIES = ["All", "Fast Deals", ...PRODUCT_CATEGORIES];
+
+export const STORE_OWNER_CATEGORIES = [
+  "Smartphones & mobile devices",
+  "Laptops & computers",
+  "Audio & entertainment",
+  "Gaming",
+  "Cameras & creative gear",
+  "Accessories & chargers",
+  "Repairs & technology services",
+  "Other electronics",
+];
