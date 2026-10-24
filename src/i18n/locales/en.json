@@ -256,6 +256,10 @@
       "button": "See Fast Deals"
     },
     "loading": "Loading...",
+    "catalogNotice": {
+      "unavailable": "Live listings are temporarily unavailable. Showing sample listings while we reconnect.",
+      "empty": "There are no live listings yet. Showing sample listings so you can explore the marketplace."
+    },
     "empty": {
       "title": "No products in this category yet",
       "subtitle": "Tell us what you are looking for and we will search our partner stores for you.",

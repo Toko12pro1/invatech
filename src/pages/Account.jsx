@@ -49,6 +49,10 @@ export default function Account() {
 
   useEffect(() => {
     let active = true;
+    const requestedType = new URLSearchParams(window.location.search).get("type");
+    if (requestedType === "store_owner") {
+      setForm((current) => ({ ...current, accountType: "store_owner" }));
+    }
     async function loadSession() {
       const { data } = await supabase.auth.getSession();
       if (!active) return;

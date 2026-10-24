@@ -170,7 +170,7 @@ export default class Stores extends BasePage {
                 <li>Receive interested buyers directly on WhatsApp</li>
                 <li>Let Innovatech help with product checks and trust</li>
               </ul>
-              <Link to="/refer" className="btn btn--secondary">Invite a customer too <FaArrowRight /></Link>
+              <Link to="/account?type=store_owner" className="btn btn--secondary">Create a store account <FaArrowRight /></Link>
             </Reveal>
             <Reveal className="contact-form-card partner-form-card" delay={0.1}>
               <h3>List a product with us</h3>

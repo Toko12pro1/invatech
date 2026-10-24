@@ -4,7 +4,7 @@ import { withTranslation } from "react-i18next";
 import {
   FaArrowRight,
   FaBolt,
-  FaCheckCircle,
+  FaInfoCircle,
   FaClipboardCheck,
   FaSearch,
   FaShieldAlt,
@@ -31,6 +31,7 @@ class Shop extends BasePage {
       activeCategory: props.initialCategory || "All",
       products: [],
       loading: true,
+      catalogStatus: "",
       search: "",
       store: "All",
       location: "All",
@@ -55,19 +56,23 @@ class Shop extends BasePage {
   }
 
   async loadProducts() {
-    await supabase.rpc("deactivate_expired_fast_deals");
-    const { data, error } = await supabase
-      .from("products")
-      .select("*, stores(name, location, whatsapp)")
-      .eq("active", true)
-      .order("sort_order");
-    if (error || !data?.length) {
-      const products = getDemoProducts();
-      this.setState({ products, loading: false }, () => this.scrollToSharedProduct());
-      return;
+    try {
+      await supabase.rpc("deactivate_expired_fast_deals");
+      const { data, error } = await supabase
+        .from("products")
+        .select("*, stores(name, location, whatsapp)")
+        .eq("active", true)
+        .order("sort_order");
+      if (error || !data?.length) {
+        const products = getDemoProducts();
+        this.setState({ products, loading: false, catalogStatus: error ? "unavailable" : "empty" }, () => this.scrollToSharedProduct());
+        return;
+      }
+      const products = data.map(toMarketplaceProduct);
+      this.setState({ products, loading: false, catalogStatus: "" }, () => this.scrollToSharedProduct());
+    } catch {
+      this.setState({ products: getDemoProducts(), loading: false, catalogStatus: "unavailable" }, () => this.scrollToSharedProduct());
     }
-    const products = data.map(toMarketplaceProduct);
-    this.setState({ products, loading: false }, () => this.scrollToSharedProduct());
   }
 
   scrollToSharedProduct() {
@@ -138,7 +143,7 @@ class Shop extends BasePage {
   renderPage() {
     const filtered = this.getFilteredProducts();
     const { t } = this.props;
-    const { loading, search, store, location, minPrice, maxPrice, sortBy } = this.state;
+    const { loading, search, store, location, minPrice, maxPrice, sortBy, catalogStatus } = this.state;
     const isFastDealPage = this.props.initialCategory === "Fast Deals";
     const heroCopy = isFastDealPage ? "shop.fastDeals.hero" : "shop.hero";
     const stores = this.getFilterOptions("storeName");
@@ -156,27 +161,6 @@ class Shop extends BasePage {
         <section className="section">
           <div className="container">
             <SectionHeading eyebrow={t("shop.browse.eyebrow")} title={t("shop.browse.title")} />
-
-            <Reveal className="marketplace-trust-panel">
-              <div className="marketplace-trust-copy">
-                <span className="eyebrow">{t("shop.trust.eyebrow")}</span>
-                <h2>{t("shop.trust.title")}</h2>
-                <p>{t("shop.trust.subtitle")}</p>
-                <div className="marketplace-trust-actions">
-                  <Link to="/stores" className="btn btn--secondary">
-                    {t("shop.trust.stores")} <FaArrowRight aria-hidden="true" />
-                  </Link>
-                  <Link to="/consult" className="btn btn--outline-light">
-                    {t("shop.trust.check")} <FaShieldAlt aria-hidden="true" />
-                  </Link>
-                </div>
-              </div>
-              <div className="marketplace-trust-list">
-                <div><FaShieldAlt /><span><strong>{t("shop.trust.verifiedTitle")}</strong>{t("shop.trust.verifiedText")}</span></div>
-                <div><FaCheckCircle /><span><strong>{t("shop.trust.testedTitle")}</strong>{t("shop.trust.testedText")}</span></div>
-                <div><FaWhatsapp /><span><strong>{t("shop.trust.supportTitle")}</strong>{t("shop.trust.supportText")}</span></div>
-              </div>
-            </Reveal>
 
             <Reveal className="fast-deal-banner">
               <div className="fast-deal-banner-icon"><FaBolt /></div>
@@ -242,21 +226,18 @@ class Shop extends BasePage {
               </p>
             </Reveal>
 
-            <Reveal className="shop-help-panel">
-              <div className="shop-help-copy">
-                <span className="shop-help-icon"><FaClipboardCheck aria-hidden="true" /></span>
-                <div>
-                  <strong>{t("shop.help.title")}</strong>
-                  <p>{t("shop.help.subtitle")}</p>
-                </div>
+            {catalogStatus && (
+              <div className="shop-catalog-notice" role="status">
+                <FaInfoCircle aria-hidden="true" />
+                <span>
+                  {catalogStatus === "unavailable"
+                    ? t("shop.catalogNotice.unavailable", "Live listings are temporarily unavailable. Showing sample listings while we reconnect.")
+                    : t("shop.catalogNotice.empty", "There are no live listings yet. Showing sample listings so you can explore the marketplace.")}
+                </span>
               </div>
-              <div className="shop-help-actions">
-                <Link to="/consult" className="btn btn--primary">{t("shop.help.button")} <FaArrowRight /></Link>
-                <a href={whatsappLink("Hi Innovatech, I need help choosing or checking a product.")} target="_blank" rel="noreferrer" className="btn btn--ghost"><FaWhatsapp /> {t("shop.help.whatsapp")}</a>
-              </div>
-            </Reveal>
+            )}
 
-            <div className="shop-results-toolbar">
+            <div id="shop-results" className="shop-results-toolbar">
               <div className="shop-results-count">
                 <strong>{filtered.length}</strong> {filtered.length === 1 ? t("shop.filters.result") : t("shop.filters.results")}
                 {isFastDealPage && <span className="shop-results-label"><FaBolt aria-hidden="true" /> Fast Deals only</span>}
@@ -290,6 +271,20 @@ class Shop extends BasePage {
                 </a>
               </div>
             )}
+
+            <Reveal className="shop-help-panel">
+              <div className="shop-help-copy">
+                <span className="shop-help-icon"><FaClipboardCheck aria-hidden="true" /></span>
+                <div>
+                  <strong>{t("shop.help.title")}</strong>
+                  <p>{t("shop.help.subtitle")}</p>
+                </div>
+              </div>
+              <div className="shop-help-actions">
+                <Link to="/consult" className="btn btn--primary">{t("shop.help.button")} <FaArrowRight /></Link>
+                <a href={whatsappLink("Hi Innovatech, I need help choosing or checking a product.")} target="_blank" rel="noreferrer" className="btn btn--ghost"><FaWhatsapp /> {t("shop.help.whatsapp")}</a>
+              </div>
+            </Reveal>
           </div>
         </section>
 

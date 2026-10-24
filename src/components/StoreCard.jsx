@@ -37,7 +37,7 @@ export default class StoreCard extends React.Component {
       <Reveal delay={index * 0.08} className="store-card-wrap">
         <motion.article className="store-card" whileHover={{ y: -7 }}>
           <div className="store-card-image">
-            <img src={store.image} alt="" loading="lazy" />
+            <img src={store.image} alt={`${store.name} store`} loading="lazy" />
             <span className="store-card-badge"><FaShieldAlt /> Verified partner</span>
           </div>
           <div className="store-card-body">

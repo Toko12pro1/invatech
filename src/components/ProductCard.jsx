@@ -90,7 +90,9 @@ class ProductCard extends React.Component {
           </div>
           <div className="product-card-body">
             <span className="product-condition">{t(`common.conditions.${product.condition}`)}</span>
-            <h3>{name}</h3>
+            <Link className="product-card-title-link" to={`/product/${encodeURIComponent(product.id)}`}>
+              <h3>{name}</h3>
+            </Link>
             <div className="product-card-store">
               <span><FaMapMarkerAlt aria-hidden="true" /> {product.storeName}</span>
               <span className="product-card-verified"><FaShieldAlt aria-hidden="true" /> {verificationLabel}</span>

@@ -256,6 +256,10 @@
       "button": "Voir les bonnes affaires"
     },
     "loading": "Chargement...",
+    "catalogNotice": {
+      "unavailable": "Les annonces en direct sont temporairement indisponibles. Des exemples sont affiches pendant la reconnexion.",
+      "empty": "Aucune annonce en direct pour le moment. Des exemples sont affiches pour explorer la marketplace."
+    },
     "empty": {
       "title": "Aucun produit dans cette catégorie pour le moment",
       "subtitle": "Dites-nous ce que vous cherchez et nous interrogerons nos boutiques partenaires.",
