@@ -3868,6 +3868,8 @@ p {
 .meta-consent-banner .btn { white-space: nowrap; }
 .admin-login-card { background: var(--color-white); border-radius: var(--radius-lg); padding: 40px; max-width: 380px; width: 100%; box-shadow: var(--shadow-lg); text-align: center; }
 .admin-login-card h1 { font-size: 1.4rem; margin-top: 12px; }
+.admin-login-session-notice { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 18px 0; padding: 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text-muted); font-size: .85rem; text-align: left; }
+.admin-login-session-notice .btn { padding: 8px 12px; font-size: .8rem; white-space: nowrap; }
 .admin-login-submit { width: 100%; margin-top: 8px; justify-content: center; }
 .admin-shell { display: flex; min-height: 100vh; }
 .admin-sidebar { width: 240px; flex-shrink: 0; background: var(--color-navy); color: var(--color-white); display: flex; flex-direction: column; padding: 24px 16px; }

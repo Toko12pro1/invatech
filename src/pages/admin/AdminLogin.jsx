@@ -5,18 +5,19 @@ import withNavigate from "../../utils/withNavigate";
 class AdminLogin extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "", error: "", loading: false };
+    this.state = { email: "", password: "", error: "", loading: false, existingSessionEmail: "" };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
     const { data } = await supabase.auth.getSession();
-    if (data.session) {
-      await supabase.auth.refreshSession();
-      const { data: isAdmin } = await supabase.rpc("is_admin");
-      this.props.navigate(isAdmin === true ? "/admin" : "/account", { replace: true });
-    }
+    this.setState({ existingSessionEmail: data.session?.user?.email || "" });
+  }
+
+  async signOutExistingSession() {
+    await supabase.auth.signOut();
+    this.setState({ email: "", password: "", existingSessionEmail: "", error: "" });
   }
 
   handleChange(event) {
@@ -43,7 +44,7 @@ class AdminLogin extends React.Component {
   }
 
   render() {
-    const { email, password, error, loading } = this.state;
+    const { email, password, error, loading, existingSessionEmail } = this.state;
 
     return (
       <div className="admin-login">
@@ -52,14 +53,16 @@ class AdminLogin extends React.Component {
           <h1>Innovatech Admin</h1>
           <p>Sign in to post products, update prices and manage the Innovatech marketplace.</p>
 
+          {existingSessionEmail && <div className="admin-login-session-notice"><span>Already signed in as {existingSessionEmail}</span><button type="button" className="btn btn--ghost" onClick={() => this.signOutExistingSession()}>Sign out</button></div>}
+
           <div className="form-row">
             <label htmlFor="email">Email</label>
-            <input id="email" name="email" type="email" required value={email} onChange={this.handleChange} />
+            <input id="email" name="email" type="email" autoComplete="off" required value={email} onChange={this.handleChange} />
           </div>
 
           <div className="form-row">
             <label htmlFor="password">Password</label>
-            <input id="password" name="password" type="password" required value={password} onChange={this.handleChange} />
+            <input id="password" name="password" type="password" autoComplete="new-password" required value={password} onChange={this.handleChange} />
           </div>
 
           {error && <p className="form-error">{error}</p>}
