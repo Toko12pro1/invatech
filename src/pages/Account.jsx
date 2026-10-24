@@ -13,6 +13,15 @@ function makeLocalCode() {
   return `INN-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 }
 
+function getAuthErrorMessage(authError) {
+  const message = authError?.message || "We could not create your account.";
+  const code = authError?.code || authError?.error_code;
+  if (authError?.status === 429 || code === "over_email_send_rate_limit" || /email rate limit exceeded/i.test(message)) {
+    return "Email confirmation is temporarily rate-limited. Wait up to one hour, then try again with this same email address.";
+  }
+  return message;
+}
+
 export default function Account() {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -119,7 +128,7 @@ export default function Account() {
         },
       });
       if (signupError) {
-        setError(signupError.message);
+        setError(getAuthErrorMessage(signupError));
       } else if (data.session) {
         setSession(data.session);
         await loadProfile(data.session);
